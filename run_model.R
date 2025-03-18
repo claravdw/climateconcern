@@ -147,7 +147,7 @@ smp_para$no_chains <- no_chains
 
 ##fit model with stan
 
-model <- cmdstan_model(paste0('stanmodels/', modelname, '.stan'),
+model <- cmdstan_model(paste0(modelname, '.stan'),
                        cpp_options = list(stan_threads = TRUE),
                        pedantic = TRUE)
 fit<- model$sample(data = opinion_dat,                                                  
@@ -156,7 +156,7 @@ fit<- model$sample(data = opinion_dat,
                      chains = smp_para$no_chains,
                      parallel_chains = smp_para$no_chains,
                      threads_per_chain = MC_CORES/smp_para$no_chains,
-                     seed=123
+                     seed=123)
 gc() #garbage collection
 
 

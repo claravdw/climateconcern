@@ -8,10 +8,10 @@
 //to speed up sampling.
 functions {
 
-  real partial_sum_lpmf(int[] slice_y,
+  real partial_sum_lpmf(array[] int slice_y,
                         int start, int end,
-                        int[] options, int[] questions, int[] regions, int[] years,
-                        real[] gamma, real[,] region_alpha, array[] vector beta) {
+                        array[] int options, array[] int questions,array[] int regions, array[] int years,
+                        array[] real gamma, array[,] real region_alpha, array[] vector beta) {
                         
     vector[end - start + 1] result;
     for (i in start:end) {
@@ -32,54 +32,54 @@ data {
   int<lower=0> J;  //number of items
   int<lower=0> R;  //number of regions
   int<lower=1> K; // max number of answer options
-  int<lower=0> Kmin1[J]; //number of cutpoints for each question (no. of options - 1)
+  array[J] int<lower=0> Kmin1; //number of cutpoints for each question (no. of options - 1)
   
   //region-level data
   int<lower=0> RTJK; //number of observed region-year-question-options
-  int<lower=0> y[RTJK]; //responses per observation (country-year-question-option)
-  int<lower=0> options[RTJK]; //options of the observations
-  int<lower=0> countries[RTJK]; //countries of the observations
-  int<lower=0> years[RTJK]; //years of the observations
-  int<lower=0> questions[RTJK]; //questions of the observations
-  int<lower=0> regions[RTJK]; //regions of the observations
+  array[RTJK] int<lower=0> y; //responses per observation (country-year-question-option)
+  array[RTJK] int<lower=0> options; //options of the observations
+  array[RTJK] int<lower=0> countries; //countries of the observations
+  array[RTJK] int<lower=0> years; //years of the observations
+  array[RTJK] int<lower=0> questions; //questions of the observations
+  array[RTJK] int<lower=0> regions; //regions of the observations
   
   //nation-level data
   int<lower=0> CTJK; //number of observed country-year-question-options
-  int<lower=0> y_nat[CTJK]; //responses per observation (country-year-question-option)
-  int<lower=0> options_nat[CTJK]; //options of the observations
-  int<lower=0> countries_nat[CTJK]; //countries of the observations
-  int<lower=0> years_nat[CTJK]; //years of the observations
-  int<lower=0> questions_nat[CTJK]; //questions of the observations
+  array[CTJK] int<lower=0> y_nat; //responses per observation (country-year-question-option)
+  array[CTJK] int<lower=0> options_nat; //options of the observations
+  array[CTJK] int<lower=0> countries_nat; //countries of the observations
+  array[CTJK] int<lower=0> years_nat; //years of the observations
+  array[CTJK] int<lower=0> questions_nat; //questions of the observations
   
-  int<lower=0> reg_to_country[R]; //mapping from region to country
-  real<lower=0,upper=1> reg_to_weight[R]; //mapping from region to weight (population proportion; sum to 1 within countries)
+  array[R] int<lower=0> reg_to_country; //mapping from region to country
+  array[R] real<lower=0,upper=1> reg_to_weight; //mapping from region to weight (population proportion; sum to 1 within countries)
 
 }
 
 parameters {
   
-  real country_alpha_raw[C,TT]; //country ability steps
-  real region_effect_raw[R,TT]; //region effect steps
+  array[C,TT] real country_alpha_raw; //country ability steps
+  array[R,TT] real region_effect_raw; //region effect steps
   
   real<lower=0> country_step; //sd of country random walks
   real<lower=0> region_step; //sd of region random walks
   
-  ordered[K-1]  beta_raw[J]; //raw cutpoints, before adjusting slope and location to K
-  real<lower=0> gamma_raw[J]; //discrimination, before scaling; should be positive
+  array[J] ordered[K-1]  beta_raw; //raw cutpoints, before adjusting slope and location to K
+  array[J] real<lower=0> gamma_raw; //discrimination, before scaling; should be positive
  
 }
 
 transformed parameters {
 
-  real country_alpha[C,TT]; //country abilities
-  real region_effect[R,TT]; //region effects
-  real region_alpha[R,TT]; //region abilities
-  real country_poststrat[C,TT]; //country abilities
+  array[C,TT] real country_alpha; //country abilities
+  array[R,TT] real region_effect; //region effects
+  array[R,TT] real region_alpha; //region abilities
+  array[C,TT] real country_poststrat; //country abilities
   
-  ordered[K-1] beta_uncentered[J]; //cutpoints, before centering
+  array[J] ordered[K-1] beta_uncentered; //cutpoints, before centering
   real mean_beta_mid = 0;
-  ordered[K-1] beta[J]; //centered cutpoints
-  real<lower=0> gamma[J]; //scaled discrimination
+  array[J] ordered[K-1] beta; //centered cutpoints
+  array[J] real<lower=0> gamma; //scaled discrimination
   
   //contructing the country random walks and region random walks
   

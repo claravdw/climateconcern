@@ -1,0 +1,239 @@
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{tabularx}
+\usepackage{amsmath}
+\usepackage{authblk}
+\usepackage[toc,page]{appendix}
+\usepackage{ulem}
+%% bibliography
+% \bibliographystyle{naturemag}
+
+
+\usepackage[top=1in, bottom=1in, left=1in, right=1in]{geometry}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{bm}
+\usepackage{epstopdf}
+\usepackage{epigraph}
+\usepackage{isomath}
+\usepackage[english]{babel}
+\usepackage{caption}
+\usepackage{placeins}
+\usepackage{comment} 
+\usepackage{paralist}
+
+\usepackage{enumitem}
+%\usepackage{fullpage}
+%\usepackage{fancyhdr}
+
+\usepackage{graphicx}
+
+\usepackage{float}
+\usepackage{dcolumn}
+\usepackage{multirow}
+\usepackage[table]{xcolor}
+\usepackage[bottom, hang,flushmargin]{footmisc}
+\usepackage{rotating}
+\usepackage{subfigure}
+\usepackage{pdflscape}
+\usepackage{setspace}
+%\usepackage{pdfpages}
+
+%bibliography
+\usepackage{csquotes}
+\usepackage[style=ext-authoryear-comp,natbib=true]{biblatex}
+\usepackage{filecontents}
+\addbibresource{survey_refs.bib}
+% \usepackage[round]{natbib}
+% \usepackage{url}
+% \usepackage{cite}
+% \bibpunct{(}{)}{,}{a}{}{,}
+
+%% track changes
+% \usepackage{changes}
+% \definechangesauthor[name={Parrish},color=red]{spb}
+
+%%%%%%%%%%% SET FILE PATH FOR GRAPHICS %%%%%%%%%%%%%%%%%%%%%%
+%\graphicspath{{../../Graphics/}{../../Climate public opinion data/figures/}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\usepackage{color}
+\usepackage{longtable}
+\usepackage{bbding}
+
+
+%table packages
+
+\definecolor{lightgray}{gray}{0.9}
+\usepackage{pgfplotstable}
+\usepackage{longtable}
+\usepackage{booktabs} 
+\usepackage{hyperref} %% because hyperref used in main file, and need to load this in the supp file in order to cross-ref (?)
+
+%%%%%%%%%%% THESE PACKAGES CAUSE ERRORS--TROUBLESHOOT %%%%%
+
+%\usepackage[colorlinks=true, pagebackref=false]{hyperref}
+\hypersetup{colorlinks, citecolor=black, filecolor=black, linkcolor=black, urlcolor=blue}
+%\def\ci{\perp\!\!\!\perp}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%% CUSTOM COMMANDS
+\def\eqd{\,{\buildrel d \over =}\,} %% "equal in distribution" sign
+\def\stdom{\,{\buildrel d \over \ge}\,} %% "stochastically dominates"
+\newcommand{\ig}{\includegraphics}
+\newcommand{\poscite}[1]{\citeauthor{#1}'s (\citeyear{#1})} %% possessive citation
+\newcommand{\red}{\textcolor{red}}%
+\newcommand{\blue}{\textcolor{blue}}%
+\newcommand{\indep}{\rotatebox[origin=c]{90}{$\models$}}
+\renewenvironment{itemize}[1]{\begin{compactitem}#1}{\end{compactitem}}
+
+
+     %\pagestyle{fancy}
+%\rhead{Warshaw and Bergquist}
+
+\begin{document}
+\pagenumbering{gobble} %% suppress page numbers since we number them in the main doc
+% \setcounter{page}{1}
+\setcounter{table}{0}
+\setcounter{figure}{0}
+\setcounter{section}{0}
+\renewcommand\thetable{S\arabic{table}}
+\renewcommand\thefigure{S\arabic{figure}}
+% \renewcommand{\thepage}{S-\arabic{page}}
+\renewcommand\thesection{S\arabic{section}}
+%% Turning on normal citations temporarily while we're editing.
+%\setcitestyle{numbers}
+%\citestyle{nature}
+
+
+% \title{Extended data for: Measuring global perceptions of climate change with a dynamic, group-level item response theory model}
+% % \author{Parrish Bergquist$^{1}$, Peter Howe$^2$, Jennifer Marlon$^3$, Anthony Leiserowitz$^3$, Matto Mildenberger$^4$, \&Clara Vandeweerdt$^5$ }
+
+% \author[1]{Parrish Bergquist}
+% \author[2]{Clara Vandeweerdt}
+% \author[3]{Matto Mildenberger}
+% \author[4]{Peter Howe}
+% % \author[5]{Anthony Leiserowitz}
+% \author[5]{Jennifer Marlon}
+% \date{}
+
+% \affil[1]{McCourt School of Public Policy, Georgetown University}
+% \affil[2]{University of Copenhagen}
+% \affil[3]{Department of Political Science, University of California Santa Barbara}
+% \affil[4]{Quinney College of Natural Resources, Utah State University}
+% \affil[5]{School of the Environment, Yale University}
+
+% \maketitle
+
+%%% begin document
+
+%\maketitle
+
+%%%%% note if we circulate prelim draft %%%
+%\begin{center}
+%\textit{Preliminary draft. Please do not forward or cite.}
+%\end{center}
+\thispagestyle{empty}
+
+\begin{center}
+\end{center}
+%%%% ABSTRACT %%%%
+
+%\newpage
+%\tableofcontents
+%\newpage
+
+
+
+\setcounter{page}{1}
+%\doublespacing
+%%%%%%%%%%%%%%%%% Introduction %%%%%%%%%%%%%%%
+%\section*{Introduction}
+%\parindent .5 in
+%\clearpage
+
+% \section*{Extended Data}
+\singlespace
+%\setcounter{table}{1} \renewcommand{\thetable}{A.\arabic{table}}
+%\setcounter{page}{16} \renewcommand{\thetable}{A.\arabic{table}}
+
+%%%%%%% deleted this, 160509 
+\pgfkeysifdefined{/pgfplots/table/output empty row/.@cmd}{
+    % upcoming releases offer this more convenient option:
+    \pgfplotstableset{
+        empty header/.style={
+          every head row/.style={output empty row},
+        }
+    }
+}{
+
+%%%%%%%%%%%%%%%% in 160509--deleted from here %%%%%%%%%%%
+    % versions up to and including 1.5.1 need this:
+    \pgfplotstableset{
+        empty header/.style={
+            typeset cell/.append code={%
+                \ifnum\pgfplotstablerow=-1 %
+                    \pgfkeyssetvalue{/pgfplots/table/@cell content}{}%
+                \fi
+            }
+        }
+    }
+}
+
+
+\rowcolors{1}{}{lightgray}
+\scriptsize
+\pgfplotstabletypeset[
+    empty header,
+    header=false,
+    begin table=\begin{longtable},
+    every first row/.append style={before row={%
+    \caption{Survey Questions}%
+    \label{tab:Questions}\\\toprule
+    \textbf{Question Category} &
+    \textbf{Years} &\textbf{Question} &\textbf{Sources} \\ \toprule    
+    \endfirsthead
+    %
+    \multicolumn{4}{l}%
+    {{\bfseries Survey Questions \thetable\ Continued from previous page}} \\
+    \toprule 
+    %
+    \textbf{Question Category} &
+    \textbf{Years} &\textbf{Question} &\textbf{Sources} \\ \toprule  
+    \endhead
+    %
+    %%%%%%%%%%%%%%%%% STOPPED HERE %%%%%%%%%%%%%%%%%%%
+    %\midrule \multicolumn{4}{r}{{Continued on next page}} \\ 
+    \bottomrule
+    \endfoot
+    %
+    \midrule
+    %\multicolumn{4}{r}{{Concluded}} \\ 
+    \bottomrule
+    \endlastfoot
+    }},%
+    %
+    end table=\end{longtable},
+    col sep=comma,
+    string type,
+    column type=l,
+    % i added the line just below here, trying to get the table to include all the columns--seems my table has one more column than Melissa's did (I adjusted the code above too, but still doesn't seem to be working right)
+ %    columns/0/.style={column type=p{1cm}},
+    columns/0/.style={column type=p{3.5cm}},
+    columns/1/.style={column type=p{1.5cm}},
+    columns/2/.style={column type=p{4cm}},
+    columns/3/.style={column type=p{7cm}},
+    ]{questions.csv}
+    %{questions_new.csv}
+    %{questions2.csv}
+
+
+%
+\clearpage
+% \bibliographystyle{chicago}
+% \bibliography{survey_refs}
+%
+%\end{refsection}
+
+\end{document}

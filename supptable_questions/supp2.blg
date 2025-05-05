@@ -1,0 +1,76 @@
+[0] Config.pm:307> INFO - This is Biber 2.19
+[0] Config.pm:310> INFO - Logfile is 'supp2.blg'
+[29] biber-darwin:340> INFO - === Fri Sep 13, 2024, 14:10:09
+[38] Biber.pm:419> INFO - Reading 'supp2.bcf'
+[92] Biber.pm:979> INFO - Found 135 citekeys in bib section 0
+[100] Biber.pm:4419> INFO - Processing section 0
+[104] Biber.pm:4610> INFO - Looking for bibtex file 'survey_refs.bib' for section 0
+[105] bibtex.pm:1713> INFO - LaTeX decoding ...
+[126] bibtex.pm:1519> INFO - Found BibTeX data source 'survey_refs.bib'
+[350] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'normalization = NFD' with 'normalization = prenormalized'
+[350] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'variable = shifted' with 'variable = non-ignorable'
+[351] Biber.pm:4239> INFO - Sorting list 'nyt/global//global/global' of type 'entry' with template 'nyt' and locale 'en-US'
+[351] Biber.pm:4245> INFO - No sort tailoring available for locale 'en-US'
+[389] bbl.pm:660> INFO - Writing 'supp2.bbl' with encoding 'UTF-8'
+[408] bbl.pm:763> INFO - Output to supp2.bbl
+[408] Biber.pm:131> WARN - legacy year field 'October, 2021' in entry 'fb' is not an integer - this will probably not sort properly.
+[408] Biber.pm:131> WARN - legacy year field 'June, 2006' in entry 'bm' is not an integer - this will probably not sort properly.
+[408] Biber.pm:131> WARN - legacy year field 'October, 2019' in entry 'cf' is not an integer - this will probably not sort properly.
+[408] Biber.pm:131> WARN - legacy year field 'October, 2020' in entry 'bn' is not an integer - this will probably not sort properly.
+[408] Biber.pm:131> WARN - legacy year field 'September, 2021' in entry 'bo' is not an integer - this will probably not sort properly.
+[408] Biber.pm:131> WARN - legacy year field 'August, 2022' in entry 'ft' is not an integer - this will probably not sort properly.
+[408] Biber.pm:131> WARN - legacy year field 'May, 2023' in entry 'fu' is not an integer - this will probably not sort properly.
+[408] Biber.pm:131> WARN - legacy year field 'June, 2016' in entry 'f' is not an integer - this will probably not sort properly.
+[408] Biber.pm:131> WARN - legacy year field 'March, 2002' in entry 'dy' is not an integer - this will probably not sort properly.
+[408] Biber.pm:131> WARN - legacy year field 'September, 2002' in entry 'ei' is not an integer - this will probably not sort properly.
+[408] Biber.pm:131> WARN - legacy year field 'April, 2008' in entry 'b' is not an integer - this will probably not sort properly.
+[408] Biber.pm:131> WARN - legacy year field 'January, 2009' in entry 'ef' is not an integer - this will probably not sort properly.
+[408] Biber.pm:131> WARN - legacy year field 'August, 2009' in entry 'ay' is not an integer - this will probably not sort properly.
+[409] Biber.pm:131> WARN - legacy year field 'June, 2011' in entry 'eg' is not an integer - this will probably not sort properly.
+[409] Biber.pm:131> WARN - legacy year field 'November, 2013' in entry 'az' is not an integer - this will probably not sort properly.
+[409] Biber.pm:131> WARN - legacy year field 'May, 2015' in entry 'bc' is not an integer - this will probably not sort properly.
+[409] Biber.pm:131> WARN - legacy year field 'March, 2017' in entry 'bd' is not an integer - this will probably not sort properly.
+[409] Biber.pm:131> WARN - legacy year field 'April, 2019' in entry 'q' is not an integer - this will probably not sort properly.
+[409] Biber.pm:131> WARN - legacy year field 'March, 2021' in entry 'r' is not an integer - this will probably not sort properly.
+[409] Biber.pm:131> WARN - legacy year field 'March, 2015' in entry 'cz' is not an integer - this will probably not sort properly.
+[409] Biber.pm:131> WARN - legacy year field 'December, 2018' in entry 'bp' is not an integer - this will probably not sort properly.
+[409] Biber.pm:131> WARN - legacy year field 'December, 2019' in entry 'dz' is not an integer - this will probably not sort properly.
+[409] Biber.pm:131> WARN - legacy year field 'January, 2009' in entry 'cq' is not an integer - this will probably not sort properly.
+[409] Biber.pm:131> WARN - legacy year field 'March, 2014' in entry 'cr' is not an integer - this will probably not sort properly.
+[409] Biber.pm:131> WARN - legacy year field 'September, 2007' in entry 'cx' is not an integer - this will probably not sort properly.
+[409] Biber.pm:131> WARN - legacy year field 'September, 2010' in entry 'c' is not an integer - this will probably not sort properly.
+[409] Biber.pm:131> WARN - legacy year field 'July, 2011' in entry 'cy' is not an integer - this will probably not sort properly.
+[409] Biber.pm:131> WARN - legacy year field 'July, 2017' in entry 'h' is not an integer - this will probably not sort properly.
+[409] Biber.pm:131> WARN - legacy year field 'May, 2019' in entry 'g' is not an integer - this will probably not sort properly.
+[409] Biber.pm:131> WARN - legacy year field 'April, 2006' in entry 'eh' is not an integer - this will probably not sort properly.
+[409] Biber.pm:131> WARN - legacy year field 'April, 2007' in entry 'dq' is not an integer - this will probably not sort properly.
+[409] Biber.pm:131> WARN - legacy year field 'April, 2008' in entry 'dr' is not an integer - this will probably not sort properly.
+[409] Biber.pm:131> WARN - legacy year field 'May, 2009' in entry 'ah' is not an integer - this will probably not sort properly.
+[409] Biber.pm:131> WARN - legacy year field 'April, 2010' in entry 'ai' is not an integer - this will probably not sort properly.
+[409] Biber.pm:131> WARN - legacy year field 'April, 2015' in entry 'bh' is not an integer - this will probably not sort properly.
+[409] Biber.pm:131> WARN - legacy year field 'July, 2010' in entry 'i' is not an integer - this will probably not sort properly.
+[409] Biber.pm:131> WARN - legacy year field 'December, 2014' in entry 'bv' is not an integer - this will probably not sort properly.
+[409] Biber.pm:131> WARN - legacy year field 'March, 2013' in entry 'bq' is not an integer - this will probably not sort properly.
+[409] Biber.pm:131> WARN - legacy year field 'April, 2016' in entry 'br' is not an integer - this will probably not sort properly.
+[409] Biber.pm:131> WARN - legacy year field 'April, 2017' in entry 'bs' is not an integer - this will probably not sort properly.
+[409] Biber.pm:131> WARN - legacy year field 'May, 2018' in entry 'bt' is not an integer - this will probably not sort properly.
+[409] Biber.pm:131> WARN - legacy year field 'March, 2022' in entry 'gb' is not an integer - this will probably not sort properly.
+[409] Biber.pm:131> WARN - legacy year field 'March, 2021' in entry 'gc' is not an integer - this will probably not sort properly.
+[409] Biber.pm:131> WARN - legacy year field 'June, 2005' in entry 'bx' is not an integer - this will probably not sort properly.
+[409] Biber.pm:131> WARN - legacy year field 'June, 2006' in entry 'by' is not an integer - this will probably not sort properly.
+[409] Biber.pm:131> WARN - legacy year field 'April, 2007' in entry 'de' is not an integer - this will probably not sort properly.
+[409] Biber.pm:131> WARN - legacy year field 'June, 2008' in entry 'ag' is not an integer - this will probably not sort properly.
+[409] Biber.pm:131> WARN - legacy year field 'June, 2009' in entry 'j' is not an integer - this will probably not sort properly.
+[409] Biber.pm:131> WARN - legacy year field 'May, 2012' in entry 'ej' is not an integer - this will probably not sort properly.
+[409] Biber.pm:131> WARN - legacy year field 'August, 2012' in entry 'ek' is not an integer - this will probably not sort properly.
+[409] Biber.pm:131> WARN - legacy year field 'February, 2011' in entry 'el' is not an integer - this will probably not sort properly.
+[409] Biber.pm:131> WARN - legacy year field 'October, 2018' in entry 'er' is not an integer - this will probably not sort properly.
+[409] Biber.pm:131> WARN - legacy year field 'May, 2017' in entry 'ep' is not an integer - this will probably not sort properly.
+[409] Biber.pm:131> WARN - legacy year field 'October, 2021' in entry 'ff' is not an integer - this will probably not sort properly.
+[409] Biber.pm:131> WARN - legacy year field 'May, 2022' in entry 'fg' is not an integer - this will probably not sort properly.
+[409] Biber.pm:131> WARN - legacy year field 'May, 2019' in entry 'fh' is not an integer - this will probably not sort properly.
+[409] Biber.pm:131> WARN - legacy year field 'November, 2019' in entry 'fi' is not an integer - this will probably not sort properly.
+[409] Biber.pm:131> WARN - legacy year field 'May, 2021' in entry 'fj' is not an integer - this will probably not sort properly.
+[409] Biber.pm:131> WARN - legacy year field 'June, 2022' in entry 'fx' is not an integer - this will probably not sort properly.
+[409] Biber.pm:131> WARN - legacy year field 'April, 2021' in entry 'gd' is not an integer - this will probably not sort properly.
+[409] Biber.pm:133> INFO - WARNINGS: 60

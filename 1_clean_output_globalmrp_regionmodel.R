@@ -279,71 +279,6 @@ difficulties%<>%
          question=gsub("human","attribution",question))
 
 
-## load survey data
-load(paste0("inputs/megapoll_globalmrp_ordinal_replication.Rda"))
-survey.data%<>%filter(as.numeric(year)>2001)
-survey.data<-survey.data%>%
-  select(source,year,iso_3166,regioncode,mergekey,all_of(questions$question))
-survey.data[survey.data=="-1"|survey.data=="-2"|survey.data==-1|survey.data==-2]<-NA
-
-names(survey.data)<-gsub("concern","worry",names(survey.data))
-names(survey.data)<-gsub("worry_worry","worry",names(survey.data))
-# names(survey.data)<-gsub("worry_worried_","worry_",names(survey.data))
-names(survey.data)<-gsub("human_caused","attribution",names(survey.data))
-names(survey.data)<-gsub("human_cause","attribution",names(survey.data))
-names(survey.data)<-gsub("human","attribution",names(survey.data))
-
-## add columns to survey.data that are used in later scripts 
-survey.data<-survey.data%>%
-  mutate(source2=substr(source,1,nchar(source)-5)) ## take year off so that I can id unique sources that span years
-
-## unique sources including those that span years--assign the last year to the ones that span years, and then merge back in
-multi.sources<-survey.data%>%
-  select(source2,year)%>%
-  distinct()%>%
-  mutate(source=grepl("[0-9]+",source2))%>%
-  group_by(source2,source)%>%
-  reframe(year2=ifelse(source==TRUE,max(year),NA))%>% ## reframe() replaced summarize
-  # ungroup()%>%
-  filter(!is.na(year2))%>%
-  select(source2,year2)%>%
-  distinct()
-
-survey.data<-left_join(survey.data,multi.sources,by="source2")
-survey.data<-survey.data%>%mutate(year2=ifelse(is.na(year2),year,year2))
-
-### create year groupings in survey.data that match data input
-unique(d$year2)
-unique(d.nat$year2)
-unique(survey.data$year2)
-
-if(timecollapse=="5yr"){
-  survey.data<-survey.data%>%mutate(
-    year2=case_when(as.numeric(year2)<=2004~"1998-2004",
-                    as.numeric(year2)>2004&as.numeric(year2)<=2009~"2005-2009",
-                    as.numeric(year2)>2009&as.numeric(year2)<=2014~"2010-2014",
-                    as.numeric(year2)>2014&as.numeric(year2)<=2021~"2015-2021"))
-}
-if(timecollapse=="2yr"){
-  survey.data<-survey.data%>%mutate(
-    year2=case_when(#as.numeric(year2)<=1999~"1998-99",
-      #as.numeric(year2)>1999&as.numeric(year2)<=2001~"2000-01",
-      as.numeric(year2)>2001&as.numeric(year2)<=2003~"2002-03",
-      # as.numeric(year2)<=2003~"1998-2003",
-      as.numeric(year2)>2003&as.numeric(year2)<=2005~"2004-05",
-      as.numeric(year2)>2005&as.numeric(year2)<=2007~"2006-07",
-      as.numeric(year2)>2007&as.numeric(year2)<=2009~"2008-09",
-      as.numeric(year2)>2009&as.numeric(year2)<=2011~"2010-11",
-      as.numeric(year2)>2011&as.numeric(year2)<=2013~"2012-13",
-      as.numeric(year2)>2013&as.numeric(year2)<=2015~"2014-15",
-      as.numeric(year2)>2015&as.numeric(year2)<=2017~"2016-17",
-      as.numeric(year2)>2017&as.numeric(year2)<=2019~"2018-19",
-      as.numeric(year2)>2019&as.numeric(year2)<=2021~"2020-21",
-      as.numeric(year2)>2021&as.numeric(year2)<=2023~"2022-23")
-  )
-}
-
-
 continents<-country.poststrat%>%
   select(Continent_Name,iso_3166)%>%
   distinct()
@@ -456,7 +391,8 @@ est.reg$mean.scl.bin<-cut(est.reg$mean.scl,breaks=c(-1,.1,.2,.3,.4,.5,.6,.7,.8,.
                           labels=c("0-0.1","0.1-0.2","0.2-0.3","0.3-0.4","0.4-0.5","0.5-0.6",
                                    "0.6-0.7","0.7-0.8","0.8-0.9","0.9-1"))
 
-
+## load survey data
+load(paste0("inputs/megapoll_globalmrp_ordinal_replication.Rda"))
 
 if(exists("datafilter")){
   save(region.alphas,country.poststrat,difficulties,discrimination,d,d.nat,survey.data,est.nat,est.reg,

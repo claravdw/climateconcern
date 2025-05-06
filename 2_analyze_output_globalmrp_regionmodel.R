@@ -52,6 +52,9 @@ if(exists("datafilter")){
   # load("data/d_rstan_region.Rda")
 }
 
+## aggregated data objects from data that are not publicly shareable
+load("inputs/surveys_nonpublic.Rda")
+
 # Table S2: create table showing thickness of data across countries #### 
 surveydesc<-d%>%
   left_join(select(country.poststrat,NAME_0_gadm,iso_3166)%>%distinct(),by="iso_3166")%>%
@@ -66,18 +69,8 @@ surveydesc<-d%>%
   mutate(NAME_0_gadm=ifelse(iso_3166=="ST","Sao Tome and Principe",NAME_0_gadm))
 write_csv(surveydesc,file=paste0(figfolder,"country_data_summaries.csv"),col_names=FALSE)
 
-## illustrative example: Afghanistan: 
-d%>%
-  left_join(select(country.poststrat,NAME_0_gadm,iso_3166)%>%distinct(),by="iso_3166")%>%
-  select(iso_3166,NAME_0_gadm,question,year2)%>%
-  distinct()%>%
-  mutate(qyr=paste(question,year2))%>%
-  filter(NAME_0_gadm=="Afghanistan")
-
-# ## CU and XK both have rows where question is na...eliminate for now but debug in dataprep
-# d<-d%>%filter(!is.na(question))
 qs_in_model<-unique(d$question) 
-length(unique(survey.data$source2)) ## 97 sources
+length(unique(survey.data$source2)) ## 97 sources (this number will not be right in replication because of non-public sources)
 length(unique(d$iso_3166)) ## 166 countries
 length(unique(d$mergekey)) ## 2188 regions
 length(unique(d$question)) ## 78 questions
@@ -126,11 +119,12 @@ n.qns<-d.samples%>%
 sort(unique(n.qns$source2))
 
 ## how many sources and questions in the model? ####
-length(unique(n.qns$source2)) ## 77 sources 
+length(unique(n.qns$source2)) ## 77 sources these numbers will be wrong in replication code because of non-public data
 length(unique(n.qns$question)) ## 81 questions
 
 ## filter to questions with more than 30 countries included
-qlist<-filter(n.qns,ctry.n>=30)
+qlist<-filter(n.qns,ctry.n>=30)%>%
+  bind_rows(qlist.np)
 
 ## collapse across sources 
 d.samples%<>%
@@ -158,11 +152,14 @@ class(d.val$year2)
 class(country.poststrat$year2) 
 d.val<-d.val%>%
   filter(size!=0)
+d.val%<>%bind_rows(d.val.np1)
 
 ## find discrepancies between survey data and rstan output
 setdiff(unique(d.val$iso_3166),unique(country.poststrat$iso_3166)) ## uncomment lines below if either of these turns anything up 
 setdiff(unique(country.poststrat$iso_3166),unique(d.val$iso_3166)) 
 ## we don't have scores from Kosovo or Angola
+
+d.val<-d.val%>%left_join(country.poststrat,by=c("iso_3166","year2")) %>%arrange(iso_3166,year2)
 
 ## merge in discrimination parameters 
 discrimination2<-discrimination%>%
@@ -227,12 +224,13 @@ d.val2<-d.val2%>%filter(!is.na(Continent_Name))
 unique(d.val2$Continent_Name)
 
 ### cross-sectional correlation plot: single page #### 
-corplot<-d.val2%>%
+corplotdata<-d.val2%>%
   mutate(qsource=paste(question,source2,sep="-"))%>%
   filter(qsource%in%qlist$qsource,
          !is.na(discrimination))%>% ## filter out questions that aren't in our model (comment this out once everything is fully merged)
   mutate(discrimination=round(discrimination,2),
-         question=fct_reorder(question,corr))%>%
+         question=fct_reorder(question,corr))
+corplot<-corplotdata%>%
          # question=fct_reorder(question,desc(discrimination))%>%
   ggplot(aes(x=mean,y=prop.scl,color=Continent_Name,label=iso_3166))+
   geom_point(size=.5)+
@@ -397,7 +395,7 @@ uscorplot<-us%>%
   labs(x="Global climate concern",y="Bergquist and Warshaw\nclimate concern")+
   theme_bw()+
   theme(strip.text.x=element_text(size=8),legend.position="bottom")
-uscorplot ## slightly better correlations here with oecd only and noqfilter(?)
+uscorplot #
 if(exists("datafilter")){
   ggsave(file=paste0(figfolder,"validation_correlations_statelevel-",modelname,"_",datafilter,"_",".pdf"),
          width=6.5,height=3.5,uscorplot)
@@ -450,7 +448,8 @@ d.yesresponses<-d.yesresponses%>%
   pivot_longer(cols=sel$question,names_to='question',values_to='yes')
 d.val<-full_join(d.yesresponses,d.samples,by=c("iso_3166","question","year2"))
 d.val<-d.val%>%
-  filter(size!=0)
+  filter(size!=0)%>%
+  bind_rows(d.val.np2) ## merge in prepared data from aggregated gallup data 
 country.est<-country.poststrat%>%select(iso_3166,year2,mean)## year2? 220813
 d.val<-d.val%>%
   left_join(country.est,by=c("iso_3166","year2")) ## year2? 220813
@@ -522,4 +521,3 @@ if(exists("datafilter")){
                include.rownames=FALSE,file=paste0(figfolder,"timeseries",datafilter,"_",modelname,".tex"))
 }
 
-# Add figure S17 here

@@ -56,6 +56,9 @@ if(exists("datafilter")){
 load(paste0("outputs_stan/stan_clean_",modelname,".Rdata"))
 }
 
+## aggregated data objects from data that are not publicly shareable
+load("inputs/surveys_nonpublic.Rda")
+
 ## number of questions in our final model: 
 length(unique(d$question)) #78
 length(unique(d.nat$question)) # 64
@@ -68,14 +71,17 @@ nrow(qs) ##81
 
 ## how many *respondents* are in the dataset. 
 respondents<-survey.data%>%select(all_of(qs$question))%>%
-  filter_all(any_vars(!is.na(.))) ## 2.6mil respondents in this dataset
-
+  filter_all(any_vars(!is.na(.))) ## This will be an under-count in replication code because of non-shareable data; but add to nrow(constructed to get full count)
+nrow(nonpublic.constructed) + nrow(respondents)
 ## number of countries and regions in input: 
 length(unique(d$iso_3166)) ## 166
 length(unique(d$mergekey[grepl(".nat",d$mergekey)==FALSE])) ## 2168
 
 
 ## number of countries where concern increased 
+# increase in global climate concern 
+est.nat%<>%filter(year%in%c("2010-11","2022-23"))
+est.reg%<>%filter(year%in%c("2010-11","2022-23"))
 est.nat%>%
   select(iso_3166,mean.scl,year)%>%
   pivot_wider(names_from=year,values_from=mean.scl)%>%
@@ -152,10 +158,10 @@ regionkey<-read_csv("individual polls/regioncodes/region_key_disaggregated_EDIT_
 regionkey%<>%left_join(countries%>%select(year,mean.scl,iso_3166),
                        by=c("iso3166_country"="iso_3166"))%>%
   rename(mean.scl.national=mean.scl)#%>%
-  # select(-geom)
+# select(-geom)
 regionkey%<>%left_join(regions%>%select(year,mean.scl,regioncode),by=c("regioncode","year"))%>%
   rename(mean.scl.regional=mean.scl)#%>%
-  # select(-geom)
+# select(-geom)
 regionkey%<>%
   # filter(!is.na(year))%>% ## filter out na values --but need to keep these so that the mappers have all the geographic units
   pivot_wider(names_from=year,values_from=c("mean.scl.regional","mean.scl.national"))%>%
@@ -168,6 +174,7 @@ write_csv(regionkey,file=paste0("analyzed_outputs/webdata/",modelname,".csv"))
 rm(regionkey)
 
 ## Fig. 1: world map #### 
+## world map #### 
 countryest<-countries%>%filter(!is.na(mean.std))
 ## save this file 
 countrynoest1<-countries%>%filter(is.na(mean.std))%>%
@@ -719,7 +726,7 @@ rownames(reg2)[2]<-"Emissions (logged, standardized)"
 
 ## table S7: energy sector emissions and climate concern 
 print.xtable(xtable(reg2,label="tab:regression.emissions.concern",caption="{\\bf Effect of energy-sector CO$_2$ emissions on climate concern:} The figure table shows the results from an OLS regression of climate concern (standardized, in 2022-23) on per-capita emissions from the energy sector (standardized, 2021) at the sub-national region level in the European Union. Standard errors are clustered by country."),
-             caption.placement="bottom",file=paste0(paperfigfolder,"regression_results_emissions.tex"))
+             caption.placement="bottom",file=paste0(figfolder,"regression_results_emissions.tex"))
 
 
 emissionsplot<-ggplot(data=europe,aes(x=emissions.log.std,y=mean.std,label=iso_3166))+
@@ -746,27 +753,7 @@ ggsave(file=paste0(figfolder,"scatter_emissions_concern_europeregions_",modelnam
 
 ## load survey data and collapse time periods (have to do this anew here b/c survey.data saved in data input only contains questions used...no action or awareness questions) #### 
 load(paste0("inputs/megapoll_globalmrp_ordinal_replication.Rda"))
-
-survey.data[survey.data=="-1"|survey.data=="-2"|survey.data==-1|survey.data==-2]<-NA
 survey.data%<>%filter(as.numeric(year)>=2002)
-
-survey.data<-survey.data%>%
-  mutate(source2=substr(source,1,nchar(source)-5)) ## take year off so that I can id unique sources that span years
-
-## unique sources including those that span years--assign the last year to the ones that span years, and then merge back in
-multi.sources<-survey.data%>%
-  select(source2,year)%>%
-  distinct()%>%
-  mutate(source=grepl("[0-9]+",source2))%>%
-  group_by(source2,source)%>%
-  reframe(year2=ifelse(source==TRUE,max(year),NA))%>%
-  ungroup()%>%
-  filter(!is.na(year2))%>%
-  select(source2,year2)%>%
-  distinct()
-
-survey.data<-left_join(survey.data,multi.sources,by="source2")
-survey.data<-survey.data%>%mutate(year2=ifelse(is.na(year2),year,year2))
 
 
 names(survey.data)<-gsub("concern","worry",names(survey.data))
@@ -778,7 +765,7 @@ names(survey.data)<-gsub("happening_aware_","aware_",names(survey.data))
 names(survey.data)<-gsub("happening_aware","aware",names(survey.data))
 
 survey.data2<-survey.data%>%
-  select(contains("attribution"),contains("aware"),contains("worry"),mergekey,constructed)%>%
+  select(contains("attribution"),contains("aware"),contains("worry"),mergekey)%>%
   filter_all(any_vars(!is.na(.)))
 
 ## identify number of countries per question: ####
@@ -825,6 +812,7 @@ for(i in 1:length(qlist)){
   country.yr.means[[i]]<-d
 }
 country.yr.means<-do.call(rbind,country.yr.means)
+country.yr.means%<>%bind_rows(country.yr.means.np)
 country.yr.means.wide<-pivot_wider(country.yr.means,id_cols=c(iso_3166),names_from="question",values_from="val")
 cormat.yr<-cor(country.yr.means.wide[,3:ncol(country.yr.means.wide)],use="pairwise.complete.obs")
 
@@ -929,6 +917,7 @@ dev.off()
 
 # table of respondents for which region codes have been constructed #### 
 table(survey.data$constructed)
+table(nonpublic.constructed$constructed)
 unique(survey.data$source[survey.data$constructed==2])
 sum(table(survey.data$constructed))
 nrow(survey.data)

@@ -6,11 +6,15 @@ library(plyr)
 library(pryr)
 library(gtools)
 
-#to install cmdstanr from source:
+# to install cmdstanr from source:
 # install.packages("remotes")
 # remotes::install_github("stan-dev/cmdstanr")
+# install_cmdstan()
+# set_cmdstan_path(...) #set path to where cmdstanr is installed
+# more info:
+# https://mc-stan.org/cmdstanr/articles/cmdstanr.html
+
 library(cmdstanr)
-install_cmdstan()
 
 ##get model and data related parameters
 

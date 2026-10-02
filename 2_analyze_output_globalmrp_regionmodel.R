@@ -11,6 +11,7 @@ library(modelsummary)
 library(sensemakr)
 library(xtable)
 library(magrittr)
+library(fixest)
 library(tidyverse)
 library(grid)
 
@@ -22,8 +23,9 @@ onUser<-function(x){
 
 # set your working directory and figure output folders here #### 
 if(onUser("pberg")){
-  setwd("~/Documents/GitHub/climateconcern")
+  setwd("~/Library/CloudStorage/Dropbox/global_mrp")
   figfolder<-"~/Documents/GitHub/climateconcern/figures/"
+  repofolder<-"~/Documents/GitHub/climateconcern/"
   # dropbox<-"~/Dropbox (Personal)/global_mrp/"
 }
 ## Clara set up your folders here
@@ -35,7 +37,8 @@ if(onUser("clara")){
 source("globalmrp_functions.R")
 
 #load and prepare data ####
-modelname<-"country_walk_region_walk_fxdstart" ## new model 240715
+modelname<-"climate_concern_v2_revision" ## new model 261001
+# modelname<-"country_walk_region_walk_fxdstart"
 timecollapse<-"2yr"
 qrestrict<-"concernhuman"
 datafilter<-paste(timecollapse,qrestrict,sep="_")
@@ -53,7 +56,7 @@ if(exists("datafilter")){
 }
 
 ## aggregated data objects from data that are not publicly shareable
-load("inputs/surveys_nonpublic.Rda")
+load(paste0(repofolder,"inputs/surveys_nonpublic.Rda"))
 
 # Table S2: create table showing thickness of data across countries #### 
 surveydesc<-d%>%
@@ -70,10 +73,10 @@ surveydesc<-d%>%
 write_csv(surveydesc,file=paste0(figfolder,"country_data_summaries.csv"),col_names=FALSE)
 
 qs_in_model<-unique(d$question) 
-length(unique(survey.data$source2)) ## 97 sources (this number will not be right in replication because of non-public sources)
-length(unique(d$iso_3166)) ## 166 countries
-length(unique(d$mergekey)) ## 2188 regions
-length(unique(d$question)) ## 78 questions
+length(unique(survey.data$source2)) ## 109 sources (this number will not be right in replication because of non-public sources)
+length(unique(d$iso_3166)) ## 159 countries
+length(unique(d$mergekey)) ## 2248 regions
+length(unique(d$question)) ## 121 questions
 
 ## find number of survey responses 
 d.sum<-d%>%
@@ -87,7 +90,7 @@ dnat.sum<-d.nat%>%
   group_by(question,iso_3166,year2)%>%
   distinct()%>%
   summarise(size=sum(size))
-sum(d.sum$size,dnat.sum$size) ## 3.9 million 
+sum(d.sum$size,dnat.sum$size) ## 5.6 million 
 
 if(exists("d.nat")){
   # d.nat<-d.nat%>%filter(!is.na(question)) ## remove after debugging dataprep 
@@ -119,8 +122,8 @@ n.qns<-d.samples%>%
 sort(unique(n.qns$source2))
 
 ## how many sources and questions in the model? ####
-length(unique(n.qns$source2)) ## 77 sources these numbers will be wrong in replication code because of non-public data
-length(unique(n.qns$question)) ## 81 questions
+length(unique(n.qns$source2)) ## 109 sources these numbers will be wrong in replication code because of non-public data
+length(unique(n.qns$question)) ## 138 questions
 
 ## filter to questions with more than 30 countries included
 qlist<-filter(n.qns,ctry.n>=30)%>%
@@ -157,7 +160,7 @@ d.val%<>%bind_rows(d.val.np1)
 ## find discrepancies between survey data and rstan output
 setdiff(unique(d.val$iso_3166),unique(country.poststrat$iso_3166)) ## uncomment lines below if either of these turns anything up 
 setdiff(unique(country.poststrat$iso_3166),unique(d.val$iso_3166)) 
-## we don't have scores from Kosovo or Angola
+## we don't have scores from Hong Kong
 
 d.val<-d.val%>%left_join(country.poststrat,by=c("iso_3166","year2")) %>%arrange(iso_3166,year2)
 
@@ -199,23 +202,17 @@ d.val2<-left_join(d.val2,cordata,by=c("question","year2"))%>%#"source2",
   filter(ncountries>1)
 ### examine correlation between discrimination and correlation with latent construct ## 
 nrow(d.val2[is.na(d.val2$corr),]) ## 0--good
-nrow(d.val2[is.na(d.val2$Continent_Name),]) ## 10--where?
-unique(d.val[is.na(d.val$Continent_Name),"iso_3166"]) # AO, XK--these are the countries for which we don't estimate scores
-d.val%<>%mutate(Continent_Name=case_when(iso_3166=="AO"~"Africa",
-                                         iso_3166=="XK"~"Europe",
+nrow(d.val2[is.na(d.val2$Continent_Name),]) ## 9--where?
+unique(d.val[is.na(d.val$Continent_Name),"iso_3166"]) # Hong Kong--this is the country for which we don't estimate scores
+d.val%<>%mutate(Continent_Name=case_when(iso_3166=="HK"~"Asia",
                                          TRUE~Continent_Name))
 
 
 ## what is the mean discrimination parameter? #### 
 mean(discrimination2$discrimination) ## mean is 1.2
-exp(mean(log(discrimination2$discrimination))) ## geometric mean is 1.00166
-quantile(discrimination2$discrimination) ## median is 1.08
-print(d.val2%>%select(discrimination)%>%distinct()%>%arrange(discrimination),n=Inf)
-## create an object that only contains items within 0.1 of average discrimination parameter. 
-d.val.avgdisc<-d.val2%>%filter(discrimination>=round(mean(discrimination2$discrimination),1)-.11&
-                                discrimination<=round(mean(discrimination2$discrimination),1)+0.1)
-d.val.avgdisc<-d.val2%>%filter(discrimination>=round(exp(mean(log(discrimination2$discrimination))),1)-.1&
-                                 discrimination<=round(exp(mean(log(discrimination2$discrimination))),1)+0.1)
+exp(mean(log(discrimination2$discrimination))) ## geometric mean is 1.007
+quantile(discrimination2$discrimination) ## median is 1.06
+# print(d.val2%>%select(discrimination)%>%distinct()%>%arrange(discrimination),n=Inf)
 
 ## figure S5: Correlation of latent climate concern estaimtes with survey questions from input dataset
 ytitle<-"Raw data: Mean response (scaled)"
@@ -237,7 +234,7 @@ corplot<-corplotdata%>%
   geom_text(aes(x=2,y=2,label=corr),color="blue",size=2.5)+
   geom_text(aes(x=0,y=2,label=discrimination),color="black",size=2.5)+
   # facet_wrap(~question~sourceyr,nrow=10,ncol=10)+
-  facet_wrap(~question~year2,nrow=10,ncol=5, labeller = label_wrap_gen(multi_line=FALSE))+
+  facet_wrap(~question~year2,nrow=10,ncol=7, labeller = label_wrap_gen(multi_line=FALSE))+
   labs(x="Latent climate concern estimate", #\n(Discrimination shown in black, correlation in blue)
        y=ytitle,
        color="Continent")+
@@ -248,38 +245,7 @@ quartz(18,18)
 # corplot
 grid.draw(shift_legend(corplot))
 
-### correlation plot showing correlations for questions with average discrimination parameters #### 
-corplot.avgdisc<-d.val.avgdisc%>%
-  mutate(qsource=paste(question,source2,sep="-"))%>%
-  filter(qsource%in%qlist$qsource,
-         !is.na(discrimination))%>% ## filter out questions that aren't in our model (comment this out once everything is fully merged)
-  mutate(discrimination=round(discrimination,2),
-         question=fct_reorder(question,discrimination))%>%
-  ggplot(aes(x=mean,y=prop.scl#,color=Continent_Name
-             ))+
-  geom_point(size=.5)+
-  geom_smooth(aes(x=mean,y=prop.scl),method=lm,se=FALSE)+
-  geom_text(aes(x=2,y=-2.6,label=corr),color="blue",size=2.5)+
-  geom_text(aes(x=1,y=-2.6,label=discrimination),color="black",size=2.5)+
-  facet_wrap(~question~year2,nrow=10,ncol=5, labeller = label_wrap_gen(multi_line=FALSE))+
-  labs(x="Latent climate concern estimate", 
-       y=ytitle,
-       color="Continent")+
-  theme_bw()+
-  theme(axis.text=element_text(size=6))+
-  theme(strip.text.x=element_text(size=6),legend.position="bottom")
-corplot.avgdisc
-
 ## save plots 
-if(exists("datafilter")){
-  ggsave(file=paste0(figfolder,"validation_correlations_avgdisc-",modelname,"_",datafilter,".pdf"),
-         width=6.5,height=4,corplot.avgdisc)
-}else{
-  ggsave(file=paste0(figfolder,"validation_correlations_avgdisc-",modelname,".pdf"),
-         width=6.5,height=2,corplot.avgdisc)
-}
-
-
 if(exists("datafilter")){
   ggsave(file=paste0(figfolder,"validation_correlations-",modelname,"_",datafilter,".pdf"),
          width=6.5,height=9,corplot)
@@ -292,7 +258,7 @@ ggsave(file=paste0(figfolder,"validation_correlations-",modelname,".pdf"),
 
 # validation2: compare estimates with Bergquist and Warshaw US dataset ####
 ## national time series comparison #### 
-bw.nat<-readstata13::read.dta13("predictors/bergquistwarshaw_national.dta")%>%
+bw.nat<-readstata13::read.dta13(paste0(repofolder,"predictors/bergquistwarshaw_national.dta"))%>%
   filter(year>=2002)%>%
   mutate(year2=case_when(
     year>2001&year<=2003~"2002-03",
@@ -305,23 +271,24 @@ bw.nat<-readstata13::read.dta13("predictors/bergquistwarshaw_national.dta")%>%
     year>2015&year<=2017~"2016-17",
     year>2017&year<=2019~"2018-19",
     year>2019&year<=2021~"2020-21",
-    year>2021&year<=2023~"2022-23"))%>%
+    year>2021&year<=2023~"2022-23",
+    year>2023~"2024-25"))%>%
   group_by(year2)%>%
   summarise(climate_concern_median=quantile(mass_climate_concern,probs=0.5,na.rm=TRUE))
 us.nat<-est.nat%>%
   filter(iso_3166=="US")
 table(us.nat$year)
 us.nat%<>%left_join(bw.nat,by=c("year"="year2"))
-cor(us.nat$mean,us.nat$climate_concern_median,use="complete.obs") ## 0.76
+cor(us.nat$mean,us.nat$climate_concern_median,use="complete.obs") ## 0.59
 
 ### Figure S7: time-series plot with national data ####
 usnatplot<-ggplot(us.nat,aes(x=mean,y=climate_concern_median,label=year))+
   geom_text()+
-  annotate(geom="text",x=1.1,y=-.76,label=round(cor(us.nat$mean,us.nat$climate_concern_median,use="complete.obs"),2),
+  annotate(geom="text",x=0.9,y=-.76,label=paste0("r = ",round(cor(us.nat$mean,us.nat$climate_concern_median,use="complete.obs"),2)),
            color="blue")+
   labs(x="Global climate concern (US)",y="US climate concern\n(Bergquist and Warshaw 2019)")+
   geom_smooth(method="lm",se=FALSE)+
-  scale_x_continuous(limits=c(0.9,1.2))+
+  scale_x_continuous(limits=c(0.6,1))+
   theme_bw()
 usnatplot
 ggsave(filename=paste0(figfolder,"validation_correlations_nationaltimeseries-",modelname,datafilter,".pdf"),
@@ -334,7 +301,7 @@ us<-est.reg%>%
   separate(mergekey,into=c("us","abb"),sep="-")
 # us<-us%>%
 #   separate(mergekey,into=c("us","abb"),sep="-")
-bw<-read_csv("predictors/bergquistwarshaw_climate.csv")
+bw<-read_csv(paste0(repofolder,"predictors/bergquistwarshaw_climate.csv"))
 table(bw$period)
 table(us$year)
 ## for time-collapsed data
@@ -363,7 +330,8 @@ if(exists("timecollapse")){
                             period>2015&period<=2017~"2016-17",
                             period>2017&period<=2019~"2018-19",
                             period>2019&period<=2021~"2020-21",
-                      period>2021&period<=2023~"2022-23"))%>%
+                      period>2021&period<=2023~"2022-23",
+                      period>2023~"2024-25"))%>%
       group_by(year2,abb)%>%
       summarise(climate=quantile(climate,probs=0.5,na.rm=TRUE))%>%
       ungroup()
@@ -373,10 +341,8 @@ if(exists("timecollapse")){
 us<-left_join(us,bw,by=c("abb","year"="year2"))
 
 ## regress state-level global estimates on PBCW estimates, with state FEs #### 
-library(fixest)
-
 statemod<-lm(mean.scl~climate+factor(abb),data=us)
-partial_r2(statemod,covariates="climate") ## 0.17
+partial_r2(statemod,covariates="climate") ## 0.29
 
 cordataus<-us%>%
   filter(!is.na(climate))%>%
@@ -447,9 +413,13 @@ d.samples<-d.samples%>%
 d.yesresponses<-d.yesresponses%>%
   pivot_longer(cols=sel$question,names_to='question',values_to='yes')
 d.val<-full_join(d.yesresponses,d.samples,by=c("iso_3166","question","year2"))
+
+## lines here break if we don't have the publicly available, aggregated gallup data
+## uncomment and comment as indicated 
 d.val<-d.val%>%
   filter(size!=0)%>%
-  bind_rows(d.val.np2) ## merge in prepared data from aggregated gallup data 
+  bind_rows(d.val.np2%>%anti_join(d.val,by=c("iso_3166","year2","question"))) ## without aggregated gallup data in workflow
+  # bind_rows(d.val.np2) ## with aggregated gallup data in workflow, merge in prepared data from aggregated gallup data
 country.est<-country.poststrat%>%select(iso_3166,year2,mean)## year2? 220813
 d.val<-d.val%>%
   left_join(country.est,by=c("iso_3166","year2")) ## year2? 220813
@@ -474,7 +444,7 @@ for(i in 1:ncol(combos)){
     select(iso_3166,year2,combos[1,i],combos[2,i])%>%
     na.omit()
   # print(nrow(mod.data))
-  if(nrow(mod.data)>length(unique(mod.data$iso_3166))){ ## filter to combos with enough degrees of freedom to estimate regression
+  if(nrow(mod.data)>length(unique(mod.data$iso_3166))+1){ ## filter to combos with enough degrees of freedom to estimate regression
     print(paste("i=",i))
     # print(combos[,i])
     # print(paste("country year combos=",max(table(mod.data$iso_3166))))

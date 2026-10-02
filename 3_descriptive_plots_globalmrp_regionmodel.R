@@ -12,7 +12,7 @@ library(corrplot)
 library(rmapshaper)
 library(sp)
 # devtools::install_github("ianmoran11/mmtable2")
-library(mmtable2)
+# library(mmtable2)
 library(xtable)
 library(magrittr)
 library(gt)
@@ -34,7 +34,9 @@ onUser<-function(x){
   return(onD)
 }
 if(onUser("pberg")){
-  setwd("~/Documents/GitHub/climateconcern")
+  # setwd("~/Documents/GitHub/climateconcern")
+  setwd("~/Library/CloudStorage/Dropbox/global_mrp") ## comment this out once data are publicly shareable
+  repofolder<-"~/Documents/GitHub/climateconcern/"
   figfolder<-"~/Documents/GitHub/climateconcern/figures/"
 }
 ## Clara set up your folders here
@@ -44,7 +46,7 @@ if(onUser("clara")){
 }
 
 #load cleaned model outputs
-modelname<-"country_walk_region_walk_fxdstart" ## new model 240715
+modelname<-"climate_concern_v2_revision" ## new model 261002
 timecollapse<-"2yr"
 qrestrict<-"concernhuman"
 datafilter<-paste(timecollapse,qrestrict,sep="_")
@@ -57,47 +59,49 @@ load(paste0("outputs_stan/stan_clean_",modelname,".Rdata"))
 }
 
 ## aggregated data objects from data that are not publicly shareable
-load("inputs/surveys_nonpublic.Rda")
+load(paste0(repofolder,"inputs/surveys_nonpublic.Rda"))
 
 ## number of questions in our final model: 
-length(unique(d$question)) #78
-length(unique(d.nat$question)) # 64
+length(unique(d$question)) #121
+length(unique(d.nat$question)) # 107
 ## total sample
-sum(d$yes) ## 3.6 million
-sum(d.nat$yes) ## 301578
+sum(d$yes) ## 4.5 million
+sum(d.nat$yes) ## 1.1 million
 
 qs<-data.frame(question=c(unique(d$question),unique(d.nat$question)))%>%distinct() 
-nrow(qs) ##81 
+nrow(qs) ##138 
 
 ## how many *respondents* are in the dataset. 
 respondents<-survey.data%>%select(all_of(qs$question))%>%
   filter_all(any_vars(!is.na(.))) ## This will be an under-count in replication code because of non-shareable data; but add to nrow(constructed to get full count)
-nrow(nonpublic.constructed) + nrow(respondents)
+nrow(nonpublic.constructed) + nrow(respondents) ## 3.89 m
 ## number of countries and regions in input: 
-length(unique(d$iso_3166)) ## 166
-length(unique(d$mergekey[grepl(".nat",d$mergekey)==FALSE])) ## 2168
+length(unique(d$iso_3166)) ## 159
+length(unique(d.nat$iso_3166)) ## 142
+surveycountries<-d%>%select(iso_3166)%>%distinct()%>%full_join(d.nat%>%select(iso_3166)%>%distinct()) ## 169 rows
+length(unique(d$mergekey[grepl(".nat",d$mergekey)==FALSE])) ## 2240
 
 
 ## number of countries where concern increased 
 # increase in global climate concern 
-est.nat%<>%filter(year%in%c("2010-11","2022-23"))
-est.reg%<>%filter(year%in%c("2010-11","2022-23"))
+est.nat%<>%filter(year%in%c("2010-11","2024-25"))
+est.reg%<>%filter(year%in%c("2010-11","2024-25"))
 est.nat%>%
   select(iso_3166,mean.scl,year)%>%
   pivot_wider(names_from=year,values_from=mean.scl)%>%
-  mutate(delta=`2022-23`-`2010-11`,
+  mutate(delta=`2024-25`-`2010-11`,
          # increase=ifelse(delta>=0,1,0))%>%
          change=case_when(delta==0~"stable",
                             delta>0~"increase",
                             delta<0~"decrease"))%>%
   group_by(change)%>%
-  count() ## 107 increase, 56 decrease, 2 stable
+  count() ## 108 increase, 61 decrease
 
 # fig of top increasers and decreasers #### 
 summ<-est.nat%>%
   select(NAME_0_gadm,mean.scl,year)%>%
   pivot_wider(names_from=year,values_from=mean.scl)%>%
-  mutate(delta=`2022-23`-`2010-11`,
+  mutate(delta=`2024-25`-`2010-11`,
          increase=factor(ifelse(delta>0,1,0)))
 
 
@@ -114,7 +118,7 @@ change<-rbind(summtop,summbottom)%>%
   arrange(NAME_0_gadm)
 changefig<-change%>%
   ggplot()+
-  geom_segment(aes(x=`2010-11`,y=NAME_0_gadm,xend=`2022-23`,yend=NAME_0_gadm,color=increase),
+  geom_segment(aes(x=`2010-11`,y=NAME_0_gadm,xend=`2024-25`,yend=NAME_0_gadm,color=increase),
                             arrow=arrow(length=unit(0.2,"cm")))+
   geom_point(aes(x=`2010-11`,y=NAME_0_gadm,color=increase))+
   scale_color_manual(values=rev(mypal))+
@@ -127,14 +131,14 @@ changefig
 ggsave(paste0(figfolder,"countrychanges_",modelname,".pdf"),width=3.5,height=6.5,changefig)
 
 # maps #### 
-## load country-level polygons
-regions <- st_read("basedata/simplified geometries/g1.agg_wmissingcountries_simplifedgeometry.gpkg")
+## load country-level polygons PICK UP HERE, LOAD NEW REGION BOUNDARIES 
+regions <- st_read(paste0(repofolder,"basedata/simplified geometries/model_regions_IR7_simplified.gpkg"))
 setdiff(est.reg$mergekey,regions$Group.1)
 regions <- ms_simplify(regions)
 
 
 # countries<-st_read("basedata/gadm_410-levels.gpkg",layer="ADM_0")
-countries<-st_read("basedata/simplified geometries/gadm_410-level0_simplifiedgeometry.gpkg")
+countries<-st_read(paste0(repofolder,"basedata/simplified geometries/gadm_410-level0_simplifiedgeometry.gpkg"))
 
 setdiff(est.nat$NAME_0_gadm,countries$COUNTRY) ## rename these in countries shapefile so that names match those in est.2020
 countries%<>%
@@ -149,17 +153,20 @@ countries%<>%
 est.nat%<>%mutate(NAME_0_gadm=ifelse(iso_3166=="ST","Sao Tome and Principe",NAME_0_gadm)) ## take out special characters in both shapefiles and estimates for this country 
 setdiff(est.nat$NAME_0_gadm,countries$COUNTRY) 
 countries<-ms_simplify(countries)
+intersect(names(countries),names(est.nat))
 countries<-left_join(countries,est.nat,by=c("COUNTRY"="NAME_0_gadm"))
-regions<-regions%>%left_join(est.reg,by=c("Group.1"="mergekey"))
+intersect(names(regions),names(est.reg))
+regions<-regions%>%left_join(est.reg,by=c("mergekey","iso_3166"))
 countrychange<-left_join(countries,summ,by=c("COUNTRY"="NAME_0_gadm"))
 
 ## save outputs for website #### 
-regionkey<-read_csv("individual polls/regioncodes/region_key_disaggregated_EDIT_THIS_ONE.csv")
+regionkey<-read_csv(paste0(repofolder,"individual polls/regioncodes/model_region_key.csv"))
+intersect(names(regionkey),names(countries))
 regionkey%<>%left_join(countries%>%select(year,mean.scl,iso_3166),
-                       by=c("iso3166_country"="iso_3166"))%>%
+                       by="iso_3166")%>%
   rename(mean.scl.national=mean.scl)#%>%
 # select(-geom)
-regionkey%<>%left_join(regions%>%select(year,mean.scl,regioncode),by=c("regioncode","year"))%>%
+regionkey%<>%left_join(regions%>%select(year,mean.scl,mergekey),by=c("mergekey","year"))%>%
   rename(mean.scl.regional=mean.scl)#%>%
 # select(-geom)
 regionkey%<>%
@@ -169,8 +176,8 @@ regionkey%<>%
 
 regionkey%<>%select(-geom.x,-geom.y)%>%distinct()
 
-save(regionkey,file=paste0("analyzed_outputs/webdata/",modelname,"_formapping.Rda"))
-write_csv(regionkey,file=paste0("analyzed_outputs/webdata/",modelname,".csv"))
+save(regionkey,file=paste0(repofolder,"analyzed_outputs/webdata/",modelname,"_formapping.Rda"))
+write_csv(regionkey,file=paste0(repofolder,"analyzed_outputs/webdata/",modelname,".csv"))
 rm(regionkey)
 
 ## Fig. 1: world map #### 
@@ -180,7 +187,7 @@ countryest<-countries%>%filter(!is.na(mean.std))
 countrynoest1<-countries%>%filter(is.na(mean.std))%>%
   mutate(year="2010-11")
 countrynoest2<-countries%>%filter(is.na(mean.std))%>%
-  mutate(year="2022-23")
+  mutate(year="2024-25")
 countrynoest<-rbind(countrynoest1,countrynoest2)
 rm(list=c("countrynoest1","countrynoest2"))
 # countryest<-as_Spatial(countryest)
@@ -244,14 +251,14 @@ ggsave(file=paste0(figfolder,"map_delta_",modelname,"_",datafilter,".pdf"),heigh
        worldplot_delta)
 
 ## subnational maps of Europe #### 
-regions[is.na(regions$year)==TRUE,]$year <- "2022-23"
+regions[is.na(regions$year)==TRUE,]$year <- "2024-25" ## nothing here now 
 europe <- st_transform(regions, "+proj=aea +lat_1=43 +lat_2=62 +lat_0=30 +lon_0=10 +x_0=0 +y_0=0 +ellps=intl +units=m +no_defs ")
 # countries_proj <- st_transform(countrynoest, "+proj=aea +lat_1=43 +lat_2=62 +lat_0=30 +lon_0=10 +x_0=0 +y_0=0 +ellps=intl +units=m +no_defs ")
 countries_proj<-st_transform(countries_proj1, "+proj=aea +lat_1=43 +lat_2=62 +lat_0=30 +lon_0=10 +x_0=0 +y_0=0 +ellps=intl +units=m +no_defs ")
-europe2022 <- europe[europe$year=="2022-23",]
+europe2024 <- europe[europe$year=="2024-25",]
 quartz(12,12)
 
-europlot<-europe2022%>%
+europlot<-europe2024%>%
   ggplot()+
   theme_bw()+
  # geom_sf(data=countries_proj,aes(geometry=geom),fill="lightgray")+
@@ -279,7 +286,7 @@ europlot
 ## subnational maps of east asia #### 
 eastasia <- st_transform(regions, "+proj=aea +lat_1=27 +lat_2=45 +lat_0=35 +lon_0=105 +x_0=0 +y_0=0 +ellps=WGS84 +datum=WGS84 +units=m +no_defs ")
 countries_proj <- st_transform(countries_proj1, "+proj=aea +lat_1=27 +lat_2=45 +lat_0=35 +lon_0=105 +x_0=0 +y_0=0 +ellps=WGS84 +datum=WGS84 +units=m +no_defs ")
-eastasia <- eastasia[eastasia$year=="2022-23",]
+eastasia <- eastasia[eastasia$year=="2024-25",]
 quartz(12,12)
 
 eastasiaplot<-eastasia%>%
@@ -310,7 +317,7 @@ ggsave(file=paste0(figfolder,"map_concern_eastasia_",modelname,".pdf"),width=6.5
 ## Fig. S12: subnational maps of south asia and middle east #### 
 southasia <- st_transform(regions, "+proj=aea +lat_1=28 +lat_2=12 +lat_0=20 +lon_0=78 +x_0=2000000 +y_0=2000000 +ellps=WGS84 +datum=WGS84 +units=m +no_defs ")
 countries_proj <- st_transform(countries_proj1, "+proj=aea +lat_1=28 +lat_2=12 +lat_0=20 +lon_0=78 +x_0=2000000 +y_0=2000000 +ellps=WGS84 +datum=WGS84 +units=m +no_defs ")
-southasia <- southasia[southasia$year=="2022-23",]
+southasia <- southasia[southasia$year=="2024-25",]
 quartz(12,12)
 
 southasiaplot<-southasia%>%
@@ -347,7 +354,7 @@ regions[is.na(regions$Continent_Name)==TRUE,]$Continent_Name <- "Missing"
 africa <- st_transform(regions, "+proj=aea +lat_1=20 +lat_2=-23 +lat_0=0 +lon_0=25 +x_0=0 +y_0=0 +ellps=WGS84 +datum=WGS84 +units=m +no_defs ")
 africa<-africa%>%filter(Continent_Name %in% c("Africa","Europe","Asia","Missing"))
 countries_proj <- st_transform(countries_proj1, "+proj=aea +lat_1=20 +lat_2=-23 +lat_0=0 +lon_0=25 +x_0=0 +y_0=0 +ellps=WGS84 +datum=WGS84 +units=m +no_defs ")
-africa<-africa%>%filter(year=="2022-23")
+africa<-africa%>%filter(year=="2024-25")
 quartz(12,12)
 
 africaplot<-africa%>%
@@ -377,7 +384,7 @@ ggsave(file=paste0(figfolder,"map_concern_africa_",modelname,".pdf"),width=6.5,h
 southamerica <- st_transform(regions, "+proj=aea +lat_1=-5 +lat_2=-42 +lat_0=-32 +lon_0=-60 +x_0=0 +y_0=0 +ellps=aust_SA +units=m +no_defs ")
 southamerica<-southamerica%>%filter(Continent_Name %in% c("South America","North America","Missing"))
 countries_proj <- st_transform(countries_proj1, "+proj=aea +lat_1=-5 +lat_2=-42 +lat_0=-32 +lon_0=-60 +x_0=0 +y_0=0 +ellps=aust_SA +units=m +no_defs ")
-southamerica <- southamerica[southamerica$year=="2022-23",]
+southamerica <- southamerica[southamerica$year=="2024-25",]
 quartz(12,12)
 
 southamericaplot<-southamerica%>%
@@ -407,7 +414,7 @@ ggsave(file=paste0(figfolder,"map_concern_southamerica_",modelname,".pdf"),width
 northamerica <- st_transform(regions, "+proj=aea +lat_1=20 +lat_2=60 +lat_0=40 +lon_0=-96 +x_0=0 +y_0=0 +ellps=GRS80 +datum=NAD83 +units=m +no_defs ")
 northamerica<-northamerica%>%filter(Continent_Name %in% c("South America","North America","Missing"))
 countries_proj <- st_transform(countries_proj1, "+proj=aea +lat_1=20 +lat_2=60 +lat_0=40 +lon_0=-96 +x_0=0 +y_0=0 +ellps=GRS80 +datum=NAD83 +units=m +no_defs ")
-northamerica <- northamerica[northamerica$year=="2022-23",]
+northamerica <- northamerica[northamerica$year=="2024-25",]
 quartz(12,12)
 
 northamericaplot<-northamerica%>%
@@ -437,7 +444,7 @@ ggsave(file=paste0(figfolder,"map_concern_northamerica_",modelname,".pdf"),width
 oceania <- st_transform(regions, "+proj=aea +lat_1=-18 +lat_2=-36 +lat_0=0 +lon_0=132 +x_0=0 +y_0=0 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs  ")
 oceania<-oceania%>%filter(Continent_Name %in% c("Asia","Oceania","Eurasia", "Missing"))
 countries_proj <- st_transform(countries_proj1, "+proj=aea +lat_1=-18 +lat_2=-36 +lat_0=0 +lon_0=132 +x_0=0 +y_0=0 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs ")
-oceania <- oceania[oceania$year=="2022-23",]
+oceania <- oceania[oceania$year=="2024-25",]
 quartz(12,12)
 
 oceaniaplot<-oceania%>%
@@ -468,24 +475,24 @@ ggsave(file=paste0(figfolder,"map_concern_oceania_",modelname,".pdf"),width=4.5,
 
 # tables of regional estimates #### 
 top20<-data.frame(regions)%>%
-  filter(year=="2022-23")%>%
-  select(regionname_ISOenglish,mergekey,NAME_0,Continent_Name,mean,q95,q5)%>%
+  filter(year=="2024-25")%>%
+  select(region_name,mergekey,NAME_0_gadm,Continent_Name,mean,q95,q5)%>%
   distinct()%>%
   filter(!is.na(mean))%>%
   arrange(mean)%>%
   slice_tail(n=20)%>%
-  arrange(regionname_ISOenglish)
+  arrange(region_name)
 
 bottom20<-data.frame(regions)%>%
-  filter(year=="2022-23")%>%
-  select(regionname_ISOenglish,mergekey,NAME_0,Continent_Name,mean,q95,q5)%>%
+  filter(year=="2024-25")%>%
+  select(region_name,mergekey,NAME_0_gadm,Continent_Name,mean,q95,q5)%>%
   distinct()%>%
   filter(!is.na(mean))%>%
   arrange(mean)%>%
   slice_head(n=20)%>%
-  arrange(regionname_ISOenglish)
+  arrange(region_name)
 ciplot.world<-rbind(top20,bottom20)%>%
-  mutate(fullname=paste(regionname_ISOenglish,NAME_0,sep=", "),
+  mutate(fullname=paste(region_name,NAME_0_gadm,sep=", "),
          fullname=fct_reorder(fullname,mean))%>%
   ggplot(aes(x=mean,y=fullname,color=Continent_Name))+
   geom_point()+
@@ -497,8 +504,8 @@ ggsave(file=paste0(figfolder,"ciplot_worldregions_",modelname,".png"),width=6.5,
 
 # Fig. S17: highest and lowest climate concerned regions by continent #### 
 top5<-data.frame(regions)%>%
-  filter(year=="2022-23")%>%
-  select(regionname_ISOenglish,mergekey,NAME_0,Continent_Name,mean,q95,q5)%>%
+  filter(year=="2024-25")%>%
+  select(region_name,mergekey,NAME_0_gadm,Continent_Name,mean,q95,q5)%>%
   distinct()%>%
   mutate(Continent_Name=case_when(Continent_Name=="North America"|Continent_Name=="South America"~"Americas",
                                   Continent_Name=="Asia"|Continent_Name=="Oceania"~"Asia, Oceania",
@@ -512,8 +519,8 @@ top5<-data.frame(regions)%>%
   ungroup()%>%
   select(-mergekey)
 bottom5<-data.frame(regions)%>%
-  filter(year=="2022-23")%>%
-  select(regionname_ISOenglish,mergekey,NAME_0,Continent_Name,mean,q95,q5)%>%
+  filter(year=="2024-25")%>%
+  select(region_name,mergekey,NAME_0_gadm,Continent_Name,mean,q95,q5)%>%
   mutate(Continent_Name=case_when(Continent_Name=="North America"|Continent_Name=="South America"~"Americas",
                                   Continent_Name=="Asia"|Continent_Name=="Oceania"~"Asia, Oceania",
                                   Continent_Name=="Europe"|Continent_Name=="Eurasia"~"Europe, Eurasia",
@@ -526,7 +533,7 @@ bottom5<-data.frame(regions)%>%
   ungroup()%>%
   select(-mergekey)
 top.bottom5fig<-rbind(top5,bottom5)%>%
-  mutate(fullname=paste(regionname_ISOenglish,NAME_0,sep=",\n"),
+  mutate(fullname=paste(region_name,NAME_0_gadm,sep=",\n"),
          fullname=fct_reorder(fullname,mean))%>%
   ggplot(aes(x=mean,y=fullname))+
   geom_pointrange(aes(y=fullname,xmin=q5,xmax=q95),size=.1)+
@@ -539,19 +546,19 @@ top.bottom5fig
 ggsave(file=paste0(figfolder,"ciplot_continentregions_",modelname,".png"),width=6.5,height=6.5,top.bottom5fig)
 
 
-# Fig. S15: ci plot with 2022-23 values ####
+# Fig. S15: ci plot with 2024-25 values ####
 ## rearrange by order of climate concern
-est.2022<-est.nat%>%filter(year=="2022-23")
-est.2022$NAME_0_gadm<-reorder(est.2022$NAME_0_gadm,est.2022$mean)
-est.2022<-est.2022%>%
+est.2024<-est.nat%>%filter(year=="2024-25")
+est.2024$NAME_0_gadm<-reorder(est.2024$NAME_0_gadm,est.2024$mean)
+est.2024<-est.2024%>%
   arrange(NAME_0_gadm)
-est.2022$group<-c(rep(1,round(nrow(est.2022)/2,0)),
-                  rep(2,nrow(est.2022)-round(nrow(est.2022)/2,0)))
-head(levels(est.2022$NAME_0_gadm))
+est.2024$group<-c(rep(1,round(nrow(est.2024)/2,0)),
+                  rep(2,nrow(est.2024)-round(nrow(est.2024)/2,0)))
+head(levels(est.2024$NAME_0_gadm))
 
 ## plot
 quartz(12,12)
-estplot<-ggplot(est.2022,aes(x=mean,y=NAME_0_gadm,color=Continent_Name))+
+estplot<-ggplot(est.2024,aes(x=mean,y=NAME_0_gadm,color=Continent_Name))+
   geom_point()+
   geom_linerange(aes(y=NAME_0_gadm,xmin=q5,xmax=q95))+
   facet_wrap(~group,scales="free_y",strip.position="top")+
@@ -631,7 +638,7 @@ country.alphas.fig<-
   geom_ribbon(data=country.est, aes(ymin=q5,ymax=q95, alpha=0.3)) +  ## this is 90% CIs
   facet_wrap(~ NAME_0_gadm) +
   theme(legend.position = "none")+
-  scale_x_discrete(limits=sort(unique(country.est$year2)),breaks=c("2000-01","2005-06","2010-11","2015-16","2020-21","2022-23"))+
+  scale_x_discrete(limits=sort(unique(country.est$year2)),breaks=c("2000-01","2005-06","2010-11","2015-16","2020-21","2022-23","2024-25"))+
   theme(axis.text.x=element_text(angle=45))
 pdf(paste0(figfolder,"countrytrends-",modelname,"_",".pdf"), 15, 20)
 country.alphas.fig
@@ -640,12 +647,12 @@ dev.off()
 
 # Fig. 4: Climate concern and vulnerability #### 
 ## merge in exposure data, to analyze change in quadrants
-d<-read_csv("predictors/ND-GAIN2022_exposure.csv")
+d<-read_csv(paste0(repofolder,"predictors/ND-GAIN2022_exposure.csv"))
 est.nat<-left_join(est.nat,d,by=c("iso_3166","NAME_0_gadm"))
 est.nat$exp.std<-scale(est.nat$exposure,center=TRUE,scale=TRUE)
 
 ## quadrants plot without 2010 values #### 
-reg1<-lm_robust(mean.std~exp.std,data=subset(est.nat,year=="2022-23"))
+reg1<-lm_robust(mean.std~exp.std,data=subset(est.nat,year=="2024-25"))
 
 ## table S6: climate risk exposure and climate concern 
 texreg::texreg(reg1,custom.coef.names=c("(Intercept)","Exposure (st.dev.)"),
@@ -654,26 +661,26 @@ texreg::texreg(reg1,custom.coef.names=c("(Intercept)","Exposure (st.dev.)"),
        caption="{ \\bf Effect of climate risk exposure on climate concern:} The table shows the results from an OLS regression of climate concern (standardized) on climate risk exposure (standardized), at the national level, in 2022. The model was estimated using OLS regression with heteroskedasticity-robust standard errors.",
        file=paste0(figfolder,"regression_results_simple.tex"),float.pos="!htpb")
 
-est.nat22<-est.nat%>%filter(year=="2022-23")
-est.nat22$mean_2022.stdwithin<-scale(est.nat22$mean,center=TRUE,scale=TRUE)
-countrylabs<-est.nat22%>%
-  filter((mean_2022.stdwithin>quantile(est.nat22$mean_2022.stdwithin,na.rm=TRUE,probs=0.75)&exp.std<quantile(est.nat22$exp.std,na.rm=TRUE,prob=.25))|## high concern, low exposure
-           (mean_2022.stdwithin<quantile(est.nat22$mean_2022.stdwithin,na.rm=TRUE,probs=.25)&exp.std>quantile(est.nat22$exp.std,na.rm=TRUE,prob=.75))| # low concern, high exposure
-           (mean_2022.stdwithin<quantile(est.nat22$mean_2022.stdwithin,na.rm=TRUE,probs=.25)&exp.std<quantile(est.nat22$exp.std,na.rm=TRUE,prob=.25))| # low concern, exposure concern
-           (mean_2022.stdwithin>quantile(est.nat22$mean_2022.stdwithin,na.rm=TRUE,probs=.75)&exp.std>quantile(est.nat22$exp.std,na.rm=TRUE,prob=.75))| # high concern, high exposure
+est.nat24<-est.nat%>%filter(year=="2024-25")
+est.nat24$mean_2024.stdwithin<-scale(est.nat24$mean,center=TRUE,scale=TRUE)
+countrylabs<-est.nat24%>%
+  filter((mean_2024.stdwithin>quantile(est.nat24$mean_2024.stdwithin,na.rm=TRUE,probs=0.75)&exp.std<quantile(est.nat24$exp.std,na.rm=TRUE,prob=.25))|## high concern, low exposure
+           (mean_2024.stdwithin<quantile(est.nat24$mean_2024.stdwithin,na.rm=TRUE,probs=.25)&exp.std>quantile(est.nat24$exp.std,na.rm=TRUE,prob=.75))| # low concern, high exposure
+           (mean_2024.stdwithin<quantile(est.nat24$mean_2024.stdwithin,na.rm=TRUE,probs=.25)&exp.std<quantile(est.nat24$exp.std,na.rm=TRUE,prob=.25))| # low concern, exposure concern
+           (mean_2024.stdwithin>quantile(est.nat24$mean_2024.stdwithin,na.rm=TRUE,probs=.75)&exp.std>quantile(est.nat24$exp.std,na.rm=TRUE,prob=.75))| # high concern, high exposure
            NAME_0_gadm%in%c("United States","China","Brazil","India","Russia","Japan","Germany"))%>%
   mutate(type=ifelse(NAME_0_gadm%in%c("United States","China","Brazil","India","Russia","Japan","Germany"),"emitter","outlier"))
 countrylabs%<>%mutate(NAME_0_gadm=ifelse(iso_3166=="CD","DRC",NAME_0_gadm))
 
-quadrants<-est.nat22%>%
-  ggplot(aes(x=exp.std,y=mean_2022.stdwithin,label=iso_3166))+
+quadrants<-est.nat24%>%
+  ggplot(aes(x=exp.std,y=mean_2024.stdwithin,label=iso_3166))+
   geom_vline(aes(xintercept=0))+
   geom_hline(aes(yintercept=0))+
   geom_smooth(method="lm",se=FALSE,lty="dashed",lwd=.5)+
-  geom_text(data=subset(est.nat22,iso_3166%in%countrylabs$iso_3166==FALSE),inherit.aes=TRUE,color="lightgray",size=1.5)+
+  geom_text(data=subset(est.nat24,iso_3166%in%countrylabs$iso_3166==FALSE),inherit.aes=TRUE,color="lightgray",size=1.5)+
   geom_point(data=countrylabs,inherit.aes =TRUE)+
   geom_text_repel(data=countrylabs,
-                  aes(x=exp.std,y=mean_2022.stdwithin,label=NAME_0_gadm,color=type),
+                  aes(x=exp.std,y=mean_2024.stdwithin,label=NAME_0_gadm,color=type),
                   nudge_x=0.2,min.segment.length=.3)+
   scale_color_manual(values=c("emitter"="orange","outlier"="black"))+
   guides(color="none")+
@@ -691,7 +698,7 @@ quadrants
 ggsave(file=paste0(figfolder,"quadrants_exposure_concern_",modelname,".pdf"),width=6.5,height=6.5,quadrants)
 
 # Figure 6: sub-national emissions regression, scatterplot #### 
-emissions<-read_excel("predictors/EDGAR_GHG_NUTS2_by_sector_1990_2021.xlsx",sheet=1)
+emissions<-read_excel(paste0(repofolder,"predictors/EDGAR_GHG_NUTS2_by_sector_1990_2021.xlsx"),sheet=1)
 emissions%<>%
   filter(sector=="ENE",
          grepl("FRY",NUTS_ID)==FALSE)%>% # filter to energy production sector 
@@ -701,12 +708,12 @@ emissions%<>%
   group_by(NUTS_ID,CNTR_CODE,NAME_LATN)%>%
   summarise(emissions.cumul=sum(`2021`,na.rm=TRUE),
             emissions.cumul=emissions.cumul*1000) ## convert to tons rather than kilotons
-crosswalk<-read_excel("predictors/EU_crosswalk.xlsx",sheet=1)
+crosswalk<-read_excel(paste0(repofolder,"predictors/EU_crosswalk.xlsx"),sheet=1)
 emissions<-left_join(emissions,crosswalk,by=c("NUTS_ID"="eucodes")) ## aggregate across EU regions with same code in our dataset
 emissions<-emissions%>%
   group_by(CNTR_CODE,ourcodes)%>%
   summarise(emissions.cumul=sum(emissions.cumul))
-pop<-read_csv("basedata/Covariates/region_covariates.csv")%>%
+pop<-read_csv(paste0(repofolder,"basedata/Covariates/region_covariates.csv"))%>%
   select(mergekey,region_pop)
 emissions<-left_join(emissions,pop,by=c("ourcodes"="mergekey"))%>%
   mutate(emissions.percap=emissions.cumul/region_pop)
@@ -714,7 +721,7 @@ emissions$emissions.percap.bin<-cut(emissions$emissions.percap,breaks=c(-1,1,2,3
                                     labels=c("0-1","1-2","2-3","3-4","4-5","5-10","10-20","20+"))
 
 regions=left_join(regions,emissions,by=c("mergekey"="ourcodes"))
-europe<-regions%>%filter(Continent_Name=="Europe")%>%filter(year=="2022-23") ## filter to Europe and only 2022-23
+europe<-regions%>%filter(Continent_Name=="Europe")%>%filter(year=="2024-25") ## filter to Europe and only 2022-23
 europe$mean.std<-scale(europe$mean,center=TRUE,scale=TRUE) ## this regression standardizes estimates *within* Europe for interpretation. 
 europe$emissions.log.std<-scale(log(europe$emissions.percap),center=TRUE,scale=TRUE)
 reg2<-lm_robust(mean.std~emissions.log.std+factor(iso_3166),data=europe) ##-.26. the linear-log model returns a coefficient of -.15, so much smaller.
@@ -725,7 +732,7 @@ reg2<-coeftable(reg2)
 rownames(reg2)[2]<-"Emissions (logged, standardized)"
 
 ## table S7: energy sector emissions and climate concern 
-print.xtable(xtable(reg2,label="tab:regression.emissions.concern",caption="{\\bf Effect of energy-sector CO$_2$ emissions on climate concern:} The figure table shows the results from an OLS regression of climate concern (standardized, in 2022-23) on per-capita emissions from the energy sector (standardized, 2021) at the sub-national region level in the European Union. Standard errors are clustered by country."),
+print.xtable(xtable(reg2,label="tab:regression.emissions.concern",caption="{\\bf Effect of energy-sector CO$_2$ emissions on climate concern:} The figure table shows the results from an OLS regression of climate concern (standardized, in 2024-25) on per-capita emissions from the energy sector (standardized, 2021) at the sub-national region level in the European Union. Standard errors are clustered by country."),
              caption.placement="bottom",file=paste0(figfolder,"regression_results_emissions.tex"))
 
 
@@ -739,7 +746,7 @@ emissionsplot<-ggplot(data=europe,aes(x=emissions.log.std,y=mean.std,label=iso_3
                                         # round(reg2$p.value[2],10)),
            color="blue",parse=TRUE)+
   scale_y_continuous(limits=c(-2,3))+
-  labs(x="Energy-sector carbon dioxide emissions\n(tons per capita, logged, st.dev, 2021)",y="Climate concern (st.dev), 2022-23")+
+  labs(x="Energy-sector carbon dioxide emissions\n(tons per capita, logged, st.dev, 2021)",y="Climate concern (st.dev), 2024-25")+
   theme_bw()
 emissionsplot
 ggsave(file=paste0(figfolder,"scatter_emissions_concern_europeregions_",modelname,".pdf"),width=6.5,height=3.5,emissionsplot)

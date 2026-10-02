@@ -34,7 +34,7 @@ if(onUser("clara")){
   figfolder<-"~/Documents/climateconcern/figures"
 }
 
-source("globalmrp_functions.R")
+source(paste0(repofolder,"globalmrp_functions.R"))
 
 #load and prepare data ####
 modelname<-"climate_concern_v2_revision" ## new model 261001
@@ -55,8 +55,33 @@ if(exists("datafilter")){
   # load("data/d_rstan_region.Rda")
 }
 
+## rescale estimates on the same scale: Delete after this has been added to the cleaning script. ####
+global.mean<-mean(c(est.nat$mean,est.reg$mean),na.rm=TRUE)
+global.sd<-sd(c(est.nat$mean,est.reg$mean),na.rm=TRUE)
+global.range<-range(c(est.nat$mean,est.reg$mean),na.rm=TRUE,finite=TRUE)
+
+est.nat$mean.std<-(est.nat$mean-global.mean)/global.sd
+est.nat$mean.std.bin<-cut(est.nat$mean.std,breaks=c(-3,-2,-1.5,-1,-0.5,0.5,1,1.5,2,4),
+                          labels=c("-2","-1.5","-1","-0.5","0","0.5","1","1.5","2+"))
+est.nat$mean.scl<-scales::rescale(est.nat$mean,to=c(0,1),from=global.range)
+est.nat$mean.scl.bin<-cut(est.nat$mean.scl,breaks=c(-1,.1,.2,.3,.4,.5,.6,.7,.8,.9,1),
+                          labels=c("0-0.1","0.1-0.2","0.2-0.3","0.3-0.4","0.4-0.5","0.5-0.6",
+                                   "0.6-0.7","0.7-0.8","0.8-0.9","0.9-1"))
+
+
+est.reg$mean.std<-(est.reg$mean-global.mean)/global.sd
+est.reg$mean.std.bin<-cut(est.reg$mean.std,breaks=c(-3,-2,-1.5,-1,-0.5,0.5,1,1.5,2,4),
+                          labels=c("-2","-1.5","-1","-0.5","0","0.5","1","1.5","2+"))
+est.reg$mean.scl<-scales::rescale(est.reg$mean,to=c(0,1),from=global.range)
+est.reg$mean.scl.bin<-cut(est.reg$mean.scl,breaks=c(-1,.1,.2,.3,.4,.5,.6,.7,.8,.9,1),
+                          labels=c("0-0.1","0.1-0.2","0.2-0.3","0.3-0.4","0.4-0.5","0.5-0.6",
+                                   "0.6-0.7","0.7-0.8","0.8-0.9","0.9-1"))
+save.image(file=paste0("outputs_stan/stan_clean_",modelname,"_",datafilter,".Rdata"))
+
 ## aggregated data objects from data that are not publicly shareable
 load(paste0(repofolder,"inputs/surveys_nonpublic.Rda"))
+
+
 
 # Table S2: create table showing thickness of data across countries #### 
 surveydesc<-d%>%

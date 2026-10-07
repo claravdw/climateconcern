@@ -126,14 +126,14 @@ changefig<-change%>%
   labs(x="Climate concern",y="")+
   theme(legend.position="none")
 
-quartz(12,12)
+#quartz(12,12)
 changefig
 ggsave(paste0(figfolder,"countrychanges_",modelname,".pdf"),width=3.5,height=6.5,changefig)
 
 # maps #### 
 ## load country-level polygons PICK UP HERE, LOAD NEW REGION BOUNDARIES 
 regions <- st_read(paste0(repofolder,"basedata/simplified geometries/model_regions_IR7_simplified.gpkg"))
-setdiff(est.reg$mergekey,regions$Group.1)
+# setdiff(est.reg$mergekey,regions$Group.1)
 regions <- ms_simplify(regions)
 
 
@@ -153,9 +153,9 @@ countries%<>%
 est.nat%<>%mutate(NAME_0_gadm=ifelse(iso_3166=="ST","Sao Tome and Principe",NAME_0_gadm)) ## take out special characters in both shapefiles and estimates for this country 
 setdiff(est.nat$NAME_0_gadm,countries$COUNTRY) 
 countries<-ms_simplify(countries)
-intersect(names(countries),names(est.nat))
+intersect(names(countries),names(est.nat)) ## check that column names are the same
 countries<-left_join(countries,est.nat,by=c("COUNTRY"="NAME_0_gadm"))
-intersect(names(regions),names(est.reg))
+intersect(names(regions),names(est.reg)) ## check that column names are the same
 regions<-regions%>%left_join(est.reg,by=c("mergekey","iso_3166"))
 countrychange<-left_join(countries,summ,by=c("COUNTRY"="NAME_0_gadm"))
 
@@ -192,7 +192,7 @@ countrynoest<-rbind(countrynoest1,countrynoest2)
 rm(list=c("countrynoest1","countrynoest2"))
 # countryest<-as_Spatial(countryest)
 # countries<-as_Spatial(countries)
-quartz(12,12)
+#quartz(12,12)
 
 ## World map in equal area projection
 countryest_proj <- st_transform(countryest, "+proj=moll")
@@ -208,7 +208,8 @@ worldplot<-countrynoest_proj%>%
   ggplot()+
   theme_bw()+
   geom_sf(aes(geometry=geom),fill="lightgray",lwd=.1,color="darkgray")+
-  geom_sf(data=countryest_proj,aes(geometry=geom,fill=mean.scl.bin),lwd=.1,color="darkgray")+
+  geom_sf(data=countryest_proj,aes(geometry=geom,fill=mean.scl.bin),lwd=.1,color="darkgray",
+          show.legend=c(fill=TRUE))+
   scale_fill_brewer(palette="RdBu",direction=-1,drop=FALSE,guide=guide_legend(reverse=TRUE))+
   labs(fill="Climate\nconcern")+
   theme_classic()+
@@ -222,7 +223,6 @@ worldplot<-countrynoest_proj%>%
                          style=north_arrow_orienteering(text_size=4)) +  
   coord_sf()+
   facet_wrap(~year,nrow=2,ncol=1)
-
 worldplot
 ggsave(file=paste0(figfolder,"map_projected_paired_",modelname,"_",datafilter,".pdf"),height=6.5,width=6.5,
        worldplot)
@@ -232,7 +232,8 @@ worldplot_delta<-countrynoest_proj%>%
   ggplot()+
   theme_bw()+
   geom_sf(aes(geometry=geom),fill="lightgray",lwd=.1,color="darkgray")+
-  geom_sf(data=countrydelta_proj,aes(geometry=geom,fill=delta),lwd=.1,color="darkgray")+
+  geom_sf(data=countrydelta_proj,aes(geometry=geom,fill=delta),lwd=.1,color="darkgray",
+          show.legend=c(fill=TRUE))+
   scale_fill_distiller(palette="RdBu")+
   # scale_fill_brewer(palette="RdBu",direction=-1,drop=FALSE,guide=guide_legend(reverse=TRUE))+
   labs(fill="Change in \nclimate\nconcern")+
@@ -251,20 +252,22 @@ ggsave(file=paste0(figfolder,"map_delta_",modelname,"_",datafilter,".pdf"),heigh
        worldplot_delta)
 
 ## subnational maps of Europe #### 
-regions[is.na(regions$year)==TRUE,]$year <- "2024-25" ## nothing here now 
+# regions[is.na(regions$year)==TRUE,]$year <- "2024-25" ## nothing here now 
 europe <- st_transform(regions, "+proj=aea +lat_1=43 +lat_2=62 +lat_0=30 +lon_0=10 +x_0=0 +y_0=0 +ellps=intl +units=m +no_defs ")
 # countries_proj <- st_transform(countrynoest, "+proj=aea +lat_1=43 +lat_2=62 +lat_0=30 +lon_0=10 +x_0=0 +y_0=0 +ellps=intl +units=m +no_defs ")
 countries_proj<-st_transform(countries_proj1, "+proj=aea +lat_1=43 +lat_2=62 +lat_0=30 +lon_0=10 +x_0=0 +y_0=0 +ellps=intl +units=m +no_defs ")
 europe2024 <- europe[europe$year=="2024-25",]
-quartz(12,12)
+#quartz(12,12)
 
 europlot<-europe2024%>%
   ggplot()+
   theme_bw()+
  # geom_sf(data=countries_proj,aes(geometry=geom),fill="lightgray")+
-  geom_sf(aes(geometry=geom,fill=mean.scl.bin),lwd=.1,color="darkgray")+
+  geom_sf(aes(geometry=geom,fill=mean.scl.bin),lwd=.1,color="darkgray",
+          show.legend=c(fill=TRUE))+
   # scale_fill_brewer(palette="PRGn",direction=1,drop=FALSE,guide=guide_legend(reverse=TRUE))+
-  scale_fill_brewer(palette="RdBu",direction=-1,drop=FALSE,guide=guide_legend(reverse=TRUE),na.value="gray")+
+  scale_fill_brewer(palette="RdBu",direction=-1,drop=FALSE,guide=guide_legend(reverse=TRUE),
+                    na.value="gray")+
   # labs(fill="Climate concern\n(st.dev from global mean)")+
   labs(fill="Climate\nconcern")+
   geom_sf(data=countries_proj,aes(geometry=geom),fill=NA,lwd=.2,color="darkgray")+
@@ -287,13 +290,14 @@ europlot
 eastasia <- st_transform(regions, "+proj=aea +lat_1=27 +lat_2=45 +lat_0=35 +lon_0=105 +x_0=0 +y_0=0 +ellps=WGS84 +datum=WGS84 +units=m +no_defs ")
 countries_proj <- st_transform(countries_proj1, "+proj=aea +lat_1=27 +lat_2=45 +lat_0=35 +lon_0=105 +x_0=0 +y_0=0 +ellps=WGS84 +datum=WGS84 +units=m +no_defs ")
 eastasia <- eastasia[eastasia$year=="2024-25",]
-quartz(12,12)
+#quartz(12,12)
 
 eastasiaplot<-eastasia%>%
   ggplot()+
   theme_bw()+
   # geom_sf(data=countries_proj,aes(geometry=geom),fill="lightgray")+
-  geom_sf(aes(geometry=geom,fill=mean.scl.bin),lwd=.1,color="darkgray")+
+  geom_sf(aes(geometry=geom,fill=mean.scl.bin),lwd=.1,color="darkgray",
+          show.legend=c(fill=TRUE))+
   # scale_fill_brewer(palette="PRGn",direction=1,drop=FALSE,guide=guide_legend(reverse=TRUE))+
   scale_fill_brewer(palette="RdBu",direction=-1,drop=FALSE,guide=guide_legend(reverse=TRUE),na.value="gray")+
   # labs(fill="Climate concern\n(st.dev from global mean)")+
@@ -318,13 +322,14 @@ ggsave(file=paste0(figfolder,"map_concern_eastasia_",modelname,".pdf"),width=6.5
 southasia <- st_transform(regions, "+proj=aea +lat_1=28 +lat_2=12 +lat_0=20 +lon_0=78 +x_0=2000000 +y_0=2000000 +ellps=WGS84 +datum=WGS84 +units=m +no_defs ")
 countries_proj <- st_transform(countries_proj1, "+proj=aea +lat_1=28 +lat_2=12 +lat_0=20 +lon_0=78 +x_0=2000000 +y_0=2000000 +ellps=WGS84 +datum=WGS84 +units=m +no_defs ")
 southasia <- southasia[southasia$year=="2024-25",]
-quartz(12,12)
+#quartz(12,12)
 
 southasiaplot<-southasia%>%
   ggplot()+
   theme_bw()+
   # geom_sf(data=countries_proj,aes(geometry=geom),fill="lightgray")+
-  geom_sf(aes(geometry=geom,fill=mean.scl.bin),lwd=.1,color="darkgray")+
+  geom_sf(aes(geometry=geom,fill=mean.scl.bin),lwd=.1,color="darkgray",
+          show.legend=c(fill=TRUE))+
   # scale_fill_brewer(palette="PRGn",direction=1,drop=FALSE,guide=guide_legend(reverse=TRUE))+
   scale_fill_brewer(palette="RdBu",direction=-1,drop=FALSE,guide=guide_legend(reverse=TRUE),na.value="gray")+
   # labs(fill="Climate concern\n(st.dev from global mean)")+
@@ -350,18 +355,19 @@ ggsave(file=paste0(figfolder,"map_concern_europe_southasia_",modelname,".pdf"),w
   
 
 ## Fig. S13: subnational maps of Africa #### 
-regions[is.na(regions$Continent_Name)==TRUE,]$Continent_Name <- "Missing"
+# regions[is.na(regions$Continent_Name)==TRUE,]$Continent_Name <- "Missing"
 africa <- st_transform(regions, "+proj=aea +lat_1=20 +lat_2=-23 +lat_0=0 +lon_0=25 +x_0=0 +y_0=0 +ellps=WGS84 +datum=WGS84 +units=m +no_defs ")
 africa<-africa%>%filter(Continent_Name %in% c("Africa","Europe","Asia","Missing"))
 countries_proj <- st_transform(countries_proj1, "+proj=aea +lat_1=20 +lat_2=-23 +lat_0=0 +lon_0=25 +x_0=0 +y_0=0 +ellps=WGS84 +datum=WGS84 +units=m +no_defs ")
 africa<-africa%>%filter(year=="2024-25")
-quartz(12,12)
+#quartz(12,12)
 
 africaplot<-africa%>%
   ggplot()+
   theme_bw()+
   # geom_sf(data=countries_proj,aes(geometry=geom),fill="lightgray")+
-  geom_sf(aes(geometry=geom,fill=mean.scl.bin),lwd=.1,color="darkgray")+
+  geom_sf(aes(geometry=geom,fill=mean.scl.bin),lwd=.1,color="darkgray",
+          show.legend=c(fill=TRUE))+
   # scale_fill_brewer(palette="PRGn",direction=1,drop=FALSE,guide=guide_legend(reverse=TRUE))+
   scale_fill_brewer(palette="RdBu",direction=-1,drop=FALSE,guide=guide_legend(reverse=TRUE),na.value="gray")+
   # labs(fill="Climate concern\n(st.dev from global mean)")+
@@ -385,13 +391,14 @@ southamerica <- st_transform(regions, "+proj=aea +lat_1=-5 +lat_2=-42 +lat_0=-32
 southamerica<-southamerica%>%filter(Continent_Name %in% c("South America","North America","Missing"))
 countries_proj <- st_transform(countries_proj1, "+proj=aea +lat_1=-5 +lat_2=-42 +lat_0=-32 +lon_0=-60 +x_0=0 +y_0=0 +ellps=aust_SA +units=m +no_defs ")
 southamerica <- southamerica[southamerica$year=="2024-25",]
-quartz(12,12)
+#quartz(12,12)
 
 southamericaplot<-southamerica%>%
   ggplot()+
   theme_bw()+
   # geom_sf(data=countries_proj,aes(geometry=geom),fill="lightgray")+
-  geom_sf(aes(geometry=geom,fill=mean.scl.bin),lwd=.1,color="darkgray")+
+  geom_sf(aes(geometry=geom,fill=mean.scl.bin),lwd=.1,color="darkgray",
+          show.legend=c(fill=TRUE))+
   # scale_fill_brewer(palette="PRGn",direction=1,drop=FALSE,guide=guide_legend(reverse=TRUE))+
   scale_fill_brewer(palette="RdBu",direction=-1,drop=FALSE,guide=guide_legend(reverse=TRUE),na.value="gray")+
   # labs(fill="Climate concern\n(st.dev from global mean)")+
@@ -415,13 +422,14 @@ northamerica <- st_transform(regions, "+proj=aea +lat_1=20 +lat_2=60 +lat_0=40 +
 northamerica<-northamerica%>%filter(Continent_Name %in% c("South America","North America","Missing"))
 countries_proj <- st_transform(countries_proj1, "+proj=aea +lat_1=20 +lat_2=60 +lat_0=40 +lon_0=-96 +x_0=0 +y_0=0 +ellps=GRS80 +datum=NAD83 +units=m +no_defs ")
 northamerica <- northamerica[northamerica$year=="2024-25",]
-quartz(12,12)
+#quartz(12,12)
 
 northamericaplot<-northamerica%>%
   ggplot()+
   theme_bw()+
   # geom_sf(data=countries_proj,aes(geometry=geom),fill="lightgray")+
-  geom_sf(aes(geometry=geom,fill=mean.scl.bin),lwd=.1,color="darkgray")+
+  geom_sf(aes(geometry=geom,fill=mean.scl.bin),lwd=.1,color="darkgray",
+          show.legend=c(fill=TRUE))+
   # scale_fill_brewer(palette="PRGn",direction=1,drop=FALSE,guide=guide_legend(reverse=TRUE))+
   scale_fill_brewer(palette="RdBu",direction=-1,drop=FALSE,guide=guide_legend(reverse=TRUE),na.value="gray")+
   # labs(fill="Climate concern\n(st.dev from global mean)")+
@@ -445,13 +453,14 @@ oceania <- st_transform(regions, "+proj=aea +lat_1=-18 +lat_2=-36 +lat_0=0 +lon_
 oceania<-oceania%>%filter(Continent_Name %in% c("Asia","Oceania","Eurasia", "Missing"))
 countries_proj <- st_transform(countries_proj1, "+proj=aea +lat_1=-18 +lat_2=-36 +lat_0=0 +lon_0=132 +x_0=0 +y_0=0 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs ")
 oceania <- oceania[oceania$year=="2024-25",]
-quartz(12,12)
+#quartz(12,12)
 
 oceaniaplot<-oceania%>%
   ggplot()+
   theme_bw()+
   # geom_sf(data=countries_proj,aes(geometry=geom),fill="lightgray")+
-  geom_sf(aes(geometry=geom,fill=mean.scl.bin),lwd=.1,color="darkgray")+
+  geom_sf(aes(geometry=geom,fill=mean.scl.bin),lwd=.1,color="darkgray",
+          show.legend=c(fill=TRUE))+
   # scale_fill_brewer(palette="PRGn",direction=1,drop=FALSE,guide=guide_legend(reverse=TRUE))+
   scale_fill_brewer(palette="RdBu",direction=-1,drop=FALSE,guide=guide_legend(reverse=TRUE),na.value="gray")+
   # labs(fill="Climate concern\n(st.dev from global mean)")+
@@ -557,7 +566,7 @@ est.2024$group<-c(rep(1,round(nrow(est.2024)/2,0)),
 head(levels(est.2024$NAME_0_gadm))
 
 ## plot
-quartz(12,12)
+#quartz(12,12)
 estplot<-ggplot(est.2024,aes(x=mean,y=NAME_0_gadm,color=Continent_Name))+
   geom_point()+
   geom_linerange(aes(y=NAME_0_gadm,xmin=q5,xmax=q95))+
@@ -569,10 +578,10 @@ estplot<-ggplot(est.2024,aes(x=mean,y=NAME_0_gadm,color=Continent_Name))+
 estplot
 
 if(exists("datafilter")){
-  ggsave(file=paste0(figfolder,"estimates_",modelname,"_",datafilter,Sys.Date(),".pdf"),
+  ggsave(file=paste0(figfolder,"estimates_",modelname,"_",datafilter,".pdf"),
          width=6.5,height=9,units="in",estplot)
 }else{
-  ggsave(file=paste0(figfolder,"estimates_",modelname,"_",Sys.Date(),".pdf"),
+  ggsave(file=paste0(figfolder,"estimates_",modelname,"_",".pdf"),
        width=6.5,height=9,units="in",estplot)
 }
 # Fig. S8:  barplot with discrimination parameters ####
@@ -608,7 +617,7 @@ dsum<-d%>%
 head(dsum) 
 range(dsum$n)
 
-# quartz(18,18)
+# #quartz(18,18)
 
 questions.plot<-ggplot(dsum,aes(x=year2,y=iso_3166,alpha=n,color=Continent_Name))+
   geom_point()+
@@ -647,7 +656,7 @@ dev.off()
 
 # Fig. 4: Climate concern and vulnerability #### 
 ## merge in exposure data, to analyze change in quadrants
-d<-read_csv(paste0(repofolder,"predictors/ND-GAIN2022_exposure.csv"))
+d<-read_csv(paste0(repofolder,"predictors/ND-GAIN2026_exposure.csv"))
 est.nat<-left_join(est.nat,d,by=c("iso_3166","NAME_0_gadm"))
 est.nat$exp.std<-scale(est.nat$exposure,center=TRUE,scale=TRUE)
 

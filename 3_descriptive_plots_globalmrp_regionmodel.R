@@ -707,34 +707,15 @@ quadrants
 ggsave(file=paste0(figfolder,"quadrants_exposure_concern_",modelname,".pdf"),width=6.5,height=6.5,quadrants)
 
 # Figure 6: sub-national emissions regression, scatterplot #### 
-emissions<-read_excel(paste0(repofolder,"predictors/EDGAR_GHG_NUTS2_by_sector_1990_2021.xlsx"),sheet=1)
-emissions%<>%
-  filter(sector=="ENE",
-         grepl("FRY",NUTS_ID)==FALSE)%>% # filter to energy production sector 
-  # select(-`2021`)%>%
-  # pivot_longer(`1990`:`2020`,values_to="emissions",names_to="year")%>%
-  select(NUTS_ID,CNTR_CODE,NAME_LATN,sector,`2021`)%>%
-  group_by(NUTS_ID,CNTR_CODE,NAME_LATN)%>%
-  summarise(emissions.cumul=sum(`2021`,na.rm=TRUE),
-            emissions.cumul=emissions.cumul*1000) ## convert to tons rather than kilotons
-crosswalk<-read_excel(paste0(repofolder,"predictors/EU_crosswalk.xlsx"),sheet=1)
-emissions<-left_join(emissions,crosswalk,by=c("NUTS_ID"="eucodes")) ## aggregate across EU regions with same code in our dataset
-emissions<-emissions%>%
-  group_by(CNTR_CODE,ourcodes)%>%
-  summarise(emissions.cumul=sum(emissions.cumul))
-pop<-read_csv(paste0(repofolder,"basedata/Covariates/region_covariates.csv"))%>%
-  select(mergekey,region_pop)
-emissions<-left_join(emissions,pop,by=c("ourcodes"="mergekey"))%>%
-  mutate(emissions.percap=emissions.cumul/region_pop)
-emissions$emissions.percap.bin<-cut(emissions$emissions.percap,breaks=c(-1,1,2,3,4,5,10,20,100),
-                                    labels=c("0-1","1-2","2-3","3-4","4-5","5-10","10-20","20+"))
+emissions<-read_csv(paste0(repofolder,"predictors/emissions_clean.csv"))
 
 regions=left_join(regions,emissions,by=c("mergekey"="ourcodes"))
-europe<-regions%>%filter(Continent_Name=="Europe")%>%filter(year=="2024-25") ## filter to Europe and only 2022-23
+europe<-regions%>%filter(Continent_Name=="Europe")%>%filter(year=="2024-25") ## filter to Europe and only most recent year
 europe$mean.std<-scale(europe$mean,center=TRUE,scale=TRUE) ## this regression standardizes estimates *within* Europe for interpretation. 
 europe$emissions.log.std<-scale(log(europe$emissions.percap),center=TRUE,scale=TRUE)
-reg2<-lm_robust(mean.std~emissions.log.std+factor(iso_3166),data=europe) ##-.26. the linear-log model returns a coefficient of -.15, so much smaller.
-summary(reg2)
+europe%<>%
+  filter(!is.na(emissions.log.std))
+
 reg2<-feols(mean.std~emissions.log.std,vcov=~iso_3166,data=europe)
 summary(reg2)
 reg2<-coeftable(reg2)
@@ -745,7 +726,7 @@ print.xtable(xtable(reg2,label="tab:regression.emissions.concern",caption="{\\bf
              caption.placement="bottom",file=paste0(figfolder,"regression_results_emissions.tex"))
 
 
-emissionsplot<-ggplot(data=europe,aes(x=emissions.log.std,y=mean.std,label=iso_3166))+
+emissionsplot<-ggplot(data=europe,aes(x=emissions.log.std,y=mean.std))+
   geom_point()+
   geom_smooth(method="lm",se=FALSE,lty="dashed")+
   annotate("text",x=-3,y=-1.5,label=paste("beta == ",round(reg2[2,1],2)),
@@ -754,7 +735,7 @@ emissionsplot<-ggplot(data=europe,aes(x=emissions.log.std,y=mean.std,label=iso_3
   annotate("text",x=-3,y=-1.8,label=paste("p == ",round(reg2[2,4],2)),
                                         # round(reg2$p.value[2],10)),
            color="blue",parse=TRUE)+
-  scale_y_continuous(limits=c(-2,3))+
+  # scale_y_continuous(limits=c(-2,3))+
   labs(x="Energy-sector carbon dioxide emissions\n(tons per capita, logged, st.dev, 2021)",y="Climate concern (st.dev), 2024-25")+
   theme_bw()
 emissionsplot

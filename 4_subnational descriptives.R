@@ -19,16 +19,22 @@ library(data.table)
 # source("globalmrp_functions.R")
 
 ## set your working directory here 
-setwd("~/Documents/GitHub/climateconcern")
+# setwd("~/Documents/GitHub/climateconcern") ## uncomment once data are publicly shareable
+setwd("~/Library/CloudStorage/Dropbox/global_mrp") ## comment this out once data are publicly shareable
+repofolder<-"~/Documents/GitHub/climateconcern/"
 figfolder<-"~/Documents/GitHub/climateconcern/figures/"
 
 # # load data #### 
- modelname<-"country_walk_region_walk_fxdstart" ## new model 240715
-est.reg <- read.csv(file="analyzed_outputs/estimates_regional_2010-22_country_walk_region_walk_fxdstart.csv")
-est.nat <- read.csv(file="analyzed_outputs/estimates_2010-22_country_walk_region_walk_fxdstart.csv")
+ modelname<-"climate_concern_v2_revision" 
+timecollapse<-"2yr"
+qrestrict<-"concernhuman"
+datafilter<-paste(timecollapse,qrestrict,sep="_")
+load(file=paste0("outputs_stan/stan_clean_",modelname,"_",datafilter,".Rdata"))
 
-load("outputs_stan/stan_clean_country_walk_region_walk_fxdstart_2yr_concernhuman.Rdata")
-
+est.reg%<>%
+  filter(year=="2010-11"|year=="2024-25")
+est.nat%<>%
+  filter(year=="2010-11"|year=="2024-25")
 
 # load region key
 load("individual polls/regioncodes/region_key_disaggregated.Rda")

@@ -350,8 +350,8 @@ ggsave(file=paste0(figfolder,"map_concern_southasia_",modelname,".pdf"),width=6.
 
 
 ## Figure 3: combined figure with south asia and europe/ eurasia #### 
-ggsave(file=paste0(figfolder,"map_concern_europe_southasia_",modelname,".pdf"),width=9,height=6.5,
-       ggarrange(europlot,southasiaplot,nrow=1,ncol=2))
+ggsave(file=paste0(figfolder,"map_concern_europe_southasia_",modelname,".pdf"),width=6.5,height=9,
+       ggarrange(europlot,southasiaplot,nrow=2,ncol=1,common.legend=TRUE,legend="right"))
   
 
 ## Fig. S13: subnational maps of Africa #### 
@@ -657,7 +657,7 @@ dev.off()
 # Fig. 4: Climate concern and vulnerability #### 
 ## merge in exposure data, to analyze change in quadrants
 d<-read_csv(paste0(repofolder,"predictors/ND-GAIN2026_exposure.csv"))
-est.nat<-left_join(est.nat,d,by=c("iso_3166","NAME_0_gadm"))
+est.nat<-left_join(est.nat,d%>%select(-NAME_0_gadm,-GID_0_gadm),by=c("iso_3166"))
 est.nat$exp.std<-scale(est.nat$exposure,center=TRUE,scale=TRUE)
 
 ## quadrants plot without 2010 values #### 
@@ -698,8 +698,8 @@ quadrants<-est.nat24%>%
         axis.ticks=element_blank())+
   annotate(geom="text",x=2.5,y=-3,label="High exposure,\nlow concern",color="blue")+
   annotate(geom="text",x=2.5,y=3,label="High exposure,\nhigh concern",color="blue")+
-  annotate(geom="text",x=-2.5,y=-3,label="Low exposure,\nlow concern",color="blue")+
-  annotate(geom="text",x=-2.5,y=3,label="Low exposure,\nhigh concern",color="blue")+ 
+  annotate(geom="text",x=-1.8,y=-3,label="Low exposure,\nlow concern",color="blue")+
+  annotate(geom="text",x=-1.8,y=3,label="Low exposure,\nhigh concern",color="blue")+ 
   annotate("text",x=3,y=.5,label=paste("beta == ",round(reg1$coefficients[2],2)),color="blue",parse=TRUE)+
   annotate("text",x=3,y=.3,label=paste("p == ",round(reg1$p.value[2],2)),color="blue",parse=TRUE)+
   labs(x="Climate exposure (st.dev)",y="Climate concern (st.dev)")
@@ -711,36 +711,61 @@ emissions<-read_csv(paste0(repofolder,"predictors/emissions_clean.csv"))
 
 regions=left_join(regions,emissions,by=c("mergekey"="ourcodes"))
 europe<-regions%>%filter(Continent_Name=="Europe")%>%filter(year=="2024-25") ## filter to Europe and only most recent year
+europe%<>%
+  filter(!is.na(emissions.percap))
 europe$mean.std<-scale(europe$mean,center=TRUE,scale=TRUE) ## this regression standardizes estimates *within* Europe for interpretation. 
 europe$emissions.log.std<-scale(log(europe$emissions.percap),center=TRUE,scale=TRUE)
-europe%<>%
-  filter(!is.na(emissions.log.std))
 
-reg2<-feols(mean.std~emissions.log.std,vcov=~iso_3166,data=europe)
+reg2<-feols(mean.std~emissions.log.std|iso_3166,vcov=~iso_3166,data=europe)
 summary(reg2)
 reg2<-coeftable(reg2)
-rownames(reg2)[2]<-"Emissions (logged, standardized)"
+rownames(reg2)[1]<-"Emissions (logged, standardized)"
+
 
 ## table S7: energy sector emissions and climate concern 
 print.xtable(xtable(reg2,label="tab:regression.emissions.concern",caption="{\\bf Effect of energy-sector CO$_2$ emissions on climate concern:} The figure table shows the results from an OLS regression of climate concern (standardized, in 2024-25) on per-capita emissions from the energy sector (standardized, 2021) at the sub-national region level in the European Union. Standard errors are clustered by country."),
              caption.placement="bottom",file=paste0(figfolder,"regression_results_emissions.tex"))
 
+## without country FEs: 
+# reg2<-feols(mean.std~emissions.log.std,vcov=~iso_3166,data=europe)
+# summary(reg2)
+# reg2<-coeftable(reg2)
+# rownames(reg2)[2]<-"Emissions (logged, standardized)"
 
-emissionsplot<-ggplot(data=europe,aes(x=emissions.log.std,y=mean.std))+
+# emissionsplot<-ggplot(data=europe,aes(x=emissions.log.std,y=mean.std))+
+#   geom_point()+
+#   geom_smooth(method="lm",se=FALSE,lty="dashed")+
+#   annotate("text",x=-3,y=-1.5,label=paste("beta == ",round(reg2[1,1],2)),
+#                                           # round(reg2$coefficients[2],2)),
+#            color="blue",parse=TRUE)+
+#   annotate("text",x=-3,y=-1.8,label=paste("p == ",round(reg2[1,4],2)),
+#                                         # round(reg2$p.value[2],10)),
+#            color="blue",parse=TRUE)+
+#   # scale_y_continuous(limits=c(-2,3))+
+#   labs(x="Energy-sector carbon dioxide emissions\n(tons per capita, logged, st.dev, 2021)",y="Climate concern (st.dev), 2024-25")+
+#   theme_bw()
+# emissionsplot
+# ggsave(file=paste0(figfolder,"scatter_emissions_concern_europeregions_",modelname,".pdf"),width=6.5,height=3.5,emissionsplot)
+
+## plot results, demeaning by country FEs 
+europe%<>%
+  group_by(iso_3166)%>%
+  mutate(mean.std.within = mean.std - mean(mean.std, na.rm=TRUE),
+         emissions.log.std.within = emissions.log.std - mean(emissions.log.std, na.rm=TRUE))%>%
+  ungroup()
+
+emissionsplot_fe<-ggplot(data=europe,aes(x=emissions.log.std.within,y=mean.std.within))+
   geom_point()+
   geom_smooth(method="lm",se=FALSE,lty="dashed")+
-  annotate("text",x=-3,y=-1.5,label=paste("beta == ",round(reg2[2,1],2)),
-                                          # round(reg2$coefficients[2],2)),
+  annotate("text",x=-3,y=1.2,label=paste("beta == ",round((reg2)[1,1],3)),
            color="blue",parse=TRUE)+
-  annotate("text",x=-3,y=-1.8,label=paste("p == ",round(reg2[2,4],2)),
-                                        # round(reg2$p.value[2],10)),
+  annotate("text",x=-3,y=1.0,label=paste("p == ",round((reg2)[1,4],2)),
            color="blue",parse=TRUE)+
-  # scale_y_continuous(limits=c(-2,3))+
-  labs(x="Energy-sector carbon dioxide emissions\n(tons per capita, logged, st.dev, 2021)",y="Climate concern (st.dev), 2024-25")+
+  labs(x="Energy-sector carbon dioxide emissions\n(logged, standardized, within-country deviation)",
+       y="Climate concern\n(standardized, within-country deviation)")+
   theme_bw()
-emissionsplot
-ggsave(file=paste0(figfolder,"scatter_emissions_concern_europeregions_",modelname,".pdf"),width=6.5,height=3.5,emissionsplot)
-
+emissionsplot_fe
+ggsave(file=paste0(figfolder,"scatter_emissions_concern_europeregions_withinFE_",modelname,".pdf"),width=6.5,height=3.5,emissionsplot_fe)
 
 
 # Fig. S3: dimensionality with country-year groups: only questions with 20+ countries #### 
@@ -749,10 +774,54 @@ ggsave(file=paste0(figfolder,"scatter_emissions_concern_europeregions_",modelnam
 ## and then average across biennia within groups.
 
 ## load survey data and collapse time periods (have to do this anew here b/c survey.data saved in data input only contains questions used...no action or awareness questions) #### 
-load(paste0("inputs/megapoll_globalmrp_ordinal_replication.Rda"))
+load("inputs/megapoll_globalmrp_ordinal_v2_IR8.Rda")
 survey.data%<>%filter(as.numeric(year)>=2002)
 
+## pasting in from rstan_prepdata_region.R
+## identify sources that span years--assign the last year to the ones that span years, and then merge back in
+## take year off so that I can id unique sources that are duplicated after doing that. 
+survey.data<-survey.data%>%
+  mutate(source2=substr(source,1,nchar(source)-5)) 
 
+multi.sources<-survey.data%>%
+  select(source,year)%>%
+  distinct()%>% ## keep distinct rows for each source-year
+  mutate(source2=substr(source,1,nchar(source)-5))%>% ## take year off source name
+  mutate(dup=grepl("[0-9]+",source2))%>% ### identify sources that still have numbers in the name but exclude eurobarometers b/c they're all single-year, single-wave. 
+  filter(dup==TRUE,
+         grepl("eurobarometer",source2)==FALSE)%>%
+  group_by(source2)%>%
+  summarise(year2=max(year))%>%
+  ungroup()
+
+## identify number of years in which each question is asked
+
+survey.data<-left_join(survey.data,multi.sources,by="source2") # sources that are multiwave now have a value in "year2" and "source2" columns
+unique(survey.data$year)
+survey.data<-survey.data%>%
+  mutate(year2=ifelse(is.na(year2),year,year2),
+         source2=ifelse(is.na(source2),source,source2))
+survey.data<-survey.data%>%mutate(
+  year2=case_when(#as.numeric(year2)<=1999~"1998-99",
+    #as.numeric(year2)>1999&as.numeric(year2)<=2001~"2000-01",
+    as.numeric(year2)>2001&as.numeric(year2)<=2003~"2002-03",
+    # as.numeric(year2)<=2003~"1998-2003",
+    as.numeric(year2)>2003&as.numeric(year2)<=2005~"2004-05",
+    as.numeric(year2)>2005&as.numeric(year2)<=2007~"2006-07",
+    as.numeric(year2)>2007&as.numeric(year2)<=2009~"2008-09",
+    as.numeric(year2)>2009&as.numeric(year2)<=2011~"2010-11",
+    as.numeric(year2)>2011&as.numeric(year2)<=2013~"2012-13",
+    as.numeric(year2)>2013&as.numeric(year2)<=2015~"2014-15",
+    as.numeric(year2)>2015&as.numeric(year2)<=2017~"2016-17",
+    as.numeric(year2)>2017&as.numeric(year2)<=2019~"2018-19",
+    as.numeric(year2)>2019&as.numeric(year2)<=2021~"2020-21",
+    as.numeric(year2)>2021&as.numeric(year2)<=2023~"2022-23",
+    as.numeric(year2)>2024&as.numeric(year2)<=2026~"2024-25")
+)
+## end pasted part from rstan_prepdata_region.R
+
+sort(names(survey.data))
+names(survey.data)<-gsub("crisis_strength_scientific_consensus","attribution_consensus_strength",names(survey.data)) ## hopefully this will be renamed in future versions. check using line above 
 names(survey.data)<-gsub("concern","worry",names(survey.data))
 names(survey.data)<-gsub("worry_worry","worry",names(survey.data))
 names(survey.data)<-gsub("human_caused","attribution",names(survey.data))
@@ -791,6 +860,8 @@ qlist<-unique(qlist$question)
 
 country.yr.means<-list()
 
+
+
 for(i in 1:length(qlist)){
   print(i)
   print(qlist[i])
@@ -809,7 +880,8 @@ for(i in 1:length(qlist)){
   country.yr.means[[i]]<-d
 }
 country.yr.means<-do.call(rbind,country.yr.means)
-country.yr.means%<>%bind_rows(country.yr.means.np)
+country.yr.means%<>%
+  bind_rows(country.yr.means.np%>%anti_join(country.yr.means,by=c("iso_3166","question")))
 country.yr.means.wide<-pivot_wider(country.yr.means,id_cols=c(iso_3166),names_from="question",values_from="val")
 cormat.yr<-cor(country.yr.means.wide[,3:ncol(country.yr.means.wide)],use="pairwise.complete.obs")
 
@@ -832,11 +904,12 @@ dev.off()
 sources<-c("worldbank_2010","mildenbergerdynata_2021")
 dsub<-survey.data%>%
   filter(source%in%sources)%>%
-  select(-year,-year2,-source2,-iso_3166,-nonrepresentative,
-         -regioncode,-constructed,-party,
-         -mergekey,-`...1`,-partyfactcode,-partyfactid,-ideowiki,-ideowiki2,-partyid#,-age,
+  select(-year,-year2,-source2,-iso_3166,
+         -regioncode,-constructed,
+         -mergekey,-reference_survey,-support_weight,-likelihood_route,-n_support,-reference_survey#,-age,
          #-respondent_gender
-         )
+         )%>%
+  select(-contains("respondent"))
 
 ## Figure S2: side-by-side screeplots for Mildenberger and World Bank surveys #### 
 ## (the only 2 in our data set that asked multiple questions in multiple countries)

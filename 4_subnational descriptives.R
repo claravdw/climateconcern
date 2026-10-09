@@ -36,12 +36,9 @@ est.reg%<>%
 est.nat%<>%
   filter(year=="2010-11"|year=="2024-25")
 
-# load region key
-load("individual polls/regioncodes/region_key_disaggregated.Rda")
-
 # load population data
-load("basedata/populations_extract_worldpop/populations.Rda")
-load("basedata/populations_extract_worldpop/populations_national.Rda")
+load(paste0(repofolder,"basedata/populations_extract_worldpop/populations.Rda"))
+load(paste0(repofolder,"basedata/populations_extract_worldpop/populations_national.Rda"))
 
 populations.combine <- merge(populations, populations.national, by="iso_3166")
 
@@ -53,41 +50,41 @@ samples.nat <- d%>%group_by(iso_3166)%>%summarise(n=sum(size))
 est.reg <- merge(est.reg, samples.reg, by="mergekey", all.y=FALSE)
 est.nat <- merge(est.nat, samples.nat, by="iso_3166", all.y=FALSE)
 
-est.2022<-est.nat%>%filter(year=="2022-23")
+est.2024<-est.nat%>%filter(year=="2024-25")
 
-est.reg.2022<-est.reg%>%filter(year=="2022-23")
+est.reg.2024<-est.reg%>%filter(year=="2024-25")
 
 
-est.reg.2022 <- data.table(est.reg.2022)
+est.reg.2024 <- data.table(est.reg.2024)
 
 #remove regions with sample less than 1000 
-est.reg.2022 <- est.reg.2022[est.reg.2022$n>999,]
-est.reg.2022 <- est.reg.2022[est.reg.2022$mergekey!="CN-HK",]
+est.reg.2024 <- est.reg.2024[est.reg.2024$n>999,]
+est.reg.2024 <- est.reg.2024[est.reg.2024$mergekey!="CN-HK",]
 
 
 #calculate national coefficient of variation by region
-nat.descriptives <- est.reg.2022[, .(nat.CV = sd(mean.scl)/mean(mean.scl), nat.regionmean = mean(mean.scl), nat.regionsd = sd(mean.scl)), by = .(iso_3166)]
+nat.descriptives <- est.reg.2024[, .(nat.CV = sd(mean.scl)/mean(mean.scl), nat.regionmean = mean(mean.scl), nat.regionsd = sd(mean.scl)), by = .(iso_3166)]
 
 #calculate regional location quotient by country
-est.nat.sub <- est.2022[,c("iso_3166", "mean.scl", "Continent_Name", "NAME_0_gadm")]
+est.nat.sub <- est.2024[,c("iso_3166", "mean.scl", "Continent_Name", "NAME_0_gadm")]
 names(est.nat.sub)[2] <- "nat.mean.scl"
 nat.descriptives <- merge(nat.descriptives, est.nat.sub, by=intersect(names(nat.descriptives),names(est.nat.sub)))
-est.reg.2022 <- merge(est.reg.2022, nat.descriptives, by=intersect(names(est.reg.2022),names(nat.descriptives)))
+est.reg.2024 <- merge(est.reg.2024, nat.descriptives, by=intersect(names(est.reg.2024),names(nat.descriptives)))
 
 #est.reg.2020.pop <- merge(est.reg.2020, populations.combine, by="mergekey")
 
-est.reg.2022$reg.ratio <- (est.reg.2022$mean.scl / est.reg.2022$nat.mean.scl) *100
+est.reg.2024$reg.ratio <- (est.reg.2024$mean.scl / est.reg.2024$nat.mean.scl) *100
 #nat.descriptives <- merge(nat.descriptives, populations.national, by="iso_3166")
 
 library(sf)
-regions <- st_read("basedata/simplified geometries/g1.agg_wmissingcountries_simplifedgeometry.gpkg")
+regions <- st_read(paste0(repofolder,"basedata/simplified geometries/g1.agg_wmissingcountries_simplifedgeometry.gpkg"))
 
 regions.sub <- regions[,c("mergekey", "regionname_ISOenglish")]
-est.reg.2022.merge <- merge(est.reg.2022, regions.sub, by="mergekey")
-est.reg.2022.merge$regionname_countryname <- paste0(est.reg.2022.merge$regionname_ISOenglish, ", ", est.reg.2022.merge$NAME_0_gadm.x)
+est.reg.2024.merge <- merge(est.reg.2024, regions.sub, by="mergekey")
+est.reg.2024.merge$regionname_countryname <- paste0(est.reg.2024.merge$regionname_ISOenglish, ", ", est.reg.2024.merge$NAME_0_gadm.x)
 
 ## Fig 5b: regional location quotient for selected countries
-top5_bycountry<-data.frame(est.reg.2022.merge[est.reg.2022.merge$iso_3166%in% c("US", "CN", "IN")])%>%
+top5_bycountry<-data.frame(est.reg.2024.merge[est.reg.2024.merge$iso_3166%in% c("US", "CN", "IN")])%>%
   select(regionname_ISOenglish,iso_3166,reg.ratio,NAME_0_gadm)%>%
   distinct()%>%
   filter(!is.na(reg.ratio))%>%
@@ -96,7 +93,7 @@ top5_bycountry<-data.frame(est.reg.2022.merge[est.reg.2022.merge$iso_3166%in% c(
   slice_tail(n=5)%>%
   ungroup()
 
-bottom5_bycountry<-data.frame(est.reg.2022.merge[est.reg.2022.merge$iso_3166%in% c("US", "CN", "IN")])%>%
+bottom5_bycountry<-data.frame(est.reg.2024.merge[est.reg.2024.merge$iso_3166%in% c("US", "CN", "IN")])%>%
   select(regionname_ISOenglish,iso_3166,reg.ratio,NAME_0_gadm)%>%
   distinct()%>%
   filter(!is.na(reg.ratio))%>%
@@ -110,7 +107,7 @@ top.bottom5fig.regions.bycountry<-rbind(top5_bycountry,bottom5_bycountry)%>%
   ggplot(aes(x=reg.ratio,y=reorder(regionname_ISOenglish, reg.ratio)))+
   geom_point(aes(y=reorder(regionname_ISOenglish, reg.ratio)))+
   # geom_linerange(aes(y=fullname,xmin=q5,xmax=q95))+
-  labs(y=element_blank(),x="Subnational location quotient (2022-23 climate concern)")+
+  labs(y=element_blank(),x="Subnational location quotient (2024-25 climate concern)")+
   theme_bw()+
   guides(color="none")+
   facet_wrap(~NAME_0_gadm,scales="free_y")

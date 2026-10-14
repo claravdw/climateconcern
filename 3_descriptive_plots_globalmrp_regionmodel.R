@@ -802,6 +802,15 @@ emissionsplot_fe
 ggsave(file=paste0(figfolder,"scatter_emissions_concern_europeregions_withinFE_",modelname,".pdf"),width=6.5,height=3.5,emissionsplot_fe)
 
 
+## error-corrected regressions over the full posterior #### 
+## load region scores 
+draws<-readRDS(paste0(repofolder,"outputs_stan/draws_region_scores_1000.rds")) ## this matrix isn't particularly usable as far as I can tell. no labels
+load("~/Documents/GitHub/globalmrp/globalmrp_hpc/analyzed_outputs/country_walk_region_walk_fxdstart.Rda")
+post.nat.20<-pivot_longer(post.nat,cols=-c(geog_int,year_int,param,iso_3166,year2),names_to="iter",values_to="mean.post")%>%
+  filter(year2=="2020-21")%>%
+  select(iso_3166,iter,mean.post)
+
+
 # Fig. S3: dimensionality with country-year groups: only questions with 20+ countries #### 
 ## average each question within group-biennia, 
 ## center these averages within year (to eliminate time effects), 

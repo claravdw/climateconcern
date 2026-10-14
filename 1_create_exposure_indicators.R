@@ -53,29 +53,36 @@ d<-left_join(countrycodes,d,by=c("GID_0_gadm"="ISO3"))
 write_csv(d,file="predictors/ND-GAIN2026_exposure.csv")
 
 # create emissions indicators ####
-emissions<-read_excel("predictors/EDGAR_2025_GHGs_CO2eq_AR5_NUTS2_by_country_sector_1990-2024_b.xlsx",
-                      sheet=2)
-emissions%<>%
-  filter(Sector=="Energy")%>%
-  select(ISO,Country,`Subnational code *`,Y_2024)%>%
-  filter(`Subnational code *`!="N/A")
-unique(emissions$Country)
-crosswalk<-read_excel("predictors/EU_crosswalk.xlsx",sheet=1)
-emissions<-left_join(emissions,crosswalk,by=c("Subnational code *"="eucodes")) ## match nuts codes to codes used in our data
-emissions<-emissions%>%
-  group_by(Country,ourcodes)%>%
-  summarise(emissions.cumul=sum(Y_2024,na.rm=TRUE), ## aggregate across EU regions with same code in our dataset
-            emissions.cumul=emissions.cumul*1000) ## convert to tons rather than kilotons
-pop<-read_csv("basedata/Covariates/region_covariates.csv")%>%
-  select(mergekey,region_pop)
-emissions<-left_join(emissions,pop,by=c("ourcodes"="mergekey"))%>%
-  mutate(emissions.percap=emissions.cumul/region_pop)
-emissions$emissions.percap.bin<-cut(emissions$emissions.percap,breaks=c(-1,1,2,3,4,5,10,20,100),
-                                    labels=c("0-1","1-2","2-3","3-4","4-5","5-10","10-20","20+"))
+### MATTO please add code here to create the file currently called: emissions_eu_regions_2025edgar.csv
+## and output the file as predictors/emissions_clean.csv (rather than its current name) in the git repo so that downstream scripts work. 
 
-## this dataset only includes EU countries because of the NUTS-ourcodes crosswalk. for now, eliminate any rows without a 
-## value in the "ourcodes" column and that will eliminate NA values
-emissions%<>%
-  filter(!is.na(ourcodes))
-
+# emissions<-read_csv("predictors/edgar2025_to_model_crosswalk.csv")
+# pop<-read_csv("basedata/model_region_key.csv")
+# 
+# 
+# emissions<-read_excel("predictors/EDGAR_2025_GHGs_CO2eq_AR5_NUTS2_by_country_sector_1990-2024_b.xlsx",
+#                       sheet=2)
+# emissions%<>%
+#   filter(Sector=="Energy")%>%
+#   select(ISO,Country,`Subnational code *`,Y_2024)%>%
+#   filter(`Subnational code *`!="N/A")
+# unique(emissions$Country)
+# crosswalk<-read_excel("predictors/EU_crosswalk.xlsx",sheet=1)
+# emissions<-left_join(emissions,crosswalk,by=c("Subnational code *"="eucodes")) ## match nuts codes to codes used in our data
+# emissions<-emissions%>%
+#   group_by(Country,ourcodes)%>%
+#   summarise(emissions.cumul=sum(Y_2024,na.rm=TRUE), ## aggregate across EU regions with same code in our dataset
+#             emissions.cumul=emissions.cumul*1000) ## convert to tons rather than kilotons
+# pop<-read_csv("basedata/Covariates/region_covariates.csv")%>%
+#   select(mergekey,region_pop)
+# emissions<-left_join(emissions,pop,by=c("ourcodes"="mergekey"))%>%
+#   mutate(emissions.percap=emissions.cumul/region_pop)
+# emissions$emissions.percap.bin<-cut(emissions$emissions.percap,breaks=c(-1,1,2,3,4,5,10,20,100),
+#                                     labels=c("0-1","1-2","2-3","3-4","4-5","5-10","10-20","20+"))
+# 
+# ## this dataset only includes EU countries because of the NUTS-ourcodes crosswalk. for now, eliminate any rows without a 
+# ## value in the "ourcodes" column and that will eliminate NA values
+# emissions%<>%
+#   filter(!is.na(ourcodes))
+# 
 write_csv(emissions,"predictors/emissions_clean.csv")

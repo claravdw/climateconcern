@@ -64,18 +64,23 @@ est.nat$mean.std<-(est.nat$mean-global.mean)/global.sd
 est.nat$mean.std.bin<-cut(est.nat$mean.std,breaks=c(-3,-2,-1.5,-1,-0.5,0.5,1,1.5,2,4),
                           labels=c("-2","-1.5","-1","-0.5","0","0.5","1","1.5","2+"))
 est.nat$mean.scl<-scales::rescale(est.nat$mean,to=c(0,1),from=global.range)
-est.nat$mean.scl.bin<-cut(est.nat$mean.scl,breaks=c(-1,.1,.2,.3,.4,.5,.6,.7,.8,.9,1),
-                          labels=c("0-0.1","0.1-0.2","0.2-0.3","0.3-0.4","0.4-0.5","0.5-0.6",
-                                   "0.6-0.7","0.7-0.8","0.8-0.9","0.9-1"))
-
 
 est.reg$mean.std<-(est.reg$mean-global.mean)/global.sd
 est.reg$mean.std.bin<-cut(est.reg$mean.std,breaks=c(-3,-2,-1.5,-1,-0.5,0.5,1,1.5,2,4),
                           labels=c("-2","-1.5","-1","-0.5","0","0.5","1","1.5","2+"))
 est.reg$mean.scl<-scales::rescale(est.reg$mean,to=c(0,1),from=global.range)
-est.reg$mean.scl.bin<-cut(est.reg$mean.scl,breaks=c(-1,.1,.2,.3,.4,.5,.6,.7,.8,.9,1),
-                          labels=c("0-0.1","0.1-0.2","0.2-0.3","0.3-0.4","0.4-0.5","0.5-0.6",
-                                   "0.6-0.7","0.7-0.8","0.8-0.9","0.9-1"))
+
+## quantile-based (data-driven) bins for choropleth maps: each bin holds a comparable number of
+## countries/regions, rather than fixed 0.1-width bins that leave most units crammed into 1-2 bins.
+## breaks are computed once on the pooled national+regional values so both scales share identical
+## bin edges/colors across all maps.
+n_bins<-10
+scl.breaks<-quantile(c(est.nat$mean.scl,est.reg$mean.scl),probs=seq(0,1,length.out=n_bins+1),na.rm=TRUE)
+scl.breaks<-unique(scl.breaks) ## guard against duplicate breakpoints from ties
+scl.labels<-paste0(round(scl.breaks[-length(scl.breaks)],2),"-",round(scl.breaks[-1],2))
+
+est.nat$mean.scl.bin<-cut(est.nat$mean.scl,breaks=scl.breaks,labels=scl.labels,include.lowest=TRUE)
+est.reg$mean.scl.bin<-cut(est.reg$mean.scl,breaks=scl.breaks,labels=scl.labels,include.lowest=TRUE)
 save.image(file=paste0("outputs_stan/stan_clean_",modelname,"_",datafilter,".Rdata"))
 
 ## aggregated data objects from data that are not publicly shareable

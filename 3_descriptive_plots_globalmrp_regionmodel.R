@@ -180,8 +180,23 @@ save(regionkey,file=paste0(repofolder,"analyzed_outputs/webdata/",modelname,"_fo
 write_csv(regionkey,file=paste0(repofolder,"analyzed_outputs/webdata/",modelname,".csv"))
 rm(regionkey)
 
-## Fig. 1: world map #### 
-## world map #### 
+## colorblind-safe sequential palette for climate concern choropleths (mean.scl.bin) ####
+## single-hue blue ramp, light=low concern -> dark=high concern
+climate_concern_palette <- c(
+  "0-0.1"   = "#cde2fb",
+  "0.1-0.2" = "#9ec5f4",
+  "0.2-0.3" = "#6da7ec",
+  "0.3-0.4" = "#5598e7",
+  "0.4-0.5" = "#3987e5",
+  "0.5-0.6" = "#2a78d6",
+  "0.6-0.7" = "#256abf",
+  "0.7-0.8" = "#1c5cab",
+  "0.8-0.9" = "#184f95",
+  "0.9-1"   = "#0d366b"
+)
+
+## Fig. 1: world map ####
+## world map ####
 countryest<-countries%>%filter(!is.na(mean.std))
 ## save this file 
 countrynoest1<-countries%>%filter(is.na(mean.std))%>%
@@ -198,7 +213,17 @@ rm(list=c("countrynoest1","countrynoest2"))
 countryest_proj <- st_transform(countryest, "+proj=moll")
 countrynoest_proj <- st_transform(countrynoest, "+proj=moll")
 
-countries_proj1<-st_transform(countries, "+proj=moll")
+## drop countries whose raw WGS84 geometry spans the antimeridian as a single unsplit polygon
+## (e.g. Russia, USA via the Aleutians, New Zealand, Antarctica) -- reprojecting these into any
+## off-Pacific-centered CRS draws a spurious straight line across the map connecting their
+## far-apart vertices. This layer is only a thin country-border accent, and none of these
+## countries are relevant to the regional close-up maps that use it.
+countries$lon_span<-sapply(seq_len(nrow(countries)), function(i){
+  b<-st_bbox(countries[i,]); b["xmax"]-b["xmin"]
+})
+countries_clean<-countries%>%filter(lon_span<=180|is.na(lon_span))
+
+countries_proj1<-st_transform(countries_clean, "+proj=moll")
 
 ## deltas 2010-2020
 countrychange%<>%filter(!is.na(delta))
@@ -210,7 +235,7 @@ worldplot<-countrynoest_proj%>%
   geom_sf(aes(geometry=geom),fill="lightgray",lwd=.1,color="darkgray")+
   geom_sf(data=countryest_proj,aes(geometry=geom,fill=mean.scl.bin),lwd=.1,color="darkgray",
           show.legend=c(fill=TRUE))+
-  scale_fill_brewer(palette="RdBu",direction=-1,drop=FALSE,guide=guide_legend(reverse=TRUE))+
+  scale_fill_viridis_d(option="viridis",direction=-1,drop=FALSE,guide=guide_legend(reverse=TRUE))+
   labs(fill="Climate\nconcern")+
   theme_classic()+
   theme(axis.text=element_blank(),
@@ -266,7 +291,7 @@ europlot<-europe2024%>%
   geom_sf(aes(geometry=geom,fill=mean.scl.bin),lwd=.1,color="darkgray",
           show.legend=c(fill=TRUE))+
   # scale_fill_brewer(palette="PRGn",direction=1,drop=FALSE,guide=guide_legend(reverse=TRUE))+
-  scale_fill_brewer(palette="RdBu",direction=-1,drop=FALSE,guide=guide_legend(reverse=TRUE),
+  scale_fill_viridis_d(direction=-1,drop=FALSE,guide=guide_legend(reverse=TRUE),
                     na.value="gray")+
   # labs(fill="Climate concern\n(st.dev from global mean)")+
   labs(fill="Climate\nconcern")+
@@ -299,7 +324,7 @@ eastasiaplot<-eastasia%>%
   geom_sf(aes(geometry=geom,fill=mean.scl.bin),lwd=.1,color="darkgray",
           show.legend=c(fill=TRUE))+
   # scale_fill_brewer(palette="PRGn",direction=1,drop=FALSE,guide=guide_legend(reverse=TRUE))+
-  scale_fill_brewer(palette="RdBu",direction=-1,drop=FALSE,guide=guide_legend(reverse=TRUE),na.value="gray")+
+  scale_fill_viridis_d(direction=-1,drop=FALSE,guide=guide_legend(reverse=TRUE),na.value="gray")+
   # labs(fill="Climate concern\n(st.dev from global mean)")+
   geom_sf(data=countries_proj,aes(geometry=geom),fill=NA,lwd=.2,color="darkgray")+
   labs(fill="Climate\nconcern")+
@@ -331,7 +356,7 @@ southasiaplot<-southasia%>%
   geom_sf(aes(geometry=geom,fill=mean.scl.bin),lwd=.1,color="darkgray",
           show.legend=c(fill=TRUE))+
   # scale_fill_brewer(palette="PRGn",direction=1,drop=FALSE,guide=guide_legend(reverse=TRUE))+
-  scale_fill_brewer(palette="RdBu",direction=-1,drop=FALSE,guide=guide_legend(reverse=TRUE),na.value="gray")+
+  scale_fill_viridis_d(direction=-1,drop=FALSE,guide=guide_legend(reverse=TRUE),na.value="gray")+
   # labs(fill="Climate concern\n(st.dev from global mean)")+
   labs(fill="Climate\nconcern")+
   geom_sf(data=countries_proj,aes(geometry=geom),fill=NA,lwd=.2,color="darkgray")+
@@ -350,6 +375,13 @@ ggsave(file=paste0(figfolder,"map_concern_southasia_",modelname,".pdf"),width=6.
 
 
 ## Figure 3: combined figure with south asia and europe/ eurasia #### 
+## south asia currently has width=6,500,000, height=5,000,000 (ratio 1.3)
+## to hit europe's ratio (0.8), needed height = 6,500,000/0.8 = 8,125,000
+## so extend ylim by (8,125,000-5,000,000)/2 = 1,562,500 on each side
+southasiaplot <- southasiaplot +
+  coord_sf(xlim = c(-2500000, 4000000), ylim = c(-1562500, 6562500))
+europlot <- europlot +
+  coord_sf(xlim = c(-3250000, 3250000), ylim = c(0, 5000000))
 ggsave(file=paste0(figfolder,"map_concern_europe_southasia_",modelname,".pdf"),width=6.5,height=9,
        ggarrange(europlot,southasiaplot,nrow=2,ncol=1,common.legend=TRUE,legend="right"))
   
@@ -369,7 +401,7 @@ africaplot<-africa%>%
   geom_sf(aes(geometry=geom,fill=mean.scl.bin),lwd=.1,color="darkgray",
           show.legend=c(fill=TRUE))+
   # scale_fill_brewer(palette="PRGn",direction=1,drop=FALSE,guide=guide_legend(reverse=TRUE))+
-  scale_fill_brewer(palette="RdBu",direction=-1,drop=FALSE,guide=guide_legend(reverse=TRUE),na.value="gray")+
+  scale_fill_viridis_d(direction=-1,drop=FALSE,guide=guide_legend(reverse=TRUE),na.value="gray")+
   # labs(fill="Climate concern\n(st.dev from global mean)")+
   labs(fill="Climate\nconcern")+
   geom_sf(data=countries_proj,aes(geometry=geom),fill=NA,lwd=.2,color="darkgray")+ ## this line is now creating lines across the map. why? 
@@ -400,7 +432,7 @@ southamericaplot<-southamerica%>%
   geom_sf(aes(geometry=geom,fill=mean.scl.bin),lwd=.1,color="darkgray",
           show.legend=c(fill=TRUE))+
   # scale_fill_brewer(palette="PRGn",direction=1,drop=FALSE,guide=guide_legend(reverse=TRUE))+
-  scale_fill_brewer(palette="RdBu",direction=-1,drop=FALSE,guide=guide_legend(reverse=TRUE),na.value="gray")+
+  scale_fill_viridis_d(direction=-1,drop=FALSE,guide=guide_legend(reverse=TRUE),na.value="gray")+
   # labs(fill="Climate concern\n(st.dev from global mean)")+
   labs(fill="Climate\nconcern")+
   geom_sf(data=countries_proj,aes(geometry=geom),fill=NA,lwd=.2,color="darkgray")+
@@ -431,7 +463,7 @@ northamericaplot<-northamerica%>%
   geom_sf(aes(geometry=geom,fill=mean.scl.bin),lwd=.1,color="darkgray",
           show.legend=c(fill=TRUE))+
   # scale_fill_brewer(palette="PRGn",direction=1,drop=FALSE,guide=guide_legend(reverse=TRUE))+
-  scale_fill_brewer(palette="RdBu",direction=-1,drop=FALSE,guide=guide_legend(reverse=TRUE),na.value="gray")+
+  scale_fill_viridis_d(direction=-1,drop=FALSE,guide=guide_legend(reverse=TRUE),na.value="gray")+
   # labs(fill="Climate concern\n(st.dev from global mean)")+
   labs(fill="Climate\nconcern")+
   geom_sf(data=countries_proj,aes(geometry=geom),fill=NA,lwd=.2,color="darkgray")+
@@ -462,7 +494,7 @@ oceaniaplot<-oceania%>%
   geom_sf(aes(geometry=geom,fill=mean.scl.bin),lwd=.1,color="darkgray",
           show.legend=c(fill=TRUE))+
   # scale_fill_brewer(palette="PRGn",direction=1,drop=FALSE,guide=guide_legend(reverse=TRUE))+
-  scale_fill_brewer(palette="RdBu",direction=-1,drop=FALSE,guide=guide_legend(reverse=TRUE),na.value="gray")+
+  scale_fill_viridis_d(direction=-1,drop=FALSE,guide=guide_legend(reverse=TRUE),na.value="gray")+
   # labs(fill="Climate concern\n(st.dev from global mean)")+
   labs(fill="Climate\nconcern")+
   geom_sf(data=countries_proj,aes(geometry=geom),fill=NA,lwd=.2,color="darkgray")+
@@ -588,6 +620,7 @@ if(exists("datafilter")){
 ## separate out category
 discrimination2<-discrimination%>%
   mutate(question=ifelse(question=="attribution2_eurobarometer","attribution_eurobarometer2",question), ## this should be fixed in next merge 
+         question=ifelse(question=="consensus_attribution_activity_bcb","attribution_consensus_bcb",question), ## should also be fixed in next merge
          question2=question)%>%
   separate(question,c("Item category","question_short"),extra="merge",sep="_")%>%
   mutate(question2=fct_reorder(question2,mean))
@@ -707,23 +740,23 @@ quadrants
 ggsave(file=paste0(figfolder,"quadrants_exposure_concern_",modelname,".pdf"),width=6.5,height=6.5,quadrants)
 
 # Figure 6: sub-national emissions regression, scatterplot #### 
-emissions<-read_csv(paste0(repofolder,"predictors/emissions_clean.csv"))
+emissions<-read_csv(paste0(repofolder,"predictors/emissions_eu_regions_2025edgar.csv"))
 
-regions=left_join(regions,emissions,by=c("mergekey"="ourcodes"))
+regions=left_join(regions,emissions)
 europe<-regions%>%filter(Continent_Name=="Europe")%>%filter(year=="2024-25") ## filter to Europe and only most recent year
 europe%<>%
-  filter(!is.na(emissions.percap))
-europe$mean.std<-scale(europe$mean,center=TRUE,scale=TRUE) ## this regression standardizes estimates *within* Europe for interpretation. 
-europe$emissions.log.std<-scale(log(europe$emissions.percap),center=TRUE,scale=TRUE)
+  filter(!is.na(energy_co2_kt_2024))
+europe$mean.std<-scale(europe$mean,center=TRUE,scale=TRUE) ## this regression standardizes estimates *within* Europe for interpretation.
+# europe$emissions.log.std<-scale(log(europe$emissions.percap),center=TRUE,scale=TRUE)
 
-reg2<-feols(mean.std~emissions.log.std|iso_3166,vcov=~iso_3166,data=europe)
+reg2<-feols(mean.std~log_pc_2024|iso_3166,vcov=~iso_3166,data=europe)
 summary(reg2)
 reg2<-coeftable(reg2)
-rownames(reg2)[1]<-"Emissions (logged, standardized)"
+rownames(reg2)[1]<-"Emissions (logged)"
 
 
 ## table S7: energy sector emissions and climate concern 
-print.xtable(xtable(reg2,label="tab:regression.emissions.concern",caption="{\\bf Effect of energy-sector CO$_2$ emissions on climate concern:} The figure table shows the results from an OLS regression of climate concern (standardized, in 2024-25) on per-capita emissions from the energy sector (standardized, 2021) at the sub-national region level in the European Union. Standard errors are clustered by country."),
+print.xtable(xtable(reg2,label="tab:regression.emissions.concern",caption="{\\bf Effect of energy-sector CO$_2$ emissions on climate concern:} The figure table shows the results from an OLS regression of climate concern (standardized, in 2024-25) on per-capita emissions from the energy sector (standardized, 2024) at the sub-national region level in the European Union. Standard errors are clustered by country."),
              caption.placement="bottom",file=paste0(figfolder,"regression_results_emissions.tex"))
 
 ## without country FEs: 
@@ -751,10 +784,11 @@ print.xtable(xtable(reg2,label="tab:regression.emissions.concern",caption="{\\bf
 europe%<>%
   group_by(iso_3166)%>%
   mutate(mean.std.within = mean.std - mean(mean.std, na.rm=TRUE),
-         emissions.log.std.within = emissions.log.std - mean(emissions.log.std, na.rm=TRUE))%>%
+         # emissions.log.std.within = emissions.log.std - mean(emissions.log.std, na.rm=TRUE))%>%
+         emissions.log.within=log_pc_2024-mean(log_pc_2024,na.rm=TRUE))%>%
   ungroup()
 
-emissionsplot_fe<-ggplot(data=europe,aes(x=emissions.log.std.within,y=mean.std.within))+
+emissionsplot_fe<-ggplot(data=europe,aes(x=emissions.log.within,y=mean.std.within))+
   geom_point()+
   geom_smooth(method="lm",se=FALSE,lty="dashed")+
   annotate("text",x=-3,y=1.2,label=paste("beta == ",round((reg2)[1,1],3)),
@@ -838,6 +872,9 @@ survey.data2<-survey.data%>%
 qs<-survey.data%>%
   select(contains("attribution"),contains("aware"),contains("worry_")#,contains("action_"))
   )
+## temporary: drop "tisp" questions as they are going to get dropped from the megapoll
+qs<-qs%>%
+  select(-contains("_tisp"))
 qs<-names(qs)
 
 d.samples<-survey.data%>%

@@ -697,14 +697,61 @@ est.nat$exp.std<-scale(est.nat$exposure,center=TRUE,scale=TRUE)
 reg1<-lm_robust(mean.std~exp.std,data=subset(est.nat,year=="2024-25"))
 
 ## error-corrected. 
+load(paste0(repofolder,"outputs_stan/draws_country_2024-25.Rda"))
+est.nat24<-est.nat%>%filter(year=="2024-25")%>%select(iso_3166,exp.std,mean)
+nat_isos<-unique(est.nat24$iso_3166)
 
+draws_country_nat<-draws_country%>%
+  select(draw, any_of(nat_isos))
+
+## quick check worth running once: any national iso_3166 codes missing from draws_country?
+## setdiff(nat_isos, names(draws_country))
+
+draw_ids<-draws_country_nat$draw
+M<-as.matrix(draws_country_nat%>%select(-draw))
+rownames(M)<-draw_ids
+
+moc_draws_exposure<-map_dfr(seq_len(nrow(M)), function(i){
+  est.nat24$mean.post<-M[i, est.nat24$iso_3166]
+  est.nat24$mean.std<-as.numeric(scale(est.nat24$mean.post))
+  
+  mod<-lm_robust(mean.std~exp.std,data=est.nat24)
+  tidy(mod)%>%
+    mutate(draw=draw_ids[i],
+           composed=rnorm(n(),mean=estimate,sd=std.error))
+})
+
+reg1.moc<-moc_draws_exposure%>%
+  group_by(term)%>%
+  summarise(estimate=mean(composed),
+            std.error=sd(composed),
+            ci.low=quantile(composed,.025),
+            ci.high=quantile(composed,.975),
+            statistic=estimate/std.error,
+            p_below_zero=mean(composed<0))%>%
+  ungroup()
+
+
+## combine uncorrected + error-corrected exposure results, export as a table ####
+lm1<-tidy(reg1)%>%
+  mutate(mod="Uncorrected")%>%
+  select(term,estimate,std.error,statistic,mod)
+
+lm1.moc.all<-reg1.moc%>%
+  mutate(mod="Error corrected")%>%
+  select(term,estimate,std.error,statistic,mod)
+
+reg1.combined<-bind_rows(lm1,lm1.moc.all)%>%
+  filter(term!="(Intercept)")%>%
+  mutate(term=case_when(term=="exp.std"~"Exposure (st.dev.)",TRUE~term))
 
 ## table S6: climate risk exposure and climate concern 
-texreg::texreg(reg1,custom.coef.names=c("(Intercept)","Exposure (st.dev.)"),
-       custom.model.names="Climate concern",
-       include.ci=FALSE,label="tab:regressionsimple",
-       caption="{ \\bf Effect of climate risk exposure on climate concern:} The table shows the results from an OLS regression of climate concern (standardized) on climate risk exposure (standardized), at the national level, in 2022. The model was estimated using OLS regression with heteroskedasticity-robust standard errors.",
-       file=paste0(figfolder,"regression_results_simple.tex"),float.pos="!htpb")
+
+print.xtable(xtable(reg1.combined,digits=3,
+                    label="tab:regression.exposure.concern",
+                    caption="{\\bf Effect of climate risk exposure on climate concern:} The table shows results from an OLS regression of climate concern (standardized, in 2024-25) on climate risk exposure (standardized), at the national level, with heteroskedasticity-robust standard errors. ``Uncorrected'' is the direct regression estimate; ``Error corrected'' uses the Method of Composition over the thinned (to 1000 draws) posterior distribution of national climate concern estimates."),
+             caption.placement="bottom",include.rownames=FALSE,
+             file=paste0(figfolder,"regression_results_simple.tex"))
 
 est.nat24<-est.nat%>%filter(year=="2024-25")
 est.nat24$mean_2024.stdwithin<-scale(est.nat24$mean,center=TRUE,scale=TRUE)
@@ -736,8 +783,8 @@ quadrants<-est.nat24%>%
   annotate(geom="text",x=2.5,y=3,label="High exposure,\nhigh concern",color="blue")+
   annotate(geom="text",x=-1.8,y=-3,label="Low exposure,\nlow concern",color="blue")+
   annotate(geom="text",x=-1.8,y=3,label="Low exposure,\nhigh concern",color="blue")+ 
-  annotate("text",x=3,y=.5,label=paste("beta == ",round(reg1$coefficients[2],2)),color="blue",parse=TRUE)+
-  annotate("text",x=3,y=.3,label=paste("p == ",round(reg1$p.value[2],2)),color="blue",parse=TRUE)+
+  annotate("text",x=3,y=.5,label=paste("beta == ",round(reg1.moc[2,2],2)),color="blue",parse=TRUE)+
+  annotate("text",x=3,y=.3,label=paste("p == ",round(reg1.moc[2,7],2)),color="blue",parse=TRUE)+
   labs(x="Climate exposure (st.dev)",y="Climate concern (st.dev)")
 quadrants
 ggsave(file=paste0(figfolder,"quadrants_exposure_concern_",modelname,".pdf"),width=6.5,height=6.5,quadrants)
@@ -755,32 +802,6 @@ reg2<-feols(mean.std~log_pc_2024|iso_3166,vcov=~iso_3166,data=europe)
 summary(reg2)
 reg2<-coeftable(reg2)
 rownames(reg2)[1]<-"Emissions (logged)"
-
-
-## table S7: energy sector emissions and climate concern 
-print.xtable(xtable(reg2,label="tab:regression.emissions.concern",caption="{\\bf Effect of energy-sector CO$_2$ emissions on climate concern:} The table shows the results from an OLS regression of climate concern (standardized, in 2024-25) on per-capita emissions from the energy sector (logged, 2024) at the sub-national region level in the European Union. The regression includes country fixed effects, and standard errors are clustered by country."),
-             caption.placement="bottom",file=paste0(figfolder,"regression_results_emissions.tex"))
-
-## plot results, demeaning by country FEs 
-europe%<>%
-  group_by(iso_3166)%>%
-  mutate(mean.std.within = mean.std - mean(mean.std, na.rm=TRUE),
-         # emissions.log.std.within = emissions.log.std - mean(emissions.log.std, na.rm=TRUE))%>%
-         emissions.log.within=log_pc_2024-mean(log_pc_2024,na.rm=TRUE))%>%
-  ungroup()
-
-emissionsplot_fe<-ggplot(data=europe,aes(x=emissions.log.within,y=mean.std.within))+
-  geom_point()+
-  geom_smooth(method="lm",se=FALSE,lty="dashed")+
-  annotate("text",x=-3,y=1.2,label=paste("beta == ",round((reg2)[1,1],3)),
-           color="blue",parse=TRUE)+
-  annotate("text",x=-3,y=1.0,label=paste("p == ",round((reg2)[1,4],2)),
-           color="blue",parse=TRUE)+
-  labs(x="Energy-sector carbon dioxide emissions\n(regional deviation from within-country mean of regional logged emissions)",
-       y="Climate concern\n(standardized, deviation from within-country mean)")+
-  theme_bw()
-emissionsplot_fe
-ggsave(file=paste0(figfolder,"scatter_emissions_concern_europeregions_withinFE_",modelname,".pdf"),width=6.5,height=3.5,emissionsplot_fe)
 
 
 ## error-corrected regressions over the thinned posterior #### 
@@ -849,13 +870,33 @@ lm2.moc<-reg2.moc%>%
 reg2.combined<-bind_rows(lm2,lm2.moc)%>%
   mutate(term=case_when(term=="log_pc_2024"~"Emissions (logged)",TRUE~term))
 
-## re-export the emissions regression table with both rows
+## table S7: energy sector emissions and climate concern 
 print.xtable(xtable(reg2.combined,digits=3,
                     label="tab:regression.emissions.concern",
                     caption="{\\bf Effect of energy-sector CO$_2$ emissions on climate concern:} The table shows results from an OLS regression of climate concern (standardized, in 2024-25) on per-capita emissions from the energy sector (logged, 2024) at the sub-national region level in the European Union, with country fixed effects and SEs clustered by country. ``Uncorrected'' is the direct regression estimate; ``Error corrected'' uses the Method of Composition over the thinned (to 1000 draws) posterior distribution of regional climate concern estimates."),
              caption.placement="bottom",include.rownames=FALSE,
              file=paste0(figfolder,"regression_results_emissions.tex"))
 
+## plot results, demeaning by country FEs 
+europe%<>%
+  group_by(iso_3166)%>%
+  mutate(mean.std.within = mean.std - mean(mean.std, na.rm=TRUE),
+         # emissions.log.std.within = emissions.log.std - mean(emissions.log.std, na.rm=TRUE))%>%
+         emissions.log.within=log_pc_2024-mean(log_pc_2024,na.rm=TRUE))%>%
+  ungroup()
+
+emissionsplot_fe<-ggplot(data=europe,aes(x=emissions.log.within,y=mean.std.within))+
+  geom_point()+
+  geom_smooth(method="lm",se=FALSE,lty="dashed")+
+  annotate("text",x=-3,y=1.2,label=paste("beta == ",round(reg2.moc[1,2],2)),
+           color="blue",parse=TRUE)+
+  annotate("text",x=-3,y=1.0,label=paste("p == ",round(reg2.moc[1,7],2)),
+           color="blue",parse=TRUE)+
+  labs(x="Energy-sector carbon dioxide emissions\n(regional deviation from within-country mean of regional logged emissions)",
+       y="Climate concern\n(standardized, deviation from within-country mean)")+
+  theme_bw()
+emissionsplot_fe
+ggsave(file=paste0(figfolder,"scatter_emissions_concern_europeregions_withinFE_",modelname,".pdf"),width=6.5,height=3.5,emissionsplot_fe)
 
 
 # Fig. S3: dimensionality with country-year groups: only questions with 20+ countries #### 

@@ -1,23 +1,15 @@
-
-\begin{table}[!htpb]
-\begin{center}
-\begin{tabular}{l c}
-\hline
- & Climate concern \\
-\hline
-(Intercept)        & $0.07$   \\
-                   & $(0.07)$ \\
-Exposure (st.dev.) & $0.08$   \\
-                   & $(0.08)$ \\
-\hline
-R$^2$              & $0.01$   \\
-Adj. R$^2$         & $0.00$   \\
-Num. obs.          & $164$    \\
-RMSE               & $0.93$   \\
-\hline
-\multicolumn{2}{l}{\scriptsize{$^{***}p<0.001$; $^{**}p<0.01$; $^{*}p<0.05$}}
+% latex table generated in R 4.5.3 by xtable 1.8-8 package
+% Thu Oct 15 16:30:00 2026
+\begin{table}[ht]
+\centering
+\begin{tabular}{lrrrl}
+  \hline
+term & estimate & std.error & statistic & mod \\ 
+  \hline
+Exposure (st.dev.) & 0.083 & 0.078 & 1.056 & Uncorrected \\ 
+  Exposure (st.dev.) & 0.076 & 0.109 & 0.696 & Error corrected \\ 
+   \hline
 \end{tabular}
-\caption{{ \bf Effect of climate risk exposure on climate concern:} The table shows the results from an OLS regression of climate concern (standardized) on climate risk exposure (standardized), at the national level, in 2022. The model was estimated using OLS regression with heteroskedasticity-robust standard errors.}
-\label{tab:regressionsimple}
-\end{center}
+\caption{{\bf Effect of climate risk exposure on climate concern:} The table shows results from an OLS regression of climate concern (standardized, in 2024-25) on climate risk exposure (standardized), at the national level, with heteroskedasticity-robust standard errors. ``Uncorrected'' is the direct regression estimate; ``Error corrected'' uses the Method of Composition over the thinned (to 1000 draws) posterior distribution of national climate concern estimates.} 
+\label{tab:regression.exposure.concern}
 \end{table}

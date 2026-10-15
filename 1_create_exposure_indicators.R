@@ -53,36 +53,62 @@ d<-left_join(countrycodes,d,by=c("GID_0_gadm"="ISO3"))
 write_csv(d,file="predictors/ND-GAIN2026_exposure.csv")
 
 # create emissions indicators ####
-### MATTO please add code here to create the file currently called: emissions_eu_regions_2025edgar.csv
-## and output the file as predictors/emissions_clean.csv (rather than its current name) in the git repo so that downstream scripts work. 
+## 1. EDGAR energy-sector CO2 by unit 
+edgar_file <- "predictors/EDGAR_2025_GHGs_CO2eq_AR5_NUTS2_by_country_sector_1990-2024_b.xlsx"
+raw <- suppressMessages(read_excel(edgar_file, sheet = 2, col_names = FALSE, n_max = 20))
+hdr <- which(apply(raw, 1, function(r) any(r == "ISO", na.rm = TRUE)))[1]   # the header row (row 1 if the metadata rows were removed, row 7 in the original file)
+edgar <- read_excel(edgar_file, sheet = 2, skip = hdr - 1)
+edgar <- edgar %>% rename(code = `Subnational code *`, desc = `Subnational desc`) %>%
+  filter(code != "N/A", Sector == "Energy") %>%
+  group_by(ISO, Country, code, desc) %>% summarise(e2021 = sum(Y_2021, na.rm = TRUE), e2024 = sum(Y_2024, na.rm = TRUE), .groups = "drop")  # kilotonnes CO2
 
-# emissions<-read_csv("predictors/edgar2025_to_model_crosswalk.csv")
-# pop<-read_csv("basedata/model_region_key.csv")
-# 
-# 
-# emissions<-read_excel("predictors/EDGAR_2025_GHGs_CO2eq_AR5_NUTS2_by_country_sector_1990-2024_b.xlsx",
-#                       sheet=2)
-# emissions%<>%
-#   filter(Sector=="Energy")%>%
-#   select(ISO,Country,`Subnational code *`,Y_2024)%>%
-#   filter(`Subnational code *`!="N/A")
-# unique(emissions$Country)
-# crosswalk<-read_excel("predictors/EU_crosswalk.xlsx",sheet=1)
-# emissions<-left_join(emissions,crosswalk,by=c("Subnational code *"="eucodes")) ## match nuts codes to codes used in our data
-# emissions<-emissions%>%
-#   group_by(Country,ourcodes)%>%
-#   summarise(emissions.cumul=sum(Y_2024,na.rm=TRUE), ## aggregate across EU regions with same code in our dataset
-#             emissions.cumul=emissions.cumul*1000) ## convert to tons rather than kilotons
-# pop<-read_csv("basedata/Covariates/region_covariates.csv")%>%
-#   select(mergekey,region_pop)
-# emissions<-left_join(emissions,pop,by=c("ourcodes"="mergekey"))%>%
-#   mutate(emissions.percap=emissions.cumul/region_pop)
-# emissions$emissions.percap.bin<-cut(emissions$emissions.percap,breaks=c(-1,1,2,3,4,5,10,20,100),
-#                                     labels=c("0-1","1-2","2-3","3-4","4-5","5-10","10-20","20+"))
-# 
-# ## this dataset only includes EU countries because of the NUTS-ourcodes crosswalk. for now, eliminate any rows without a 
-# ## value in the "ourcodes" column and that will eliminate NA values
-# emissions%<>%
-#   filter(!is.na(ourcodes))
-# 
-write_csv(emissions,"predictors/emissions_clean.csv")
+## 2. model regions and populations 
+key <- read_csv("basedata/model_region_key.csv", show_col_types = FALSE, na = "") %>% 
+  select(mergekey, iso_3166, population, region_name)
+regions <- st_read("basedata/simplified geometries/model_regions_IR7_simplified.gpkg", quiet = TRUE) %>% 
+  select(mergekey, iso_3166)
+
+## 3a. NUTS 2024 units: population-weighted overlay 
+nuts <- st_read("basedata/NUTS_RG_01M_2024_4326.gpkg", quiet = TRUE) %>% 
+  filter(LEVL_CODE == 2, NUTS_ID %in% edgar$code) %>% 
+  select(NUTS_ID)
+countries_nuts <- unique(substr(nuts$NUTS_ID, 1, 2)); countries_nuts[countries_nuts == "EL"] <- "GR"
+m <- regions %>% filter(iso_3166 %in% countries_nuts) %>% st_transform(3035) %>% st_make_valid()
+n <- nuts %>% st_transform(3035) %>% st_make_valid()
+m$a_m <- as.numeric(st_area(m)); n$a_e <- as.numeric(st_area(n))
+ix <- suppressWarnings(st_intersection(m, n)); ix$a_x <- as.numeric(st_area(ix))
+ov <- st_drop_geometry(ix) %>% mutate(cover_m = a_x / a_m, cover_e = a_x / a_e) %>%
+  filter(!(cover_m < 0.20 & cover_e < 0.02)) %>%                      # drop boundary slivers (model region mostly outside the unit and under 2% of it)
+  left_join(key %>% select(mergekey, population), by = "mergekey") %>%
+  group_by(NUTS_ID) %>% mutate(weight = population * cover_m / sum(population * cover_m)) %>%
+  filter(weight >= 0.001) %>% mutate(weight = weight / sum(weight)) %>% ungroup() %>%
+  transmute(edgar_code = NUTS_ID, mergekey, weight, method = "nuts2024-overlay")
+
+## 3b. United Kingdom: EDGAR uses NUTS 2021 level-2 codes; our regions are NUTS 1 (UKC1 -> UKC) 
+uk <- edgar %>% filter(ISO == "GBR") %>% 
+  transmute(edgar_code = code, mergekey = substr(code, 1, 3), weight = 1, method = "uk-nuts1-prefix")
+
+## 3c. Ukraine: EDGAR's own codes -> ISO 3166-2 oblasts 
+ua_map <- c(UA11 = "UA-53", UA12 = "UA-59", UA13 = "UA-63", UA14 = "UA-74", UA21 = "UA-14", UA22 = "UA-09", UA31 = "UA-12", UA32 = "UA-23",
+            UA33 = "UA-35", UA41 = "UA-48", UA42 = "UA-51", UA43 = "UA-65", UA44 = "UA-43", UA45 = "UA-40", UA51 = "UA-05", UA52 = "UA-61",
+            UA53 = "UA-68", UA61 = "UA-32", UA62 = "UA-71", UA63 = "UA-30", UA71 = "UA-21", UA72 = "UA-26", UA73 = "UA-46", UA74 = "UA-77",
+            UA81 = "UA-07", UA82 = "UA-18", UA83 = "UA-56")   # Poltava, Sumy, Kharkiv, Chernihiv, Donetsk, Luhansk, Dnipropetrovsk, Zaporizhzhia, Kirovohrad, Mykolaiv, Odesa, Kherson, Crimea, Sevastopol, Vinnytsia, Ternopil, Khmelnytskyi, Kyiv oblast, Cherkasy, Kyiv city, Zakarpattia, Ivano-Frankivsk, Lviv, Chernivtsi, Volyn, Zhytomyr, Rivne
+ua <- tibble(edgar_code = names(ua_map), mergekey = unname(ua_map), weight = 1, method = "ukraine-table") %>% filter(edgar_code %in% edgar$code)
+
+crosswalk <- bind_rows(ov, uk, ua) %>%
+  left_join(edgar %>% select(edgar_code = code, edgar_iso3 = ISO, edgar_name = desc), by = "edgar_code") %>%
+  left_join(key %>% select(mergekey, model_region_name = region_name, iso_3166), by = "mergekey") %>%
+  select(edgar_iso3, edgar_code, edgar_name, mergekey, model_region_name, iso_3166, weight, method) %>% arrange(edgar_iso3, edgar_code, desc(weight))
+stopifnot(all(abs(tapply(crosswalk$weight, crosswalk$edgar_code, sum) - 1) < 1e-6))   # each EDGAR unit's weights sum to 1
+write_csv(crosswalk, "predictors/edgar2025_to_model_crosswalk.csv")
+
+## 4. region emissions = sum(weight x unit emissions); per capita; log 
+emissions_regions <- crosswalk %>% 
+  inner_join(edgar %>% select(code, e2021, e2024), by = c("edgar_code" = "code")) %>%
+  group_by(mergekey) %>% summarise(energy_co2_kt_2021 = sum(weight * e2021), energy_co2_kt_2024 = sum(weight * e2024), .groups = "drop") %>%
+  inner_join(key %>% select(mergekey, iso_3166, population), by = "mergekey") %>%
+  mutate(co2_pc_t_2021 = energy_co2_kt_2021 * 1000 / population, co2_pc_t_2024 = energy_co2_kt_2024 * 1000 / population,   # tonnes per person
+         log_pc_2021 = log(co2_pc_t_2021), log_pc_2024 = log(co2_pc_t_2024))
+write_csv(emissions_regions, "predictors/emissions_eu_regions_2025edgar.csv")
+cat("crosswalk:", nrow(crosswalk), "rows;", length(unique(crosswalk$edgar_code)), "EDGAR units;", nrow(emissions_regions), "regions with emissions\n")
+

@@ -1,614 +1,458 @@
-edgar_iso3,edgar_country,edgar_code,edgar_name,mergekey,model_region_name,weight,relationship,method,share_of_model_region_inside,share_of_unit_inside,iso_3166
-ALB,Albania,AL01,Veri,AL01,Northern Albania,1,edgar_units_merged,nuts2024-overlay,0.981,0.994,AL
-ALB,Albania,AL02,Qender,AL02,Central Albania,0.990536,edgar_unit_split,nuts2024-overlay,0.989,0.956,AL
-ALB,Albania,AL02,Qender,AL01,Northern Albania,0.009464,partial_overlap,nuts2024-overlay,0.015,0.034,AL
-ALB,Albania,AL03,Jug,AL03,Southern Albania,1,identity,nuts2024-overlay,0.992,0.988,AL
-AUT,Austria,AT11,Burgenland,AT-1,Burgenland,1,identity,nuts2024-overlay,0.984,0.985,AT
-AUT,Austria,AT12,Niederösterreich,AT-3,Niederösterreich,1,identity,nuts2024-overlay,0.991,0.994,AT
-AUT,Austria,AT13,Wien,AT-9,Wien,1,identity,nuts2024-overlay,0.959,0.966,AT
-AUT,Austria,AT21,Kärnten,AT-2,Kärnten,1,identity,nuts2024-overlay,0.997,0.989,AT
-AUT,Austria,AT22,Steiermark,AT-6,Steiermark,1,identity,nuts2024-overlay,0.995,0.996,AT
-AUT,Austria,AT31,Oberösterreich,AT-4,Oberösterreich,1,identity,nuts2024-overlay,0.994,0.991,AT
-AUT,Austria,AT32,Salzburg,AT-5,Salzburg,1,identity,nuts2024-overlay,0.991,0.994,AT
-AUT,Austria,AT33,Tirol,AT-7,Tirol,1,identity,nuts2024-overlay,0.996,0.992,AT
-AUT,Austria,AT34,Vorarlberg,AT-8,Vorarlberg,1,identity,nuts2024-overlay,0.996,0.983,AT
-BEL,Belgium,BE10,Région de Bruxelles-Capitale/ Brussels Hoofdstedelijk Gewest,BE-BRU,Brussels Hoofdstedelijk Gewest,0.996337,edgar_unit_split,nuts2024-overlay,0.98,0.947,BE
-BEL,Belgium,BE10,Région de Bruxelles-Capitale/ Brussels Hoofdstedelijk Gewest,BE-VBR,Vlaams-Brabant,0.003663,partial_overlap,nuts2024-overlay,0.004,0.053,BE
-BEL,Belgium,BE21,Prov. Antwerpen,BE-VAN,Antwerpen,1,identity,nuts2024-overlay,0.981,0.979,BE
-BEL,Belgium,BE22,Prov. Limburg (BE),BE-VLI,Limburg,1,identity,nuts2024-overlay,0.975,0.979,BE
-BEL,Belgium,BE23,Prov. Oost-Vlaanderen,BE-VOV,Oost-Vlaanderen,1,identity,nuts2024-overlay,0.984,0.979,BE
-BEL,Belgium,BE24,Prov. Vlaams-Brabant,BE-VBR,Vlaams-Brabant,1,edgar_units_merged,nuts2024-overlay,0.948,0.986,BE
-BEL,Belgium,BE25,Prov. West-Vlaanderen,BE-VWV,West-Vlaanderen,1,identity,nuts2024-overlay,0.983,0.993,BE
-BEL,Belgium,BE31,Prov. Brabant wallon,BE-WBR,Brabant wallon,0.960044,edgar_unit_split,nuts2024-overlay,0.956,0.963,BE
-BEL,Belgium,BE31,Prov. Brabant wallon,BE-VBR,Vlaams-Brabant,0.039956,partial_overlap,nuts2024-overlay,0.014,0.028,BE
-BEL,Belgium,BE32,Prov. Hainaut,BE-WHT,Hainaut,1,identity,nuts2024-overlay,0.979,0.984,BE
-BEL,Belgium,BE33,Prov. Liège,BE-WLG,Liège,1,identity,nuts2024-overlay,0.984,0.981,BE
-BEL,Belgium,BE34,Prov. Luxembourg (BE),BE-WLX,Luxembourg,1,identity,nuts2024-overlay,0.989,0.981,BE
-BEL,Belgium,BE35,Prov. Namur,BE-WNA,Namur,1,identity,nuts2024-overlay,0.981,0.972,BE
-BGR,Bulgaria,BG31,Severozapaden,BG31,Severozapaden,1,identity,nuts2024-overlay,0.978,0.988,BG
-BGR,Bulgaria,BG32,Severen tsentralen,BG32,Severen tsentralen,1,edgar_units_merged,nuts2024-overlay,0.964,0.975,BG
-BGR,Bulgaria,BG33,Severoiztochen,BG33,Severoiztochen,0.983651,edgar_unit_split,nuts2024-overlay,0.979,0.972,BG
-BGR,Bulgaria,BG33,Severoiztochen,BG32,Severen tsentralen,0.016349,partial_overlap,nuts2024-overlay,0.02,0.021,BG
-BGR,Bulgaria,BG34,Yugoiztochen,BG34,Yugoiztochen,1,identity,nuts2024-overlay,0.982,0.975,BG
-BGR,Bulgaria,BG41,Yugozapaden,BG41,Yugozapaden,1,identity,nuts2024-overlay,0.97,0.988,BG
-BGR,Bulgaria,BG42,Yuzhen tsentralen,BG42,Yuzhen tsentralen,1,identity,nuts2024-overlay,0.98,0.983,BG
-CHE,Switzerland and Liechtenstein,CH01,Région lémanique,CH-VD,Vaud,0.485562,edgar_unit_split,nuts2024-overlay,0.99,0.364,CH
-CHE,Switzerland and Liechtenstein,CH01,Région lémanique,CH-GE,Genève,0.30121,edgar_unit_split,nuts2024-overlay,0.991,0.032,CH
-CHE,Switzerland and Liechtenstein,CH01,Région lémanique,CH-VS,Valais,0.213228,edgar_unit_split,nuts2024-overlay,0.992,0.593,CH
-CHE,Switzerland and Liechtenstein,CH02,Espace Mittelland,CH-BE,Bern,0.549458,edgar_unit_split,nuts2024-overlay,0.994,0.59,CH
-CHE,Switzerland and Liechtenstein,CH02,Espace Mittelland,CH-FR,Fribourg,0.178648,edgar_unit_split,nuts2024-overlay,0.994,0.166,CH
-CHE,Switzerland and Liechtenstein,CH02,Espace Mittelland,CH-SO,Solothurn,0.13797,edgar_unit_split,nuts2024-overlay,0.958,0.075,CH
-CHE,Switzerland and Liechtenstein,CH02,Espace Mittelland,CH-NE,Neuchâtel,0.095716,edgar_unit_split,nuts2024-overlay,0.994,0.08,CH
-CHE,Switzerland and Liechtenstein,CH02,Espace Mittelland,CH-JU,Jura,0.038207,edgar_unit_split,nuts2024-overlay,0.991,0.082,CH
-CHE,Switzerland and Liechtenstein,CH03,Nordwestschweiz,CH-AG,Aargau,0.594159,edgar_unit_split,nuts2024-overlay,0.986,0.694,CH
-CHE,Switzerland and Liechtenstein,CH03,Nordwestschweiz,CH-BL,Basel-Landschaft,0.254391,edgar_unit_split,nuts2024-overlay,0.974,0.253,CH
-CHE,Switzerland and Liechtenstein,CH03,Nordwestschweiz,CH-BS,Basel-Stadt,0.151451,edgar_unit_split,nuts2024-overlay,0.986,0.017,CH
-CHE,Switzerland and Liechtenstein,CH04,Zürich,CH-ZH,Zürich,1,identity,nuts2024-overlay,0.975,0.981,CH
-CHE,Switzerland and Liechtenstein,CH05,Ostschweiz,CH-SG,St. Gallen,0.432825,edgar_unit_split,nuts2024-overlay,0.989,0.171,CH
-CHE,Switzerland and Liechtenstein,CH05,Ostschweiz,CH-TG,Thurgau,0.232138,edgar_unit_split,nuts2024-overlay,0.992,0.087,CH
-CHE,Switzerland and Liechtenstein,CH05,Ostschweiz,CH-GR,Graubünden,0.177582,edgar_unit_split,nuts2024-overlay,0.991,0.608,CH
-CHE,Switzerland and Liechtenstein,CH05,Ostschweiz,CH-SH,Schaffhausen,0.064127,edgar_unit_split,nuts2024-overlay,0.982,0.024,CH
-CHE,Switzerland and Liechtenstein,CH05,Ostschweiz,CH-AR,Appenzell Ausserrhoden,0.045422,edgar_unit_split,nuts2024-overlay,1,0.021,CH
-CHE,Switzerland and Liechtenstein,CH05,Ostschweiz,CH-GL,Glarus,0.0332,edgar_unit_split,nuts2024-overlay,0.986,0.059,CH
-CHE,Switzerland and Liechtenstein,CH05,Ostschweiz,CH-AI,Appenzell Innerrhoden,0.014706,edgar_unit_split,nuts2024-overlay,1,0.015,CH
-CHE,Switzerland and Liechtenstein,CH06,Zentralschweiz,CH-LU,Luzern,0.504042,edgar_unit_split,nuts2024-overlay,0.986,0.336,CH
-CHE,Switzerland and Liechtenstein,CH06,Zentralschweiz,CH-SZ,Schwyz,0.200435,edgar_unit_split,nuts2024-overlay,0.984,0.195,CH
-CHE,Switzerland and Liechtenstein,CH06,Zentralschweiz,CH-ZG,Zug,0.15118,edgar_unit_split,nuts2024-overlay,0.953,0.051,CH
-CHE,Switzerland and Liechtenstein,CH06,Zentralschweiz,CH-NW,Nidwalden,0.05187,edgar_unit_split,nuts2024-overlay,1,0.059,CH
-CHE,Switzerland and Liechtenstein,CH06,Zentralschweiz,CH-OW,Obwalden,0.048191,edgar_unit_split,nuts2024-overlay,0.999,0.108,CH
-CHE,Switzerland and Liechtenstein,CH06,Zentralschweiz,CH-UR,Uri,0.044282,edgar_unit_split,nuts2024-overlay,0.994,0.237,CH
-CHE,Switzerland and Liechtenstein,CH07,Ticino,CH-TI,Ticino,1,identity,nuts2024-overlay,0.978,0.993,CH
-CHN,China,CHN.10_1,Hebei,CN-HE,Hebei Sheng,1,identity,gadm36-id,,,CN
-CHN,China,CHN.11_1,Heilongjiang,CN-HL,Heilongjiang Sheng,1,identity,gadm36-id,,,CN
-CHN,China,CHN.12_1,Henan,CN-HA,Henan Sheng,1,identity,gadm36-id,,,CN
-CHN,China,CHN.13_1,Hubei,CN-HB,Hubei Sheng,1,identity,gadm36-id,,,CN
-CHN,China,CHN.14_1,Hunan,CN-HN,Hunan Sheng,1,identity,gadm36-id,,,CN
-CHN,China,CHN.15_1,Jiangsu,CN-JS,Jiangsu Sheng,1,identity,gadm36-id,,,CN
-CHN,China,CHN.16_1,Jiangxi,CN-JX,Jiangxi Sheng,1,identity,gadm36-id,,,CN
-CHN,China,CHN.17_1,Jilin,CN-JL,Jilin Sheng,1,identity,gadm36-id,,,CN
-CHN,China,CHN.18_1,Liaoning,CN-LN,Liaoning Sheng,1,identity,gadm36-id,,,CN
-CHN,China,CHN.19_1,Nei Mongol,CN-NM,Nei Mongol Zizhiqu,1,identity,gadm36-id,,,CN
-CHN,China,CHN.1_1,Anhui,CN-AH,Anhui Sheng,1,identity,gadm36-id,,,CN
-CHN,China,CHN.20_1,Ningxia Hui,CN-NX,Ningxia Huizi Zizhiqu,1,identity,gadm36-id,,,CN
-CHN,China,CHN.21_1,Qinghai,CN-QH,Qinghai Sheng,1,identity,gadm36-id,,,CN
-CHN,China,CHN.22_1,Shaanxi,CN-SN,Shaanxi Sheng,1,identity,gadm36-id,,,CN
-CHN,China,CHN.23_1,Shandong,CN-SD,Shandong Sheng,1,identity,gadm36-id,,,CN
-CHN,China,CHN.24_1,Shanghai,CN-SH,Shanghai Shi,1,identity,gadm36-id,,,CN
-CHN,China,CHN.25_1,Shanxi,CN-SX,Shanxi Sheng,1,identity,gadm36-id,,,CN
-CHN,China,CHN.26_1,Sichuan,CN-SC,Sichuan Sheng,1,identity,gadm36-id,,,CN
-CHN,China,CHN.27_1,Tianjin,CN-TJ,Tianjin Shi,1,identity,gadm36-id,,,CN
-CHN,China,CHN.28_1,Xinjiang Uygur,CN-XJ,Xinjiang Uygur Zizhiqu,1,identity,gadm36-id,,,CN
-CHN,China,CHN.29_1,Xizang,CN-XZ,Xizang Zizhiqu,1,identity,gadm36-id,,,CN
-CHN,China,CHN.2_1,Beijing,CN-BJ,Beijing Shi,1,identity,gadm36-id,,,CN
-CHN,China,CHN.30_1,Yunnan,CN-YN,Yunnan Sheng,1,identity,gadm36-id,,,CN
-CHN,China,CHN.31_1,Zhejiang,CN-ZJ,Zhejiang Sheng,1,identity,gadm36-id,,,CN
-CHN,China,CHN.3_1,Chongqing,CN-CQ,Chongqing Shi,1,identity,gadm36-id,,,CN
-CHN,China,CHN.4_1,Fujian,CN-FJ,Fujian Sheng,1,identity,gadm36-id,,,CN
-CHN,China,CHN.5_1,Gansu,CN-GS,Gansu Sheng,1,identity,gadm36-id,,,CN
-CHN,China,CHN.6_1,Guangdong,CN-GD,Guangdong Sheng,1,identity,gadm36-id,,,CN
-CHN,China,CHN.7_1,Guangxi,CN-GX,Guangxi Zhuangzu Zizhiqu,1,identity,gadm36-id,,,CN
-CHN,China,CHN.8_1,Guizhou,CN-GZ,Guizhou Sheng,1,identity,gadm36-id,,,CN
-CHN,China,CHN.9_1,Hainan,CN-HI,Hainan Sheng,1,identity,gadm36-id,,,CN
-CYP,Cyprus,CY00,Kýpros,CY-NC,Northern Cyprus,0.284622,edgar_unit_split,nuts2024-overlay,0.995,0.356,CY
-CYP,Cyprus,CY00,Kýpros,CY-01,Lefkosia,0.262929,edgar_unit_split,nuts2024-overlay,1,0.213,CY
-CYP,Cyprus,CY00,Kýpros,CY-02,Lemesos,0.206008,edgar_unit_split,nuts2024-overlay,0.998,0.136,CY
-CYP,Cyprus,CY00,Kýpros,CY-03,Larnaka,0.119052,edgar_unit_split,nuts2024-overlay,0.998,0.098,CY
-CYP,Cyprus,CY00,Kýpros,CY-05,Pafos,0.089585,edgar_unit_split,nuts2024-overlay,0.997,0.147,CY
-CYP,Cyprus,CY00,Kýpros,CY-04,Ammochostos,0.037803,edgar_unit_split,nuts2024-overlay,0.988,0.022,CY
-CZE,Czechia,CZ01,Praha,CZ-10,"Praha, Hlavní město",0.996275,edgar_unit_split,nuts2024-overlay,0.949,0.935,CZ
-CZE,Czechia,CZ01,Praha,CZ-20,Středočeský kraj,0.003725,partial_overlap,nuts2024-overlay,0.003,0.065,CZ
-CZE,Czechia,CZ02,Střední Čechy,CZ-20,Středočeský kraj,1,edgar_units_merged,nuts2024-overlay,0.985,0.976,CZ
-CZE,Czechia,CZ03,Jihozápad,CZ-31,Jihočeský kraj,0.516517,edgar_unit_split,nuts2024-overlay,0.989,0.558,CZ
-CZE,Czechia,CZ03,Jihozápad,CZ-32,Plzeňský kraj,0.483483,edgar_unit_split,nuts2024-overlay,0.994,0.427,CZ
-CZE,Czechia,CZ04,Severozápad,CZ-42,Ústecký kraj,0.73501,edgar_unit_split,nuts2024-overlay,0.973,0.61,CZ
-CZE,Czechia,CZ04,Severozápad,CZ-41,Karlovarský kraj,0.26499,edgar_unit_split,nuts2024-overlay,0.975,0.386,CZ
-CZE,Czechia,CZ05,Severovýchod,CZ-52,Královéhradecký kraj,0.369813,edgar_unit_split,nuts2024-overlay,0.995,0.387,CZ
-CZE,Czechia,CZ05,Severovýchod,CZ-53,Pardubický kraj,0.342835,edgar_unit_split,nuts2024-overlay,0.988,0.354,CZ
-CZE,Czechia,CZ05,Severovýchod,CZ-51,Liberecký kraj,0.287352,edgar_unit_split,nuts2024-overlay,0.976,0.247,CZ
-CZE,Czechia,CZ06,Jihovýchod,CZ-64,Jihomoravský kraj,0.694829,partial_overlap,nuts2024-overlay,0.965,0.489,CZ
-CZE,Czechia,CZ06,Jihovýchod,CZ-63,Kraj Vysočina,0.305171,edgar_unit_split,nuts2024-overlay,0.987,0.497,CZ
-CZE,Czechia,CZ07,Střední Morava,CZ-71,Olomoucký kraj,0.506127,edgar_unit_split,nuts2024-overlay,0.978,0.536,CZ
-CZE,Czechia,CZ07,Střední Morava,CZ-72,Zlínský kraj,0.463842,partial_overlap,nuts2024-overlay,0.959,0.416,CZ
-CZE,Czechia,CZ07,Střední Morava,CZ-64,Jihomoravský kraj,0.030031,partial_overlap,nuts2024-overlay,0.03,0.023,CZ
-CZE,Czechia,CZ08,Moravskoslezsko,CZ-80,Moravskoslezský kraj,0.981357,edgar_unit_split,nuts2024-overlay,0.96,0.957,CZ
-CZE,Czechia,CZ08,Moravskoslezsko,CZ-72,Zlínský kraj,0.018643,partial_overlap,nuts2024-overlay,0.037,0.027,CZ
-DEU,Germany,DE11,Stuttgart,DE-BW,Baden-Württemberg,1,edgar_units_merged,nuts2024-overlay,0.292,0.999,DE
-DEU,Germany,DE12,Karlsruhe,DE-BW,Baden-Württemberg,1,edgar_units_merged,nuts2024-overlay,0.192,0.999,DE
-DEU,Germany,DE13,Freiburg,DE-BW,Baden-Württemberg,1,edgar_units_merged,nuts2024-overlay,0.26,0.999,DE
-DEU,Germany,DE14,Tübingen,DE-BW,Baden-Württemberg,1,edgar_units_merged,nuts2024-overlay,0.253,0.999,DE
-DEU,Germany,DE21,Oberbayern,DE-BY,Bayern,1,edgar_units_merged,nuts2024-overlay,0.248,0.999,DE
-DEU,Germany,DE22,Niederbayern,DE-BY,Bayern,1,edgar_units_merged,nuts2024-overlay,0.146,0.999,DE
-DEU,Germany,DE23,Oberpfalz,DE-BY,Bayern,1,edgar_units_merged,nuts2024-overlay,0.137,1,DE
-DEU,Germany,DE24,Oberfranken,DE-BY,Bayern,1,edgar_units_merged,nuts2024-overlay,0.102,0.999,DE
-DEU,Germany,DE25,Mittelfranken,DE-BY,Bayern,1,edgar_units_merged,nuts2024-overlay,0.103,0.999,DE
-DEU,Germany,DE26,Unterfranken,DE-BY,Bayern,1,edgar_units_merged,nuts2024-overlay,0.121,0.998,DE
-DEU,Germany,DE27,Schwaben,DE-BY,Bayern,1,edgar_units_merged,nuts2024-overlay,0.141,0.994,DE
-DEU,Germany,DE30,Berlin,DE-BE,Berlin,1,identity,nuts2024-overlay,0.994,0.993,DE
-DEU,Germany,DE40,Brandenburg,DE-BB,Brandenburg,1,identity,nuts2024-overlay,0.999,0.999,DE
-DEU,Germany,DE50,Bremen,DE-HB,Bremen,1,identity,nuts2024-overlay,0.985,0.978,DE
-DEU,Germany,DE60,Hamburg,DE-HH,Hamburg,1,identity,nuts2024-overlay,0.992,0.983,DE
-DEU,Germany,DE71,Darmstadt,DE-HE,Hessen,1,edgar_units_merged,nuts2024-overlay,0.352,0.998,DE
-DEU,Germany,DE72,Gießen,DE-HE,Hessen,1,edgar_units_merged,nuts2024-overlay,0.255,0.999,DE
-DEU,Germany,DE73,Kassel,DE-HE,Hessen,1,edgar_units_merged,nuts2024-overlay,0.392,0.998,DE
-DEU,Germany,DE80,Mecklenburg-Vorpommern,DE-MV,Mecklenburg-Vorpommern,1,identity,nuts2024-overlay,0.984,0.996,DE
-DEU,Germany,DE91,Braunschweig,DE-NI,Niedersachsen,1,edgar_units_merged,nuts2024-overlay,0.17,0.998,DE
-DEU,Germany,DE92,Hannover,DE-NI,Niedersachsen,1,edgar_units_merged,nuts2024-overlay,0.19,0.999,DE
-DEU,Germany,DE93,Lüneburg,DE-NI,Niedersachsen,1,edgar_units_merged,nuts2024-overlay,0.324,0.999,DE
-DEU,Germany,DE94,Weser-Ems,DE-NI,Niedersachsen,1,edgar_units_merged,nuts2024-overlay,0.313,0.997,DE
-DEU,Germany,DEA1,Düsseldorf,DE-NW,Nordrhein-Westfalen,1,edgar_units_merged,nuts2024-overlay,0.155,0.999,DE
-DEU,Germany,DEA2,Köln,DE-NW,Nordrhein-Westfalen,1,edgar_units_merged,nuts2024-overlay,0.216,0.999,DE
-DEU,Germany,DEA3,Münster,DE-NW,Nordrhein-Westfalen,1,edgar_units_merged,nuts2024-overlay,0.203,0.999,DE
-DEU,Germany,DEA4,Detmold,DE-NW,Nordrhein-Westfalen,1,edgar_units_merged,nuts2024-overlay,0.191,0.998,DE
-DEU,Germany,DEA5,Arnsberg,DE-NW,Nordrhein-Westfalen,1,edgar_units_merged,nuts2024-overlay,0.235,0.999,DE
-DEU,Germany,DEB1,Koblenz,DE-RP,Rheinland-Pfalz,1,edgar_units_merged,nuts2024-overlay,0.406,0.999,DE
-DEU,Germany,DEB2,Trier,DE-RP,Rheinland-Pfalz,1,edgar_units_merged,nuts2024-overlay,0.248,0.998,DE
-DEU,Germany,DEB3,Rheinhessen-Pfalz,DE-RP,Rheinland-Pfalz,1,edgar_units_merged,nuts2024-overlay,0.345,0.999,DE
-DEU,Germany,DEC0,Saarland,DE-SL,Saarland,1,identity,nuts2024-overlay,0.997,0.996,DE
-DEU,Germany,DED2,Dresden,DE-SN,Sachsen,1,edgar_units_merged,nuts2024-overlay,0.43,0.998,DE
-DEU,Germany,DED4,Chemnitz,DE-SN,Sachsen,1,edgar_units_merged,nuts2024-overlay,0.353,0.998,DE
-DEU,Germany,DED5,Leipzig,DE-SN,Sachsen,1,edgar_units_merged,nuts2024-overlay,0.215,0.998,DE
-DEU,Germany,DEE0,Sachsen-Anhalt,DE-ST,Sachsen-Anhalt,1,identity,nuts2024-overlay,0.999,0.998,DE
-DEU,Germany,DEF0,Schleswig-Holstein,DE-SH,Schleswig-Holstein,1,identity,nuts2024-overlay,0.99,0.991,DE
-DEU,Germany,DEG0,Thüringen,DE-TH,Thüringen,1,identity,nuts2024-overlay,0.998,0.998,DE
-DNK,Denmark,DK01,Hovedstaden,DK-84,Hovedstaden,1,identity,nuts2024-overlay,0.992,0.991,DK
-DNK,Denmark,DK02,Sjælland,DK-85,Sjælland,1,identity,nuts2024-overlay,0.987,0.988,DK
-DNK,Denmark,DK03,Syddanmark,DK-83,Syddanmark,1,identity,nuts2024-overlay,0.989,0.99,DK
-DNK,Denmark,DK04,Midtjylland,DK-82,Midtjylland,1,identity,nuts2024-overlay,0.995,0.992,DK
-DNK,Denmark,DK05,Nordjylland,DK-81,Nordjylland,1,identity,nuts2024-overlay,0.993,0.99,DK
-ESP,Spain and Andorra,ES11,Galicia,ES-GA,Galicia,1,identity,nuts2024-overlay,0.996,0.998,ES
-ESP,Spain and Andorra,ES12,Principado de Asturias,ES-AS,"Asturias, Principado de",1,identity,nuts2024-overlay,0.997,0.997,ES
-ESP,Spain and Andorra,ES13,Cantabria,ES-CB,Cantabria,1,identity,nuts2024-overlay,0.995,0.992,ES
-ESP,Spain and Andorra,ES21,País Vasco,ES-PV,País Vasco,1,identity,nuts2024-overlay,0.996,0.996,ES
-ESP,Spain and Andorra,ES22,Comunidad Foral de Navarra,ES-NC,"Navarra, Comunidad Foral de",1,identity,nuts2024-overlay,0.998,0.995,ES
-ESP,Spain and Andorra,ES23,La Rioja,ES-RI,La Rioja,1,identity,nuts2024-overlay,0.997,0.997,ES
-ESP,Spain and Andorra,ES24,Aragón,ES-AR,Aragón,1,identity,nuts2024-overlay,0.999,0.999,ES
-ESP,Spain and Andorra,ES30,Comunidad de Madrid,ES-MD,"Madrid, Comunidad de",1,identity,nuts2024-overlay,0.997,0.997,ES
-ESP,Spain and Andorra,ES41,Castilla y León,ES-CL,Castilla y León,1,identity,nuts2024-overlay,0.999,0.999,ES
-ESP,Spain and Andorra,ES42,Castilla-La Mancha,ES-CM,Castilla-La Mancha,1,identity,nuts2024-overlay,0.999,0.999,ES
-ESP,Spain and Andorra,ES43,Extremadura,ES-EX,Extremadura,1,identity,nuts2024-overlay,0.999,0.999,ES
-ESP,Spain and Andorra,ES51,Cataluña,ES-CT,Catalunya,1,identity,nuts2024-overlay,0.999,0.998,ES
-ESP,Spain and Andorra,ES52,Comunitat Valenciana,ES-VC,"Valenciana, Comunidad",1,identity,nuts2024-overlay,0.998,0.998,ES
-ESP,Spain and Andorra,ES53,Illes Balears,ES-IB,Illes Balears,1,identity,nuts2024-overlay,0.987,0.995,ES
-ESP,Spain and Andorra,ES61,Andalucía,ES-AN,Andalucía,1,identity,nuts2024-overlay,0.999,0.999,ES
-ESP,Spain and Andorra,ES62,Región de Murcia,ES-MC,"Murcia, Región de",1,identity,nuts2024-overlay,0.998,0.998,ES
-ESP,Spain and Andorra,ES63,Ciudad de Ceuta,ES-CE,Ceuta,1,identity,nuts2024-overlay,0.887,0.932,ES
-ESP,Spain and Andorra,ES64,Ciudad de Melilla,ES-ML,Melilla,1,identity,nuts2024-overlay,0.9,0.551,ES
-ESP,Spain and Andorra,ES70,Canarias,ES-CN,Canarias,1,identity,nuts2024-overlay,0.988,0.996,ES
-EST,Estonia,EE00,Eesti,EE001,Põhja-Eesti,0.45184,edgar_unit_split,nuts2024-overlay,0.996,0.095,EE
-EST,Estonia,EE00,Eesti,EE008,Lõuna-Eesti,0.220917,edgar_unit_split,nuts2024-overlay,0.986,0.381,EE
-EST,Estonia,EE00,Eesti,EE007,Kirde-Eesti,0.122732,edgar_unit_split,nuts2024-overlay,0.999,0.073,EE
-EST,Estonia,EE00,Eesti,EE004,Lääne-Eesti,0.108991,edgar_unit_split,nuts2024-overlay,0.989,0.245,EE
-EST,Estonia,EE00,Eesti,EE006,Kesk-Eesti,0.09552,edgar_unit_split,nuts2024-overlay,1,0.2,EE
-FIN,Finland,FI19,Länsi-Suomi,FI-11,Pirkanmaa,0.377481,edgar_unit_split,nuts2024-overlay,0.999,0.232,FI
-FIN,Finland,FI19,Länsi-Suomi,FI-08,Keski-Suomi,0.198122,edgar_unit_split,nuts2024-overlay,0.997,0.299,FI
-FIN,Finland,FI19,Länsi-Suomi,FI-17,Satakunta,0.157262,edgar_unit_split,nuts2024-overlay,0.994,0.129,FI
-FIN,Finland,FI19,Länsi-Suomi,FI-03,Etelä-Pohjanmaa,0.140104,edgar_unit_split,nuts2024-overlay,1,0.216,FI
-FIN,Finland,FI19,Länsi-Suomi,FI-12,Pohjanmaa,0.127031,edgar_unit_split,nuts2024-overlay,0.979,0.12,FI
-FIN,Finland,FI1B,Helsinki-Uusimaa,FI-18,Uusimaa,1,identity,nuts2024-overlay,0.969,0.982,FI
-FIN,Finland,FI1C,Etelä-Suomi,FI-19,Varsinais-Suomi,0.403659,edgar_unit_split,nuts2024-overlay,0.961,0.297,FI
-FIN,Finland,FI1C,Etelä-Suomi,FI-16,Päijät-Häme,0.177967,edgar_unit_split,nuts2024-overlay,0.996,0.171,FI
-FIN,Finland,FI1C,Etelä-Suomi,FI-06,Kanta-Häme,0.157006,edgar_unit_split,nuts2024-overlay,0.996,0.167,FI
-FIN,Finland,FI1C,Etelä-Suomi,FI-09,Kymenlaakso,0.152016,edgar_unit_split,nuts2024-overlay,0.991,0.157,FI
-FIN,Finland,FI1C,Etelä-Suomi,FI-02,Etelä-Karjala,0.109352,edgar_unit_split,nuts2024-overlay,0.945,0.194,FI
-FIN,Finland,FI1D,Pohjois- ja Itä-Suomi,FI-14,Pohjois-Pohjanmaa,0.322236,edgar_unit_split,nuts2024-overlay,0.998,0.163,FI
-FIN,Finland,FI1D,Pohjois- ja Itä-Suomi,FI-15,Pohjois-Savo,0.190529,edgar_unit_split,nuts2024-overlay,1,0.088,FI
-FIN,Finland,FI1D,Pohjois- ja Itä-Suomi,FI-10,Lappi,0.136134,edgar_unit_split,nuts2024-overlay,0.997,0.435,FI
-FIN,Finland,FI1D,Pohjois- ja Itä-Suomi,FI-13,Pohjois-Karjala,0.126609,edgar_unit_split,nuts2024-overlay,0.998,0.095,FI
-FIN,Finland,FI1D,Pohjois- ja Itä-Suomi,FI-04,Etelä-Savo,0.111961,edgar_unit_split,nuts2024-overlay,0.998,0.084,FI
-FIN,Finland,FI1D,Pohjois- ja Itä-Suomi,FI-05,Kainuu,0.058237,edgar_unit_split,nuts2024-overlay,0.997,0.108,FI
-FIN,Finland,FI1D,Pohjois- ja Itä-Suomi,FI-07,Keski-Pohjanmaa,0.054294,edgar_unit_split,nuts2024-overlay,0.994,0.024,FI
-FIN,Finland,FI20,Aland,FI-01,Åland,1,identity,nuts2024-overlay,0.864,0.89,FI
-FRA,France and Monaco,FR10,Ile-de-France,FR-IDF,Île-de-France,1,identity,nuts2024-overlay,0.999,0.999,FR
-FRA,France and Monaco,FRB0,Centre — Val de Loire,FR-CVL,Centre-Val de Loire,1,identity,nuts2024-overlay,0.999,0.999,FR
-FRA,France and Monaco,FRC1,Bourgogne,FR-BFC,Bourgogne-Franche-Comté,1,edgar_units_merged,nuts2024-overlay,0.66,0.999,FR
-FRA,France and Monaco,FRC2,Franche-Comté,FR-BFC,Bourgogne-Franche-Comté,1,edgar_units_merged,nuts2024-overlay,0.339,0.999,FR
-FRA,France and Monaco,FRD1,Basse-Normandie,FR-NOR,Normandie,1,edgar_units_merged,nuts2024-overlay,0.588,0.999,FR
-FRA,France and Monaco,FRD2,Haute-Normandie,FR-NOR,Normandie,1,edgar_units_merged,nuts2024-overlay,0.408,0.999,FR
-FRA,France and Monaco,FRE1,Nord-Pas de Calais,FR-HDF,Hauts-de-France,1,edgar_units_merged,nuts2024-overlay,0.389,0.999,FR
-FRA,France and Monaco,FRE2,Picardie,FR-HDF,Hauts-de-France,1,edgar_units_merged,nuts2024-overlay,0.609,0.999,FR
-FRA,France and Monaco,FRF1,Alsace,FR-GES,Grand-Est,1,edgar_units_merged,nuts2024-overlay,0.144,0.999,FR
-FRA,France and Monaco,FRF2,Champagne-Ardenne,FR-GES,Grand-Est,1,edgar_units_merged,nuts2024-overlay,0.445,0.999,FR
-FRA,France and Monaco,FRF3,Lorraine,FR-GES,Grand-Est,1,edgar_units_merged,nuts2024-overlay,0.41,1,FR
-FRA,France and Monaco,FRG0,Pays de la Loire,FR-PDL,Pays-de-la-Loire,1,identity,nuts2024-overlay,0.997,0.999,FR
-FRA,France and Monaco,FRH0,Bretagne,FR-BRE,Bretagne,1,identity,nuts2024-overlay,0.99,0.998,FR
-FRA,France and Monaco,FRI1,Aquitaine,FR-NAQ,Nouvelle-Aquitaine,1,edgar_units_merged,nuts2024-overlay,0.492,0.999,FR
-FRA,France and Monaco,FRI2,Limousin,FR-NAQ,Nouvelle-Aquitaine,1,edgar_units_merged,nuts2024-overlay,0.201,0.999,FR
-FRA,France and Monaco,FRI3,Poitou-Charentes,FR-NAQ,Nouvelle-Aquitaine,1,edgar_units_merged,nuts2024-overlay,0.306,0.999,FR
-FRA,France and Monaco,FRJ1,Languedoc-Roussillon,FR-OCC,Occitanie,1,edgar_units_merged,nuts2024-overlay,0.377,0.995,FR
-FRA,France and Monaco,FRJ2,Midi-Pyrénées,FR-OCC,Occitanie,1,edgar_units_merged,nuts2024-overlay,0.622,1,FR
-FRA,France and Monaco,FRK1,Auvergne,FR-ARA,Auvergne-Rhône-Alpes,1,edgar_units_merged,nuts2024-overlay,0.367,0.999,FR
-FRA,France and Monaco,FRK2,Rhône-Alpes,FR-ARA,Auvergne-Rhône-Alpes,1,edgar_units_merged,nuts2024-overlay,0.631,0.999,FR
-FRA,France and Monaco,FRL0,Provence-Alpes-Côte d’Azur,FR-PAC,Provence-Alpes-Côte-d’Azur,1,identity,nuts2024-overlay,0.996,0.999,FR
-FRA,France and Monaco,FRM0,Corse,FR-20R,Corse,1,identity,nuts2024-overlay,0.995,0.997,FR
-GBR,United Kingdom,UKC1,Tees Valley and Durham,UKC,North East,1,edgar_units_merged,nuts1-prefix,,,GB
-GBR,United Kingdom,UKC2,Northumberland and Tyne and Wear,UKC,North East,1,edgar_units_merged,nuts1-prefix,,,GB
-GBR,United Kingdom,UKD1,Cumbria,UKD,North West,1,edgar_units_merged,nuts1-prefix,,,GB
-GBR,United Kingdom,UKD3,Greater Manchester,UKD,North West,1,edgar_units_merged,nuts1-prefix,,,GB
-GBR,United Kingdom,UKD4,Lancashire,UKD,North West,1,edgar_units_merged,nuts1-prefix,,,GB
-GBR,United Kingdom,UKD6,Cheshire,UKD,North West,1,edgar_units_merged,nuts1-prefix,,,GB
-GBR,United Kingdom,UKD7,Merseyside,UKD,North West,1,edgar_units_merged,nuts1-prefix,,,GB
-GBR,United Kingdom,UKE1,East Yorkshire and Northern Lincolnshire,UKE,Yorkshire and the Humber,1,edgar_units_merged,nuts1-prefix,,,GB
-GBR,United Kingdom,UKE2,North Yorkshire,UKE,Yorkshire and the Humber,1,edgar_units_merged,nuts1-prefix,,,GB
-GBR,United Kingdom,UKE3,South Yorkshire,UKE,Yorkshire and the Humber,1,edgar_units_merged,nuts1-prefix,,,GB
-GBR,United Kingdom,UKE4,West Yorkshire,UKE,Yorkshire and the Humber,1,edgar_units_merged,nuts1-prefix,,,GB
-GBR,United Kingdom,UKF1,Derbyshire and Nottinghamshire,UKF,East Midlands,1,edgar_units_merged,nuts1-prefix,,,GB
-GBR,United Kingdom,UKF2,"Leicestershire, Rutland and Northamptonshire",UKF,East Midlands,1,edgar_units_merged,nuts1-prefix,,,GB
-GBR,United Kingdom,UKF3,Lincolnshire,UKF,East Midlands,1,edgar_units_merged,nuts1-prefix,,,GB
-GBR,United Kingdom,UKG1,"Herefordshire, Worcestershire and Warwickshire",UKG,West Midlands,1,edgar_units_merged,nuts1-prefix,,,GB
-GBR,United Kingdom,UKG2,Shropshire and Staffordshire,UKG,West Midlands,1,edgar_units_merged,nuts1-prefix,,,GB
-GBR,United Kingdom,UKG3,West Midlands,UKG,West Midlands,1,edgar_units_merged,nuts1-prefix,,,GB
-GBR,United Kingdom,UKH1,East Anglia,UKH,East of England,1,edgar_units_merged,nuts1-prefix,,,GB
-GBR,United Kingdom,UKH2,Bedfordshire and Hertfordshire,UKH,East of England,1,edgar_units_merged,nuts1-prefix,,,GB
-GBR,United Kingdom,UKH3,Essex,UKH,East of England,1,edgar_units_merged,nuts1-prefix,,,GB
-GBR,United Kingdom,UKI3_4_5_6_7,London,UKI,London,1,edgar_units_merged,nuts1-prefix,,,GB
-GBR,United Kingdom,UKJ1,"Berkshire, Buckinghamshire and Oxfordshire",UKJ,South East,1,edgar_units_merged,nuts1-prefix,,,GB
-GBR,United Kingdom,UKJ2,"Surrey, East and West Sussex",UKJ,South East,1,edgar_units_merged,nuts1-prefix,,,GB
-GBR,United Kingdom,UKJ3,Hampshire and Isle of Wight,UKJ,South East,1,edgar_units_merged,nuts1-prefix,,,GB
-GBR,United Kingdom,UKJ4,Kent,UKJ,South East,1,edgar_units_merged,nuts1-prefix,,,GB
-GBR,United Kingdom,UKK1,"Gloucestershire, Wiltshire and Bristol/Bath area",UKK,South West,1,edgar_units_merged,nuts1-prefix,,,GB
-GBR,United Kingdom,UKK2,Dorset and Somerset,UKK,South West,1,edgar_units_merged,nuts1-prefix,,,GB
-GBR,United Kingdom,UKK3,Cornwall and Isles of Scilly,UKK,South West,1,edgar_units_merged,nuts1-prefix,,,GB
-GBR,United Kingdom,UKK4,Devon,UKK,South West,1,edgar_units_merged,nuts1-prefix,,,GB
-GBR,United Kingdom,UKL1,West Wales and The Valleys,UKL,Wales,1,edgar_units_merged,nuts1-prefix,,,GB
-GBR,United Kingdom,UKL2,East Wales,UKL,Wales,1,edgar_units_merged,nuts1-prefix,,,GB
-GBR,United Kingdom,UKM5,North Eastern Scotland,UKM,Scotland,1,edgar_units_merged,nuts1-prefix,,,GB
-GBR,United Kingdom,UKM6,Highlands and Islands,UKM,Scotland,1,edgar_units_merged,nuts1-prefix,,,GB
-GBR,United Kingdom,UKM7,Eastern Scotland,UKM,Scotland,1,edgar_units_merged,nuts1-prefix,,,GB
-GBR,United Kingdom,UKM8,West Central Scotland,UKM,Scotland,1,edgar_units_merged,nuts1-prefix,,,GB
-GBR,United Kingdom,UKM9,Southern Scotland,UKM,Scotland,1,edgar_units_merged,nuts1-prefix,,,GB
-GBR,United Kingdom,UKN0,Northern Ireland,UKN,Northern Ireland,1,edgar_units_merged,nuts1-prefix,,,GB
-GLP,Guadeloupe,FRY1,Guadeloupe,,,,no_model_region,not modelled (French overseas regions; Svalbard and Jan Mayen),,,
-GRC,Greece,EL30,Attiki,GR-I,Attikí,1,identity,nuts2024-overlay,0.98,0.988,GR
-GRC,Greece,EL41,Voreio Aigaio,GR-K,Vóreio Aigaío,1,identity,nuts2024-overlay,0.982,0.99,GR
-GRC,Greece,EL42,Notio Aigaio,GR-L,Nótio Aigaío,1,identity,nuts2024-overlay,0.953,0.98,GR
-GRC,Greece,EL43,Kriti,GR-M,Kríti,1,identity,nuts2024-overlay,0.993,0.996,GR
-GRC,Greece,EL51,"Anatoliki Makedonia, Thraki",GR-A,Anatolikí Makedonía kai Thráki,1,identity,nuts2024-overlay,0.99,0.99,GR
-GRC,Greece,EL52,Kentriki Makedonia,GR-B,Kentrikí Makedonía,1,identity,nuts2024-overlay,0.976,0.996,GR
-GRC,Greece,EL53,Dytiki Makedonia,GR-C,Dytikí Makedonía,1,identity,nuts2024-overlay,0.989,0.995,GR
-GRC,Greece,EL54,Ipeiros,GR-D,Ípeiros,1,identity,nuts2024-overlay,0.983,0.991,GR
-GRC,Greece,EL61,Thessalia,GR-E,Thessalía,1,identity,nuts2024-overlay,0.991,0.995,GR
-GRC,Greece,EL62,Ionia Nisia,GR-F,Ionía Nísia,1,identity,nuts2024-overlay,0.97,0.988,GR
-GRC,Greece,EL63,Dytiki Elláda,GR-G,Dytikí Elláda,1,identity,nuts2024-overlay,0.994,0.991,GR
-GRC,Greece,EL64,Sterea Elláda,GR-H,Stereá Elláda,1,identity,nuts2024-overlay,0.991,0.993,GR
-GRC,Greece,EL65,Peloponnisos,GR-J,Pelóponnisos,1,identity,nuts2024-overlay,0.995,0.995,GR
-GUF,French Guiana,FRY3,Guyane,,,,no_model_region,not modelled (French overseas regions; Svalbard and Jan Mayen),,,
-HRV,Croatia,HR02,Panonska Hrvatska,HR-14,Osječko-baranjska županija,0.252154,edgar_unit_split,nuts2024-overlay,0.986,0.17,HR
-HRV,Croatia,HR02,Panonska Hrvatska,HR-03,Sisačko-moslavačka županija,0.144424,edgar_unit_split,nuts2024-overlay,0.983,0.19,HR
-HRV,Croatia,HR02,Panonska Hrvatska,HR-16,Vukovarsko-srijemska županija,0.140047,edgar_unit_split,nuts2024-overlay,0.979,0.102,HR
-HRV,Croatia,HR02,Panonska Hrvatska,HR-12,Brodsko-posavska županija,0.128607,edgar_unit_split,nuts2024-overlay,0.991,0.086,HR
-HRV,Croatia,HR02,Panonska Hrvatska,HR-04,Karlovačka županija,0.104862,edgar_unit_split,nuts2024-overlay,0.973,0.151,HR
-HRV,Croatia,HR02,Panonska Hrvatska,HR-07,Bjelovarsko-bilogorska županija,0.096108,edgar_unit_split,nuts2024-overlay,0.976,0.112,HR
-HRV,Croatia,HR02,Panonska Hrvatska,HR-10,Virovitičko-podravska županija,0.069098,edgar_unit_split,nuts2024-overlay,0.982,0.088,HR
-HRV,Croatia,HR02,Panonska Hrvatska,HR-11,Požeško-slavonska županija,0.064699,edgar_unit_split,nuts2024-overlay,1,0.078,HR
-HRV,Croatia,HR03,Jadranska Hrvatska,HR-17,Splitsko-dalmatinska županija,0.319691,edgar_unit_split,nuts2024-overlay,0.957,0.185,HR
-HRV,Croatia,HR03,Jadranska Hrvatska,HR-08,Primorsko-goranska županija,0.208455,edgar_unit_split,nuts2024-overlay,0.952,0.141,HR
-HRV,Croatia,HR03,Jadranska Hrvatska,HR-18,Istarska županija,0.152902,edgar_unit_split,nuts2024-overlay,0.976,0.114,HR
-HRV,Croatia,HR03,Jadranska Hrvatska,HR-13,Zadarska županija,0.1261,edgar_unit_split,nuts2024-overlay,0.966,0.148,HR
-HRV,Croatia,HR03,Jadranska Hrvatska,HR-19,Dubrovačko-neretvanska županija,0.078209,edgar_unit_split,nuts2024-overlay,0.874,0.07,HR
-HRV,Croatia,HR03,Jadranska Hrvatska,HR-15,Šibensko-kninska županija,0.076754,edgar_unit_split,nuts2024-overlay,0.977,0.116,HR
-HRV,Croatia,HR03,Jadranska Hrvatska,HR-09,Ličko-senjska županija,0.037889,edgar_unit_split,nuts2024-overlay,0.984,0.215,HR
-HRV,Croatia,HR05,Grad Zagreb,HR-21,Grad Zagreb,0.992515,partial_overlap,nuts2024-overlay,0.484,0.952,HR
-HRV,Croatia,HR05,Grad Zagreb,HR-01,Zagrebačka županija,0.007485,partial_overlap,nuts2024-overlay,0.013,0.048,HR
-HRV,Croatia,HR06,Sjeverna Hrvatska,HR-21,Grad Zagreb,0.377108,partial_overlap,nuts2024-overlay,0.508,0.08,HR
-HRV,Croatia,HR06,Sjeverna Hrvatska,HR-01,Zagrebačka županija,0.203965,partial_overlap,nuts2024-overlay,0.961,0.287,HR
-HRV,Croatia,HR06,Sjeverna Hrvatska,HR-05,Varaždinska županija,0.138437,edgar_unit_split,nuts2024-overlay,0.962,0.157,HR
-HRV,Croatia,HR06,Sjeverna Hrvatska,HR-02,Krapinsko-zagorska županija,0.103163,edgar_unit_split,nuts2024-overlay,0.973,0.145,HR
-HRV,Croatia,HR06,Sjeverna Hrvatska,HR-06,Koprivničko-križevačka županija,0.090828,edgar_unit_split,nuts2024-overlay,0.989,0.217,HR
-HRV,Croatia,HR06,Sjeverna Hrvatska,HR-20,Međimurska županija,0.086498,edgar_unit_split,nuts2024-overlay,0.949,0.09,HR
-HUN,Hungary,HU11,Budapest,HU11,Budapest,1,identity,nuts2024-overlay,1,1,HU
-HUN,Hungary,HU12,Pest,HU12,Pest,1,identity,nuts2024-overlay,1,1,HU
-HUN,Hungary,HU21,Közép-Dunántúl,HU21,Közép-Dunántúl,1,identity,nuts2024-overlay,0.993,0.975,HU
-HUN,Hungary,HU22,Nyugat-Dunántúl,HU22,Nyugat-Dunántúl,1,identity,nuts2024-overlay,0.982,0.992,HU
-HUN,Hungary,HU23,Dél-Dunántúl,HU23,Dél-Dunántúl,1,identity,nuts2024-overlay,0.989,0.988,HU
-HUN,Hungary,HU31,Észak-Magyarország,HU31,Észak-Magyarország,1,identity,nuts2024-overlay,0.991,0.988,HU
-HUN,Hungary,HU32,Észak-Alföld,HU32,Észak-Alföld,1,identity,nuts2024-overlay,0.988,0.99,HU
-HUN,Hungary,HU33,Dél-Alföld,HU33,Dél-Alföld,1,identity,nuts2024-overlay,0.992,0.988,HU
-IND,India,IND.10_1,Goa,IN-GA,Goa,1,identity,gadm36-id,,,IN
-IND,India,IND.11_1,Gujarat,IN-GJ,Gujarat,1,identity,gadm36-id,,,IN
-IND,India,IND.12_1,Haryana,IN-HR,Haryana,1,identity,gadm36-id,,,IN
-IND,India,IND.13_1,Himachal Pradesh,IN-HP,Himachal Pradesh,1,identity,gadm36-id,,,IN
-IND,India,IND.14_1,Jammu and Kashmir,IN-JK,Jammu and Kashmir,0.979465940697469,edgar_unit_split,gadm36-id-2019-change,,,IN
-IND,India,IND.14_1,Jammu and Kashmir,IN-LA,Ladakh,0.0205340593025314,edgar_unit_split,gadm36-id-2019-change,,,IN
-IND,India,IND.15_1,Jharkhand,IN-JH,Jharkhand,1,identity,gadm36-id,,,IN
-IND,India,IND.16_1,Karnataka,IN-KA,Karnataka,1,identity,gadm36-id,,,IN
-IND,India,IND.17_1,Kerala,IN-KL,Kerala,1,identity,gadm36-id,,,IN
-IND,India,IND.18_1,Lakshadweep,IN-LD,Lakshadweep,1,identity,gadm36-id,,,IN
-IND,India,IND.19_1,Madhya Pradesh,IN-MP,Madhya Pradesh,1,identity,gadm36-id,,,IN
-IND,India,IND.1_1,Andaman and Nicobar,IN-AN,Andaman and Nicobar Islands,1,identity,gadm36-id,,,IN
-IND,India,IND.20_1,Maharashtra,IN-MH,Maharashtra,1,identity,gadm36-id,,,IN
-IND,India,IND.21_1,Manipur,IN-MN,Manipur,1,identity,gadm36-id,,,IN
-IND,India,IND.22_1,Meghalaya,IN-ML,Meghalaya,1,identity,gadm36-id,,,IN
-IND,India,IND.23_1,Mizoram,IN-MZ,Mizoram,1,identity,gadm36-id,,,IN
-IND,India,IND.24_1,Nagaland,IN-NL,Nagaland,1,identity,gadm36-id,,,IN
-IND,India,IND.25_1,NCT of Delhi,IN-DL,Delhi,1,identity,gadm36-id,,,IN
-IND,India,IND.26_1,Odisha,IN-OD,Odisha,1,identity,gadm36-id,,,IN
-IND,India,IND.27_1,Puducherry,IN-PY,Puducherry,1,identity,gadm36-id,,,IN
-IND,India,IND.28_1,Punjab,IN-PB,Punjab,1,identity,gadm36-id,,,IN
-IND,India,IND.29_1,Rajasthan,IN-RJ,Rajasthan,1,identity,gadm36-id,,,IN
-IND,India,IND.2_1,Andhra Pradesh,IN-AP,Andhra Pradesh,1,identity,gadm36-id,,,IN
-IND,India,IND.30_1,Sikkim,IN-SK,Sikkim,1,identity,gadm36-id,,,IN
-IND,India,IND.31_1,Tamil Nadu,IN-TN,Tamil Nadu,1,identity,gadm36-id,,,IN
-IND,India,IND.32_1,Telangana,IN-TS,Telangana,1,identity,gadm36-id,,,IN
-IND,India,IND.33_1,Tripura,IN-TR,Tripura,1,identity,gadm36-id,,,IN
-IND,India,IND.34_1,Uttar Pradesh,IN-UP,Uttar Pradesh,1,identity,gadm36-id,,,IN
-IND,India,IND.35_1,Uttarakhand,IN-UK,Uttarakhand,1,identity,gadm36-id,,,IN
-IND,India,IND.36_1,West Bengal,IN-WB,West Bengal,1,identity,gadm36-id,,,IN
-IND,India,IND.3_1,Arunachal Pradesh,IN-AR,Arunachal Pradesh,1,identity,gadm36-id,,,IN
-IND,India,IND.4_1,Assam,IN-AS,Assam,1,identity,gadm36-id,,,IN
-IND,India,IND.5_1,Bihar,IN-BR,Bihar,1,identity,gadm36-id,,,IN
-IND,India,IND.6_1,Chandigarh,IN-CH,Chandigarh,1,identity,gadm36-id,,,IN
-IND,India,IND.7_1,Chhattisgarh,IN-CG,Chhattisgarh,1,identity,gadm36-id,,,IN
-IND,India,IND.8_1,Dadra and Nagar Haveli,IN-DH,Dadra and Nagar Haveli and Daman and Diu,1,edgar_units_merged,gadm36-id-2019-change,,,IN
-IND,India,IND.9_1,Daman and Diu,IN-DH,Dadra and Nagar Haveli and Daman and Diu,1,edgar_units_merged,gadm36-id-2019-change,,,IN
-IRL,Ireland,IE04,Northern and Western,IE042,West,0.518641,edgar_unit_split,nuts2024-overlay,0.979,0.549,IE
-IRL,Ireland,IE04,Northern and Western,IE041,Border,0.481359,edgar_unit_split,nuts2024-overlay,0.977,0.442,IE
-IRL,Ireland,IE05,Southern,IE053,South-West (IRL),0.43329,edgar_unit_split,nuts2024-overlay,0.987,0.411,IE
-IRL,Ireland,IE05,Southern,IE051,Mid-West,0.296329,edgar_unit_split,nuts2024-overlay,0.982,0.346,IE
-IRL,Ireland,IE05,Southern,IE052,South-East (IRL),0.270381,edgar_unit_split,nuts2024-overlay,0.971,0.234,IE
-IRL,Ireland,IE06,Eastern and Midland,IE061,Dublin,0.564752,edgar_unit_split,nuts2024-overlay,0.99,0.061,IE
-IRL,Ireland,IE06,Eastern and Midland,IE062,Mid-East,0.299741,edgar_unit_split,nuts2024-overlay,0.98,0.461,IE
-IRL,Ireland,IE06,Eastern and Midland,IE063,Midland,0.135507,edgar_unit_split,nuts2024-overlay,0.989,0.448,IE
-ISL,Iceland,IS00,Ísland,IS.A,Höfuðborgarsvæðið,0.645772,edgar_unit_split,nuts2024-overlay,0.992,0.01,IS
-ISL,Iceland,IS00,Ísland,IS.B,Landsbyggð,0.354228,edgar_unit_split,nuts2024-overlay,0.996,0.982,IS
-ITA,"Italy, San Marino and the Holy See",ITC1,Piemonte,IT-21,Piemonte,1,identity,nuts2024-overlay,0.998,0.993,IT
-ITA,"Italy, San Marino and the Holy See",ITC2,Valle d’Aosta/Vallée d’Aoste,IT-23,Valle d'Aosta,1,identity,nuts2024-overlay,0.989,0.986,IT
-ITA,"Italy, San Marino and the Holy See",ITC3,Liguria,IT-42,Liguria,1,identity,nuts2024-overlay,0.989,0.996,IT
-ITA,"Italy, San Marino and the Holy See",ITC4,Lombardia,IT-25,Lombardia,1,identity,nuts2024-overlay,0.995,0.996,IT
-ITA,"Italy, San Marino and the Holy See",ITF1,Abruzzo,IT-65,Abruzzo,1,identity,nuts2024-overlay,0.998,0.997,IT
-ITA,"Italy, San Marino and the Holy See",ITF2,Molise,IT-67,Molise,1,identity,nuts2024-overlay,0.996,0.994,IT
-ITA,"Italy, San Marino and the Holy See",ITF3,Campania,IT-72,Campania,1,identity,nuts2024-overlay,0.996,0.998,IT
-ITA,"Italy, San Marino and the Holy See",ITF4,Puglia,IT-75,Puglia,1,identity,nuts2024-overlay,0.998,0.996,IT
-ITA,"Italy, San Marino and the Holy See",ITF5,Basilicata,IT-77,Basilicata,1,identity,nuts2024-overlay,0.997,0.997,IT
-ITA,"Italy, San Marino and the Holy See",ITF6,Calabria,IT-78,Calabria,1,identity,nuts2024-overlay,0.998,0.998,IT
-ITA,"Italy, San Marino and the Holy See",ITG1,Sicilia,IT-82,Sicilia,1,identity,nuts2024-overlay,0.997,0.998,IT
-ITA,"Italy, San Marino and the Holy See",ITG2,Sardegna,IT-88,Sardegna,1,identity,nuts2024-overlay,0.997,0.995,IT
-ITA,"Italy, San Marino and the Holy See",ITH1,Provincia Autonoma di Bolzano/Bozen,IT-32,Trentino-Alto Adige,1,edgar_units_merged,nuts2024-overlay,0.541,0.996,IT
-ITA,"Italy, San Marino and the Holy See",ITH2,Provincia Autonoma di Trento,IT-32,Trentino-Alto Adige,1,edgar_units_merged,nuts2024-overlay,0.455,0.997,IT
-ITA,"Italy, San Marino and the Holy See",ITH3,Veneto,IT-34,Veneto,1,identity,nuts2024-overlay,0.984,0.995,IT
-ITA,"Italy, San Marino and the Holy See",ITH4,Friuli-Venezia Giulia,IT-36,Friuli Venezia Giulia,1,identity,nuts2024-overlay,0.98,0.984,IT
-ITA,"Italy, San Marino and the Holy See",ITH5,Emilia-Romagna,IT-45,Emilia-Romagna,1,identity,nuts2024-overlay,0.998,0.979,IT
-ITA,"Italy, San Marino and the Holy See",ITI1,Toscana,IT-52,Toscana,1,identity,nuts2024-overlay,0.997,0.998,IT
-ITA,"Italy, San Marino and the Holy See",ITI2,Umbria,IT-55,Umbria,1,identity,nuts2024-overlay,0.997,0.996,IT
-ITA,"Italy, San Marino and the Holy See",ITI3,Marche,IT-57,Marche,1,identity,nuts2024-overlay,0.959,0.996,IT
-ITA,"Italy, San Marino and the Holy See",ITI4,Lazio,IT-62,Lazio,1,identity,nuts2024-overlay,0.996,0.998,IT
-LTU,Lithuania,LT01,Sostinės regionas,LT-VL,Vilniaus apskritis,1,identity,nuts2024-overlay,0.962,0.968,LT
-LTU,Lithuania,LT02,Vidurio ir vakarų Lietuvos regionas,LT-KU,Kauno apskritis,0.274961,edgar_unit_split,nuts2024-overlay,0.984,0.146,LT
-LTU,Lithuania,LT02,Vidurio ir vakarų Lietuvos regionas,LT-KL,Klaipėdos apskritis,0.163665,edgar_unit_split,nuts2024-overlay,0.996,0.097,LT
-LTU,Lithuania,LT02,Vidurio ir vakarų Lietuvos regionas,LT-SA,Šiaulių apskritis,0.134066,edgar_unit_split,nuts2024-overlay,0.997,0.157,LT
-LTU,Lithuania,LT02,Vidurio ir vakarų Lietuvos regionas,LT-PN,Panevėžio apskritis,0.10977,edgar_unit_split,nuts2024-overlay,0.995,0.141,LT
-LTU,Lithuania,LT02,Vidurio ir vakarų Lietuvos regionas,LT-MR,Marijampolės apskritis,0.073703,edgar_unit_split,nuts2024-overlay,0.998,0.08,LT
-LTU,Lithuania,LT02,Vidurio ir vakarų Lietuvos regionas,LT-AL,Alytaus apskritis,0.067903,edgar_unit_split,nuts2024-overlay,0.968,0.099,LT
-LTU,Lithuania,LT02,Vidurio ir vakarų Lietuvos regionas,LT-TE,Telšių apskritis,0.06715,edgar_unit_split,nuts2024-overlay,0.998,0.075,LT
-LTU,Lithuania,LT02,Vidurio ir vakarų Lietuvos regionas,LT-UT,Utenos apskritis,0.065009,edgar_unit_split,nuts2024-overlay,0.988,0.126,LT
-LTU,Lithuania,LT02,Vidurio ir vakarų Lietuvos regionas,LT-TA,Tauragės apskritis,0.043773,edgar_unit_split,nuts2024-overlay,1,0.069,LT
-LUX,Luxembourg,LU00,Luxembourg,LU.nat,Luxembourg,1,identity,nuts2024-overlay,0.995,0.99,LU
-LVA,Latvia,LV00,Latvija,LV00A,Rīga,0.419544,edgar_unit_split,nuts2024-overlay,1,0.053,LV
-LVA,Latvia,LV00,Latvija,LV00B,Kurzeme,0.157347,edgar_unit_split,nuts2024-overlay,1,0.249,LV
-LVA,Latvia,LV00,Latvija,LV00C,Vidzeme,0.152818,edgar_unit_split,nuts2024-overlay,1,0.307,LV
-LVA,Latvia,LV00,Latvija,LV005,Latgale,0.146373,edgar_unit_split,nuts2024-overlay,0.991,0.225,LV
-LVA,Latvia,LV00,Latvija,LV009,Zemgale,0.123917,edgar_unit_split,nuts2024-overlay,0.996,0.163,LV
-MKD,North Macedonia,MK00,Severna Makedonija,MK008,Skopje,0.304073,edgar_unit_split,nuts2024-overlay,0.998,0.07,MK
-MKD,North Macedonia,MK00,Severna Makedonija,MK006,Polog,0.157098,edgar_unit_split,nuts2024-overlay,0.991,0.094,MK
-MKD,North Macedonia,MK00,Severna Makedonija,MK005,Pelagonia,0.108748,edgar_unit_split,nuts2024-overlay,0.997,0.188,MK
-MKD,North Macedonia,MK00,Severna Makedonija,MK003,Southwestern,0.107512,edgar_unit_split,nuts2024-overlay,0.999,0.138,MK
-MKD,North Macedonia,MK00,Severna Makedonija,MK004,Southeastern,0.084331,edgar_unit_split,nuts2024-overlay,1,0.104,MK
-MKD,North Macedonia,MK00,Severna Makedonija,MK002,Eastern,0.083344,edgar_unit_split,nuts2024-overlay,1,0.136,MK
-MKD,North Macedonia,MK00,Severna Makedonija,MK007,Northeastern,0.080193,edgar_unit_split,nuts2024-overlay,0.999,0.09,MK
-MKD,North Macedonia,MK00,Severna Makedonija,MK001,Vardar,0.0747,edgar_unit_split,nuts2024-overlay,1,0.154,MK
-MLT,Malta,MT00,Malta,MT.nat,Malta,1,identity,nuts2024-overlay,0.961,0.991,MT
-MTQ,Martinique,FRY2,Martinique,,,,no_model_region,not modelled (French overseas regions; Svalbard and Jan Mayen),,,
-MYT,Mayotte,FRY5,Mayotte,,,,no_model_region,not modelled (French overseas regions; Svalbard and Jan Mayen),,,
-NLD,Netherlands,NL11,Groningen,NL-GR,Groningen,1,identity,nuts2024-overlay,0.992,0.98,NL
-NLD,Netherlands,NL12,Friesland (NL),NL-FR,Fryslân,1,identity,nuts2024-overlay,0.982,0.876,NL
-NLD,Netherlands,NL13,Drenthe,NL-DR,Drenthe,1,identity,nuts2024-overlay,0.988,0.983,NL
-NLD,Netherlands,NL21,Overijssel,NL-OV,Overijssel,1,identity,nuts2024-overlay,0.991,0.977,NL
-NLD,Netherlands,NL22,Gelderland,NL-GE,Gelderland,1,identity,nuts2024-overlay,0.99,0.985,NL
-NLD,Netherlands,NL23,Flevoland,NL-FL,Flevoland,1,identity,nuts2024-overlay,0.991,0.603,NL
-NLD,Netherlands,NL32,Noord-Holland,NL-NH,Noord-Holland,1,identity,nuts2024-overlay,0.994,0.838,NL
-NLD,Netherlands,NL34,Zeeland,NL-ZE,Zeeland,1,identity,nuts2024-overlay,0.986,0.922,NL
-NLD,Netherlands,NL35,Utrecht,NL-UT,Utrecht,0.902095,edgar_unit_split,nuts2024-overlay,0.984,0.912,NL
-NLD,Netherlands,NL35,Utrecht,NL-ZH,Zuid-Holland,0.097905,partial_overlap,nuts2024-overlay,0.039,0.076,NL
-NLD,Netherlands,NL36,Zuid-Holland,NL-ZH,Zuid-Holland,1,edgar_units_merged,nuts2024-overlay,0.958,0.932,NL
-NLD,Netherlands,NL41,Noord-Brabant,NL-NB,Noord-Brabant,1,identity,nuts2024-overlay,0.986,0.982,NL
-NLD,Netherlands,NL42,Limburg (NL),NL-LI,Limburg,1,identity,nuts2024-overlay,0.993,0.971,NL
-NOR,Norway,NO02,Innlandet,NO-04,Hedmark,0.514304,edgar_unit_split,nuts2024-overlay,0.997,0.526,NO
-NOR,Norway,NO02,Innlandet,NO-05,Oppland,0.485696,partial_overlap,nuts2024-overlay,0.975,0.471,NO
-NOR,Norway,NO06,Trøndelag/Trööndelage,NO-50,Trøndelag,0.968247,edgar_unit_split,nuts2024-overlay,0.981,0.972,NO
-NOR,Norway,NO06,Trøndelag/Trööndelage,NO-15,Møre og Romsdal,0.031753,partial_overlap,nuts2024-overlay,0.062,0.022,NO
-NOR,Norway,NO07,Nord-Norge,NO-18,Nordland,0.494241,edgar_unit_split,nuts2024-overlay,0.97,0.333,NO
-NOR,Norway,NO07,Nord-Norge,NO-19,Troms,0.34554,edgar_unit_split,nuts2024-overlay,0.985,0.227,NO
-NOR,Norway,NO07,Nord-Norge,NO-20,Finnmark,0.160219,edgar_unit_split,nuts2024-overlay,0.988,0.428,NO
-NOR,Norway,NO08,Oslo og Viken,NO-03,Oslo,0.361366,edgar_unit_split,nuts2024-overlay,0.992,0.018,NO
-NOR,Norway,NO08,Oslo og Viken,NO-02,Akershus,0.331791,edgar_unit_split,nuts2024-overlay,0.992,0.196,NO
-NOR,Norway,NO08,Oslo og Viken,NO-01,Østfold,0.154586,edgar_unit_split,nuts2024-overlay,0.984,0.166,NO
-NOR,Norway,NO08,Oslo og Viken,NO-06,Buskerud,0.150044,edgar_unit_split,nuts2024-overlay,0.993,0.591,NO
-NOR,Norway,NO08,Oslo og Viken,NO-05,Oppland,0.002213,partial_overlap,nuts2024-overlay,0.022,0.022,NO
-NOR,Norway,NO09,Agder og Sør-Østlandet,NO-07,Vestfold,0.342776,edgar_unit_split,nuts2024-overlay,0.951,0.063,NO
-NOR,Norway,NO09,Agder og Sør-Østlandet,NO-10,Vest-Agder,0.252116,edgar_unit_split,nuts2024-overlay,0.977,0.214,NO
-NOR,Norway,NO09,Agder og Sør-Østlandet,NO-08,Telemark,0.243562,edgar_unit_split,nuts2024-overlay,0.993,0.449,NO
-NOR,Norway,NO09,Agder og Sør-Østlandet,NO-09,Aust-Agder,0.161546,edgar_unit_split,nuts2024-overlay,0.991,0.27,NO
-NOR,Norway,NO0A,Vestlandet,NO-12,Hordaland,0.392687,edgar_unit_split,nuts2024-overlay,0.98,0.266,NO
-NOR,Norway,NO0A,Vestlandet,NO-11,Rogaland,0.363388,edgar_unit_split,nuts2024-overlay,0.975,0.157,NO
-NOR,Norway,NO0A,Vestlandet,NO-15,Møre og Romsdal,0.165076,partial_overlap,nuts2024-overlay,0.915,0.242,NO
-NOR,Norway,NO0A,Vestlandet,NO-14,Sogn og Fjordane,0.078849,edgar_unit_split,nuts2024-overlay,0.982,0.319,NO
-NOR,Norway,NO0B,"",,,,no_model_region,not modelled (French overseas regions; Svalbard and Jan Mayen),,,
-POL,Poland,PL21,Małopolskie,PL-12,Małopolskie,1,identity,nuts2024-overlay,0.999,0.997,PL
-POL,Poland,PL22,Śląskie,PL-24,Śląskie,1,identity,nuts2024-overlay,0.998,0.996,PL
-POL,Poland,PL41,Wielkopolskie,PL-30,Wielkopolskie,1,identity,nuts2024-overlay,0.999,0.999,PL
-POL,Poland,PL42,Zachodniopomorskie,PL-32,Zachodniopomorskie,1,identity,nuts2024-overlay,0.981,0.998,PL
-POL,Poland,PL43,Lubuskie,PL-08,Lubuskie,1,identity,nuts2024-overlay,0.998,0.998,PL
-POL,Poland,PL51,Dolnośląskie,PL-02,Dolnośląskie,1,identity,nuts2024-overlay,0.999,0.997,PL
-POL,Poland,PL52,Opolskie,PL-16,Opolskie,1,identity,nuts2024-overlay,0.998,0.997,PL
-POL,Poland,PL61,Kujawsko-pomorskie,PL-04,Kujawsko-pomorskie,1,identity,nuts2024-overlay,0.999,0.999,PL
-POL,Poland,PL62,Warmińsko-mazurskie,PL-28,Warmińsko-mazurskie,1,identity,nuts2024-overlay,0.992,0.998,PL
-POL,Poland,PL63,Pomorskie,PL-22,Pomorskie,1,identity,nuts2024-overlay,0.991,0.998,PL
-POL,Poland,PL71,Łódzkie,PL-10,Łódzkie,1,identity,nuts2024-overlay,0.999,0.999,PL
-POL,Poland,PL72,Świętokrzyskie,PL-26,Świętokrzyskie,1,identity,nuts2024-overlay,0.998,0.998,PL
-POL,Poland,PL81,Lubelskie,PL-06,Lubelskie,1,identity,nuts2024-overlay,0.999,0.997,PL
-POL,Poland,PL82,Podkarpackie,PL-18,Podkarpackie,1,identity,nuts2024-overlay,0.999,0.997,PL
-POL,Poland,PL84,Podlaskie,PL-20,Podlaskie,1,identity,nuts2024-overlay,0.999,0.997,PL
-POL,Poland,PL91,Warszawski stołeczny,PL-14,Mazowieckie,1,edgar_units_merged,nuts2024-overlay,0.172,1,PL
-POL,Poland,PL92,Mazowiecki regionalny,PL-14,Mazowieckie,1,edgar_units_merged,nuts2024-overlay,0.827,0.999,PL
-PRT,Portugal,PT11,Norte,PT11,North,1,identity,nuts2024-overlay,0.999,0.938,PT
-PRT,Portugal,PT15,Algarve,PT15,Algarve,1,identity,nuts2024-overlay,0.996,0.994,PT
-PRT,Portugal,PT19,Centro (PT),PT19,Centro (PT),1,identity,nuts2024-overlay,1,1,PT
-PRT,Portugal,PT1A,"Grande Lisboa
-",PT1A,Grande Lisboa,1,identity,nuts2024-overlay,1,1,PT
-PRT,Portugal,PT1B,"Península de Setúbal
-",PT1B,Península de Setúbal,1,identity,nuts2024-overlay,1,1,PT
-PRT,Portugal,PT1C,Alentejo,PT1C,Alentejo,1,identity,nuts2024-overlay,1,1,PT
-PRT,Portugal,PT1D,"Oeste e Vale do Tejo
-",PT1D,Oeste e Vale do Tejo,1,identity,nuts2024-overlay,1,1,PT
-PRT,Portugal,PT20,Região Autónoma dos Açores,PT20,Região Autónoma dos Açores,1,identity,nuts2024-overlay,0.987,0.987,PT
-PRT,Portugal,PT30,Região Autónoma da Madeira,PT30,Região Autónoma da Madeira,1,identity,nuts2024-overlay,0.988,0.987,PT
-REU,Réunion,FRY4,La Réunion,,,,no_model_region,not modelled (French overseas regions; Svalbard and Jan Mayen),,,
-ROU,Romania,RO11,Nord-Vest,RO11,Nord-Vest,1,identity,nuts2024-overlay,0.998,0.998,RO
-ROU,Romania,RO12,Centru,RO12,Centru,1,identity,nuts2024-overlay,0.998,0.998,RO
-ROU,Romania,RO21,Nord-Est,RO21,Nord-Est,1,identity,nuts2024-overlay,0.998,0.998,RO
-ROU,Romania,RO22,Sud-Est,RO22,Sud-Est,1,identity,nuts2024-overlay,0.998,0.997,RO
-ROU,Romania,RO31,Sud-Muntenia,RO31,Sud-Muntenia,1,identity,nuts2024-overlay,0.997,0.997,RO
-ROU,Romania,RO32,Bucureşti-Ilfov,RO32,București-Ilfov,1,identity,nuts2024-overlay,0.988,0.989,RO
-ROU,Romania,RO41,Sud-Vest Oltenia,RO41,Sud-Vest Oltenia,1,identity,nuts2024-overlay,0.997,0.997,RO
-ROU,Romania,RO42,Vest,RO42,Vest,1,identity,nuts2024-overlay,0.998,0.998,RO
-SVK,Slovakia,SK01,Bratislavský kraj,SK01,Bratislava Region,0.987963,edgar_unit_split,nuts2024-overlay,0.981,0.966,SK
-SVK,Slovakia,SK01,Bratislavský kraj,SK02,Západné Slovensko,0.012037,partial_overlap,nuts2024-overlay,0.004,0.029,SK
-SVK,Slovakia,SK02,Západné Slovensko,SK02,Západné Slovensko,1,edgar_units_merged,nuts2024-overlay,0.989,0.986,SK
-SVK,Slovakia,SK03,Stredné Slovensko,SK03,Stredné Slovensko,1,identity,nuts2024-overlay,0.984,0.993,SK
-SVK,Slovakia,SK04,Východné Slovensko,SK04,Východné Slovensko,1,identity,nuts2024-overlay,0.991,0.992,SK
-SVN,Slovenia,SI03,Vzhodna Slovenija,SI032,Podravska statistična regija,0.302837,edgar_unit_split,nuts2024-overlay,0.998,0.171,SI
-SVN,Slovenia,SI03,Vzhodna Slovenija,SI034,Savinjska statistična regija,0.243187,edgar_unit_split,nuts2024-overlay,0.99,0.191,SI
-SVN,Slovenia,SI03,Vzhodna Slovenija,SI037,Jugovzhodna Slovenija statistična regija,0.135875,edgar_unit_split,nuts2024-overlay,0.978,0.207,SI
-SVN,Slovenia,SI03,Vzhodna Slovenija,SI031,Pomurska statistična regija,0.102232,edgar_unit_split,nuts2024-overlay,0.987,0.103,SI
-SVN,Slovenia,SI03,Vzhodna Slovenija,SI036,Spodnjeposavska statistična regija,0.065392,edgar_unit_split,nuts2024-overlay,0.996,0.069,SI
-SVN,Slovenia,SI03,Vzhodna Slovenija,SI033,Koroška statistična regija,0.065009,edgar_unit_split,nuts2024-overlay,0.989,0.083,SI
-SVN,Slovenia,SI03,Vzhodna Slovenija,SI038,Primorsko-notranjska statistična regija,0.04755,edgar_unit_split,nuts2024-overlay,0.949,0.111,SI
-SVN,Slovenia,SI03,Vzhodna Slovenija,SI035,Zasavska statistična regija,0.037917,edgar_unit_split,nuts2024-overlay,0.982,0.021,SI
-SVN,Slovenia,SI04,Zahodna Slovenija,SI041,Osrednjeslovenska statistična regija,0.558793,edgar_unit_split,nuts2024-overlay,0.907,0.294,SI
-SVN,Slovenia,SI04,Zahodna Slovenija,SI042,Gorenjska statistična regija,0.212051,edgar_unit_split,nuts2024-overlay,0.996,0.269,SI
-SVN,Slovenia,SI04,Zahodna Slovenija,SI044,Obalno-kraška statistična regija,0.114657,edgar_unit_split,nuts2024-overlay,0.976,0.118,SI
-SVN,Slovenia,SI04,Zahodna Slovenija,SI043,Goriška statistična regija,0.114499,edgar_unit_split,nuts2024-overlay,0.986,0.286,SI
-SWE,Sweden,SE11,Stockholm,SE11,Stockholm,1,identity,nuts2024-overlay,0.949,0.968,SE
-SWE,Sweden,SE12,Östra Mellansverige,SE12,Östra Mellansverige,1,identity,nuts2024-overlay,0.99,0.992,SE
-SWE,Sweden,SE21,Småland med öarna,SE21,Småland med öarna,0.948269,edgar_unit_split,nuts2024-overlay,0.99,0.971,SE
-SWE,Sweden,SE21,Småland med öarna,SE23,Västsverige,0.051731,partial_overlap,nuts2024-overlay,0.023,0.022,SE
-SWE,Sweden,SE22,Sydsverige,SE22,Sydsverige,1,identity,nuts2024-overlay,0.994,0.986,SE
-SWE,Sweden,SE23,Västsverige,SE23,Västsverige,1,edgar_units_merged,nuts2024-overlay,0.968,0.991,SE
-SWE,Sweden,SE31,Norra Mellansverige,SE31,Norra Mellansverige,1,identity,nuts2024-overlay,0.995,0.995,SE
-SWE,Sweden,SE32,Mellersta Norrland,SE32,Mellersta Norrland,1,identity,nuts2024-overlay,0.996,0.995,SE
-SWE,Sweden,SE33,Övre Norrland,SE33,Övre Norrland,1,identity,nuts2024-overlay,0.996,0.997,SE
-TUR,Türkiye,TR10,İstanbul,TR1,Istanbul,0.995398,edgar_unit_split,nuts2024-overlay,0.995,0.866,TR
-TUR,Türkiye,TR10,İstanbul,TR2,West Marmara,0.002509,partial_overlap,nuts2024-overlay,0.011,0.091,TR
-TUR,Türkiye,TR10,İstanbul,TR4,East Marmara,0.002093,partial_overlap,nuts2024-overlay,0.004,0.039,TR
-TUR,Türkiye,TR21,"Tekirdağ, Edirne, Kırklareli",TR2,West Marmara,1,edgar_units_merged,nuts2024-overlay,0.428,0.994,TR
-TUR,Türkiye,TR22,"Balıkesir, Çanakkale",TR2,West Marmara,1,edgar_units_merged,nuts2024-overlay,0.549,0.981,TR
-TUR,Türkiye,TR31,İzmir,TR3,Aegean,1,edgar_units_merged,nuts2024-overlay,0.133,0.991,TR
-TUR,Türkiye,TR32,"Aydın, Denizli, Muğla",TR3,Aegean,0.980731,partial_overlap,nuts2024-overlay,0.356,0.976,TR
-TUR,Türkiye,TR32,"Aydın, Denizli, Muğla",TR6,Mediterranean,0.019269,partial_overlap,nuts2024-overlay,0.008,0.021,TR
-TUR,Türkiye,TR33,"Manisa, Afyonkarahisar, Kütahya, Uşak",TR3,Aegean,1,edgar_units_merged,nuts2024-overlay,0.489,0.982,TR
-TUR,Türkiye,TR41,"Bursa, Eskişehir, Bilecik",TR4,East Marmara,1,edgar_units_merged,nuts2024-overlay,0.57,0.974,TR
-TUR,Türkiye,TR42,"Kocaeli, Sakarya, Düzce, Bolu, Yalova",TR4,East Marmara,1,edgar_units_merged,nuts2024-overlay,0.39,0.975,TR
-TUR,Türkiye,TR51,Ankara,TR5,West Anatolia,0.953255,partial_overlap,nuts2024-overlay,0.323,0.945,TR
-TUR,Türkiye,TR51,Ankara,TR4,East Marmara,0.046745,partial_overlap,nuts2024-overlay,0.017,0.033,TR
-TUR,Türkiye,TR52,"Konya, Karaman",TR5,West Anatolia,0.97849,partial_overlap,nuts2024-overlay,0.63,0.955,TR
-TUR,Türkiye,TR52,"Konya, Karaman",TR6,Mediterranean,0.02151,partial_overlap,nuts2024-overlay,0.012,0.022,TR
-TUR,Türkiye,TR61,"Antalya, Isparta, Burdur",TR6,Mediterranean,1,edgar_units_merged,nuts2024-overlay,0.388,0.975,TR
-TUR,Türkiye,TR62,"Adana, Mersin",TR6,Mediterranean,1,edgar_units_merged,nuts2024-overlay,0.316,0.974,TR
-TUR,Türkiye,TR63,"Hatay, Kahramanmaraş, Osmaniye",TR6,Mediterranean,0.97621,partial_overlap,nuts2024-overlay,0.246,0.974,TR
-TUR,Türkiye,TR63,"Hatay, Kahramanmaraş, Osmaniye",TRC,Southeast Anatolia,0.02379,partial_overlap,nuts2024-overlay,0.006,0.022,TR
-TUR,Türkiye,TR71,"Kırıkkale, Aksaray, Niğde, Nevşehir, Kırşehir",TR7,Central Anatolia,0.850645,partial_overlap,nuts2024-overlay,0.331,0.922,TR
-TUR,Türkiye,TR71,"Kırıkkale, Aksaray, Niğde, Nevşehir, Kırşehir",TR5,West Anatolia,0.149355,partial_overlap,nuts2024-overlay,0.028,0.065,TR
-TUR,Türkiye,TR72,"Kayseri, Sivas, Yozgat",TR7,Central Anatolia,0.939924,partial_overlap,nuts2024-overlay,0.637,0.961,TR
-TUR,Türkiye,TR72,"Kayseri, Sivas, Yozgat",TR6,Mediterranean,0.060076,partial_overlap,nuts2024-overlay,0.017,0.026,TR
-TUR,Türkiye,TR81,"Zonguldak, Karabük, Bartın",TR8,West Black Sea,1,edgar_units_merged,nuts2024-overlay,0.129,0.98,TR
-TUR,Türkiye,TR82,"Kastamonu, Çankırı, Sinop",TR8,West Black Sea,1,edgar_units_merged,nuts2024-overlay,0.353,0.993,TR
-TUR,Türkiye,TR83,"Samsun, Tokat, Çorum, Amasya",TR8,West Black Sea,1,edgar_units_merged,nuts2024-overlay,0.502,0.981,TR
-TUR,Türkiye,TR90,"Trabzon, Ordu, Giresun, Rize, Artvin, Gümüşhane",TR9,East Black Sea,1,edgar_units_merged,nuts2024-overlay,0.957,0.968,TR
-TUR,Türkiye,TRA1,"Erzurum, Erzincan, Bayburt",TRA,Northeast Anatolia,0.946009,partial_overlap,nuts2024-overlay,0.555,0.944,TR
-TUR,Türkiye,TRA1,"Erzurum, Erzincan, Bayburt",TR9,East Black Sea,0.053991,partial_overlap,nuts2024-overlay,0.03,0.027,TR
-TUR,Türkiye,TRA2,"Ağrı, Kars, Iğdır, Ardahan",TRA,Northeast Anatolia,0.956037,partial_overlap,nuts2024-overlay,0.423,0.969,TR
-TUR,Türkiye,TRA2,"Ağrı, Kars, Iğdır, Ardahan",TRB,Central East Anatolia,0.043963,partial_overlap,nuts2024-overlay,0.01,0.028,TR
-TUR,Türkiye,TRB1,"Malatya, Elazığ, Bingöl, Tunceli",TRB,Central East Anatolia,0.937421,partial_overlap,nuts2024-overlay,0.436,0.946,TR
-TUR,Türkiye,TRB1,"Malatya, Elazığ, Bingöl, Tunceli",TRC,Southeast Anatolia,0.062579,partial_overlap,nuts2024-overlay,0.012,0.026,TR
-TUR,Türkiye,TRB2,"Van, Muş, Bitlis, Hakkari",TRB,Central East Anatolia,0.916238,partial_overlap,nuts2024-overlay,0.527,0.955,TR
-TUR,Türkiye,TRB2,"Van, Muş, Bitlis, Hakkari",TRC,Southeast Anatolia,0.083762,partial_overlap,nuts2024-overlay,0.02,0.036,TR
-TUR,Türkiye,TRC1,"Gaziantep, Adıyaman, Kilis",TRC,Southeast Anatolia,1,edgar_units_merged,nuts2024-overlay,0.191,0.963,TR
-TUR,Türkiye,TRC2,"Şanlıurfa, Diyarbakır",TRC,Southeast Anatolia,1,edgar_units_merged,nuts2024-overlay,0.433,0.993,TR
-TUR,Türkiye,TRC3,"Mardin, Batman, Şırnak, Siirt",TRC,Southeast Anatolia,1,edgar_units_merged,nuts2024-overlay,0.33,0.991,TR
-UKR,Ukraine,UA11,Poltava,UA-53,Poltavska oblast,1,identity,explicit-table,,,UA
-UKR,Ukraine,UA12,Sumy,UA-59,Sumska oblast,1,identity,explicit-table,,,UA
-UKR,Ukraine,UA13,Kharkiv,UA-63,Kharkivska oblast,1,identity,explicit-table,,,UA
-UKR,Ukraine,UA14,Chernihiv,UA-74,Chernihivska oblast,1,identity,explicit-table,,,UA
-UKR,Ukraine,UA21,Donets'k,UA-14,Donetska oblast,1,identity,explicit-table,,,UA
-UKR,Ukraine,UA22,Luhans'k,UA-09,Luhanska oblast,1,identity,explicit-table,,,UA
-UKR,Ukraine,UA31,Dnipropetrovs'k,UA-12,Dnipropetrovska oblast,1,identity,explicit-table,,,UA
-UKR,Ukraine,UA32,Zaporizhia,UA-23,Zaporizka oblast,1,identity,explicit-table,,,UA
-UKR,Ukraine,UA33,Kirovohrad,UA-35,Kirovohradska oblast,1,identity,explicit-table,,,UA
-UKR,Ukraine,UA41,Mykolayiv,UA-48,Mykolaivska oblast,1,identity,explicit-table,,,UA
-UKR,Ukraine,UA42,Odessa,UA-51,Odeska oblast,1,identity,explicit-table,,,UA
-UKR,Ukraine,UA43,Kherson,UA-65,Khersonska oblast,1,identity,explicit-table,,,UA
-UKR,Ukraine,UA44,Crimea,UA-43,Avtonomna Respublika Krym,1,identity,explicit-table,,,UA
-UKR,Ukraine,UA45,Sevastopol',UA-40,Sevastopol,1,identity,explicit-table,,,UA
-UKR,Ukraine,UA51,Vinnytsya,UA-05,Vinnytska oblast,1,identity,explicit-table,,,UA
-UKR,Ukraine,UA52,Ternopil,UA-61,Ternopilska oblast,1,identity,explicit-table,,,UA
-UKR,Ukraine,UA53,Khmel'nyts'kyy,UA-68,Khmelnytska oblast,1,identity,explicit-table,,,UA
-UKR,Ukraine,UA61,Kiev,UA-32,Kyivska oblast,1,identity,explicit-table,,,UA
-UKR,Ukraine,UA62,Cherkasy,UA-71,Cherkaska oblast,1,identity,explicit-table,,,UA
-UKR,Ukraine,UA63,Kiev City,UA-30,Kyiv,1,identity,explicit-table,,,UA
-UKR,Ukraine,UA71,Zakarpattia,UA-21,Zakarpatska oblast,1,identity,explicit-table,,,UA
-UKR,Ukraine,UA72,Ivano-Frankivs'k,UA-26,Ivano-Frankivska oblast,1,identity,explicit-table,,,UA
-UKR,Ukraine,UA73,L'viv,UA-46,Lvivska oblast,1,identity,explicit-table,,,UA
-UKR,Ukraine,UA74,Chernivtsi,UA-77,Chernivetska oblast,1,identity,explicit-table,,,UA
-UKR,Ukraine,UA81,Volyn,UA-07,Volynska oblast,1,identity,explicit-table,,,UA
-UKR,Ukraine,UA82,Zhytomyr,UA-18,Zhytomyrska oblast,1,identity,explicit-table,,,UA
-UKR,Ukraine,UA83,Rivne,UA-56,Rivnenska oblast,1,identity,explicit-table,,,UA
-USA,United States,USA.10_1,Florida,US-FL,Florida,1,identity,gadm36-id,,,US
-USA,United States,USA.11_1,Georgia,US-GA,Georgia,1,identity,gadm36-id,,,US
-USA,United States,USA.12_1,Hawaii,US-HI,Hawaii,1,identity,gadm36-id,,,US
-USA,United States,USA.13_1,Idaho,US-ID,Idaho,1,identity,gadm36-id,,,US
-USA,United States,USA.14_1,Illinois,US-IL,Illinois,1,identity,gadm36-id,,,US
-USA,United States,USA.15_1,Indiana,US-IN,Indiana,1,identity,gadm36-id,,,US
-USA,United States,USA.16_1,Iowa,US-IA,Iowa,1,identity,gadm36-id,,,US
-USA,United States,USA.17_1,Kansas,US-KS,Kansas,1,identity,gadm36-id,,,US
-USA,United States,USA.18_1,Kentucky,US-KY,Kentucky,1,identity,gadm36-id,,,US
-USA,United States,USA.19_1,Louisiana,US-LA,Louisiana,1,identity,gadm36-id,,,US
-USA,United States,USA.1_1,Alabama,US-AL,Alabama,1,identity,gadm36-id,,,US
-USA,United States,USA.20_1,Maine,US-ME,Maine,1,identity,gadm36-id,,,US
-USA,United States,USA.21_1,Maryland,US-MD,Maryland,1,identity,gadm36-id,,,US
-USA,United States,USA.22_1,Massachusetts,US-MA,Massachusetts,1,identity,gadm36-id,,,US
-USA,United States,USA.23_1,Michigan,US-MI,Michigan,1,identity,gadm36-id,,,US
-USA,United States,USA.24_1,Minnesota,US-MN,Minnesota,1,identity,gadm36-id,,,US
-USA,United States,USA.25_1,Mississippi,US-MS,Mississippi,1,identity,gadm36-id,,,US
-USA,United States,USA.26_1,Missouri,US-MO,Missouri,1,identity,gadm36-id,,,US
-USA,United States,USA.27_1,Montana,US-MT,Montana,1,identity,gadm36-id,,,US
-USA,United States,USA.28_1,Nebraska,US-NE,Nebraska,1,identity,gadm36-id,,,US
-USA,United States,USA.29_1,Nevada,US-NV,Nevada,1,identity,gadm36-id,,,US
-USA,United States,USA.2_1,Alaska,US-AK,Alaska,1,identity,gadm36-id,,,US
-USA,United States,USA.30_1,New Hampshire,US-NH,New Hampshire,1,identity,gadm36-id,,,US
-USA,United States,USA.31_1,New Jersey,US-NJ,New Jersey,1,identity,gadm36-id,,,US
-USA,United States,USA.32_1,New Mexico,US-NM,New Mexico,1,identity,gadm36-id,,,US
-USA,United States,USA.33_1,New York,US-NY,New York,1,identity,gadm36-id,,,US
-USA,United States,USA.34_1,North Carolina,US-NC,North Carolina,1,identity,gadm36-id,,,US
-USA,United States,USA.35_1,North Dakota,US-ND,North Dakota,1,identity,gadm36-id,,,US
-USA,United States,USA.36_1,Ohio,US-OH,Ohio,1,identity,gadm36-id,,,US
-USA,United States,USA.37_1,Oklahoma,US-OK,Oklahoma,1,identity,gadm36-id,,,US
-USA,United States,USA.38_1,Oregon,US-OR,Oregon,1,identity,gadm36-id,,,US
-USA,United States,USA.39_1,Pennsylvania,US-PA,Pennsylvania,1,identity,gadm36-id,,,US
-USA,United States,USA.3_1,Arizona,US-AZ,Arizona,1,identity,gadm36-id,,,US
-USA,United States,USA.40_1,Rhode Island,US-RI,Rhode Island,1,identity,gadm36-id,,,US
-USA,United States,USA.41_1,South Carolina,US-SC,South Carolina,1,identity,gadm36-id,,,US
-USA,United States,USA.42_1,South Dakota,US-SD,South Dakota,1,identity,gadm36-id,,,US
-USA,United States,USA.43_1,Tennessee,US-TN,Tennessee,1,identity,gadm36-id,,,US
-USA,United States,USA.44_1,Texas,US-TX,Texas,1,identity,gadm36-id,,,US
-USA,United States,USA.45_1,Utah,US-UT,Utah,1,identity,gadm36-id,,,US
-USA,United States,USA.46_1,Vermont,US-VT,Vermont,1,identity,gadm36-id,,,US
-USA,United States,USA.47_1,Virginia,US-VA,Virginia,1,identity,gadm36-id,,,US
-USA,United States,USA.48_1,Washington,US-WA,Washington,1,identity,gadm36-id,,,US
-USA,United States,USA.49_1,West Virginia,US-WV,West Virginia,1,identity,gadm36-id,,,US
-USA,United States,USA.4_1,Arkansas,US-AR,Arkansas,1,identity,gadm36-id,,,US
-USA,United States,USA.50_1,Wisconsin,US-WI,Wisconsin,1,identity,gadm36-id,,,US
-USA,United States,USA.51_1,Wyoming,US-WY,Wyoming,1,identity,gadm36-id,,,US
-USA,United States,USA.5_1,California,US-CA,California,1,identity,gadm36-id,,,US
-USA,United States,USA.6_1,Colorado,US-CO,Colorado,1,identity,gadm36-id,,,US
-USA,United States,USA.7_1,Connecticut,US-CT,Connecticut,1,identity,gadm36-id,,,US
-USA,United States,USA.8_1,Delaware,US-DE,Delaware,1,identity,gadm36-id,,,US
-USA,United States,USA.9_1,District of Columbia,US-DC,District of Columbia,1,identity,gadm36-id,,,US
+edgar_iso3,edgar_code,edgar_name,mergekey,model_region_name,iso_3166,weight,method
+ALB,AL01,Veri,AL01,Northern Albania,AL,1,nuts2024-overlay
+ALB,AL02,Qender,AL02,Central Albania,AL,0.9894743288462684,nuts2024-overlay
+ALB,AL02,Qender,AL01,Northern Albania,AL,0.010525671153731684,nuts2024-overlay
+ALB,AL03,Jug,AL03,Southern Albania,AL,1,nuts2024-overlay
+AUT,AT11,Burgenland,AT-1,Burgenland,AT,1,nuts2024-overlay
+AUT,AT12,Niederösterreich,AT-3,Niederösterreich,AT,1,nuts2024-overlay
+AUT,AT13,Wien,AT-9,Wien,AT,1,nuts2024-overlay
+AUT,AT21,Kärnten,AT-2,Kärnten,AT,1,nuts2024-overlay
+AUT,AT22,Steiermark,AT-6,Steiermark,AT,1,nuts2024-overlay
+AUT,AT31,Oberösterreich,AT-4,Oberösterreich,AT,1,nuts2024-overlay
+AUT,AT32,Salzburg,AT-5,Salzburg,AT,1,nuts2024-overlay
+AUT,AT33,Tirol,AT-7,Tirol,AT,1,nuts2024-overlay
+AUT,AT34,Vorarlberg,AT-8,Vorarlberg,AT,1,nuts2024-overlay
+BEL,BE10,Région de Bruxelles-Capitale/ Brussels Hoofdstedelijk Gewest,BE-BRU,Brussels Hoofdstedelijk Gewest,BE,0.9943791301553043,nuts2024-overlay
+BEL,BE10,Région de Bruxelles-Capitale/ Brussels Hoofdstedelijk Gewest,BE-VBR,Vlaams-Brabant,BE,0.005620869844695711,nuts2024-overlay
+BEL,BE21,Prov. Antwerpen,BE-VAN,Antwerpen,BE,1,nuts2024-overlay
+BEL,BE22,Prov. Limburg (BE),BE-VLI,Limburg,BE,1,nuts2024-overlay
+BEL,BE23,Prov. Oost-Vlaanderen,BE-VOV,Oost-Vlaanderen,BE,1,nuts2024-overlay
+BEL,BE24,Prov. Vlaams-Brabant,BE-VBR,Vlaams-Brabant,BE,1,nuts2024-overlay
+BEL,BE25,Prov. West-Vlaanderen,BE-VWV,West-Vlaanderen,BE,1,nuts2024-overlay
+BEL,BE31,Prov. Brabant wallon,BE-WBR,Brabant wallon,BE,0.9513363657449065,nuts2024-overlay
+BEL,BE31,Prov. Brabant wallon,BE-VBR,Vlaams-Brabant,BE,0.048663634255093464,nuts2024-overlay
+BEL,BE32,Prov. Hainaut,BE-WHT,Hainaut,BE,1,nuts2024-overlay
+BEL,BE33,Prov. Liège,BE-WLG,Liège,BE,1,nuts2024-overlay
+BEL,BE34,Prov. Luxembourg (BE),BE-WLX,Luxembourg,BE,1,nuts2024-overlay
+BEL,BE35,Prov. Namur,BE-WNA,Namur,BE,1,nuts2024-overlay
+BGR,BG31,Severozapaden,BG31,Severozapaden,BG,1,nuts2024-overlay
+BGR,BG32,Severen tsentralen,BG32,Severen tsentralen,BG,1,nuts2024-overlay
+BGR,BG33,Severoiztochen,BG33,Severoiztochen,BG,1,nuts2024-overlay
+BGR,BG34,Yugoiztochen,BG34,Yugoiztochen,BG,1,nuts2024-overlay
+BGR,BG41,Yugozapaden,BG41,Yugozapaden,BG,1,nuts2024-overlay
+BGR,BG42,Yuzhen tsentralen,BG42,Yuzhen tsentralen,BG,1,nuts2024-overlay
+CHE,CH01,Région lémanique,CH-VD,Vaud,CH,0.48642307185584455,nuts2024-overlay
+CHE,CH01,Région lémanique,CH-GE,Genève,CH,0.29967755530805684,nuts2024-overlay
+CHE,CH01,Région lémanique,CH-VS,Valais,CH,0.2138993728360987,nuts2024-overlay
+CHE,CH02,Espace Mittelland,CH-BE,Bern,CH,0.550098804980435,nuts2024-overlay
+CHE,CH02,Espace Mittelland,CH-FR,Fribourg,CH,0.17819336756994386,nuts2024-overlay
+CHE,CH02,Espace Mittelland,CH-SO,Solothurn,CH,0.13768652319765806,nuts2024-overlay
+CHE,CH02,Espace Mittelland,CH-NE,Neuchâtel,CH,0.09588268287060396,nuts2024-overlay
+CHE,CH02,Espace Mittelland,CH-JU,Jura,CH,0.03813862138135909,nuts2024-overlay
+CHE,CH03,Nordwestschweiz,CH-AG,Aargau,CH,0.5948305080973041,nuts2024-overlay
+CHE,CH03,Nordwestschweiz,CH-BL,Basel-Landschaft,CH,0.25403706357925304,nuts2024-overlay
+CHE,CH03,Nordwestschweiz,CH-BS,Basel-Stadt,CH,0.15113242832344284,nuts2024-overlay
+CHE,CH04,Zürich,CH-ZH,Zürich,CH,1,nuts2024-overlay
+CHE,CH05,Ostschweiz,CH-SG,St. Gallen,CH,0.43367132438646716,nuts2024-overlay
+CHE,CH05,Ostschweiz,CH-TG,Thurgau,CH,0.23186945270518194,nuts2024-overlay
+CHE,CH05,Ostschweiz,CH-GR,Graubünden,CH,0.17807427073639973,nuts2024-overlay
+CHE,CH05,Ostschweiz,CH-SH,Schaffhausen,CH,0.06287498990794695,nuts2024-overlay
+CHE,CH05,Ostschweiz,CH-AR,Appenzell Ausserrhoden,CH,0.045505369716433305,nuts2024-overlay
+CHE,CH05,Ostschweiz,CH-GL,Glarus,CH,0.03327171368764808,nuts2024-overlay
+CHE,CH05,Ostschweiz,CH-AI,Appenzell Innerrhoden,CH,0.0147328788599228,nuts2024-overlay
+CHE,CH06,Zentralschweiz,CH-LU,Luzern,CH,0.5039989394520554,nuts2024-overlay
+CHE,CH06,Zentralschweiz,CH-SZ,Schwyz,CH,0.2006101549151322,nuts2024-overlay
+CHE,CH06,Zentralschweiz,CH-ZG,Zug,CH,0.15102670978881721,nuts2024-overlay
+CHE,CH06,Zentralschweiz,CH-NW,Nidwalden,CH,0.051886839174153473,nuts2024-overlay
+CHE,CH06,Zentralschweiz,CH-OW,Obwalden,CH,0.048180975154113084,nuts2024-overlay
+CHE,CH06,Zentralschweiz,CH-UR,Uri,CH,0.04429638151572854,nuts2024-overlay
+CHE,CH07,Ticino,CH-TI,Ticino,CH,1,nuts2024-overlay
+CYP,CY00,Kýpros,CY-NC,Northern Cyprus,CY,0.2840942557409895,nuts2024-overlay
+CYP,CY00,Kýpros,CY-01,Lefkosia,CY,0.2642708210232573,nuts2024-overlay
+CYP,CY00,Kýpros,CY-02,Lemesos,CY,0.20667143039622077,nuts2024-overlay
+CYP,CY00,Kýpros,CY-03,Larnaka,CY,0.11813064165285518,nuts2024-overlay
+CYP,CY00,Kýpros,CY-05,Pafos,CY,0.08933082599836105,nuts2024-overlay
+CYP,CY00,Kýpros,CY-04,Ammochostos,CY,0.03750202518831621,nuts2024-overlay
+CZE,CZ01,Praha,CZ-10,"Praha, Hlavní město",CZ,0.995249443247764,nuts2024-overlay
+CZE,CZ01,Praha,CZ-20,Středočeský kraj,CZ,0.004750556752236077,nuts2024-overlay
+CZE,CZ02,Střední Čechy,CZ-20,Středočeský kraj,CZ,1,nuts2024-overlay
+CZE,CZ03,Jihozápad,CZ-31,Jihočeský kraj,CZ,0.5167588217931887,nuts2024-overlay
+CZE,CZ03,Jihozápad,CZ-32,Plzeňský kraj,CZ,0.48324117820681145,nuts2024-overlay
+CZE,CZ04,Severozápad,CZ-42,Ústecký kraj,CZ,0.7347556632614265,nuts2024-overlay
+CZE,CZ04,Severozápad,CZ-41,Karlovarský kraj,CZ,0.26524433673857345,nuts2024-overlay
+CZE,CZ05,Severovýchod,CZ-52,Královéhradecký kraj,CZ,0.36936999031296097,nuts2024-overlay
+CZE,CZ05,Severovýchod,CZ-53,Pardubický kraj,CZ,0.34277803911831073,nuts2024-overlay
+CZE,CZ05,Severovýchod,CZ-51,Liberecký kraj,CZ,0.2878519705687284,nuts2024-overlay
+CZE,CZ06,Jihovýchod,CZ-64,Jihomoravský kraj,CZ,0.6951488541209637,nuts2024-overlay
+CZE,CZ06,Jihovýchod,CZ-63,Kraj Vysočina,CZ,0.30485114587903633,nuts2024-overlay
+CZE,CZ07,Střední Morava,CZ-71,Olomoucký kraj,CZ,0.5059409190101862,nuts2024-overlay
+CZE,CZ07,Střední Morava,CZ-72,Zlínský kraj,CZ,0.4643396147913305,nuts2024-overlay
+CZE,CZ07,Střední Morava,CZ-64,Jihomoravský kraj,CZ,0.029719466198483247,nuts2024-overlay
+CZE,CZ08,Moravskoslezsko,CZ-80,Moravskoslezský kraj,CZ,0.9809003053866333,nuts2024-overlay
+CZE,CZ08,Moravskoslezsko,CZ-72,Zlínský kraj,CZ,0.019099694613366698,nuts2024-overlay
+DEU,DE11,Stuttgart,DE-BW,Baden-Württemberg,DE,1,nuts2024-overlay
+DEU,DE12,Karlsruhe,DE-BW,Baden-Württemberg,DE,1,nuts2024-overlay
+DEU,DE13,Freiburg,DE-BW,Baden-Württemberg,DE,1,nuts2024-overlay
+DEU,DE14,Tübingen,DE-BW,Baden-Württemberg,DE,1,nuts2024-overlay
+DEU,DE21,Oberbayern,DE-BY,Bayern,DE,1,nuts2024-overlay
+DEU,DE22,Niederbayern,DE-BY,Bayern,DE,1,nuts2024-overlay
+DEU,DE23,Oberpfalz,DE-BY,Bayern,DE,1,nuts2024-overlay
+DEU,DE24,Oberfranken,DE-BY,Bayern,DE,1,nuts2024-overlay
+DEU,DE25,Mittelfranken,DE-BY,Bayern,DE,1,nuts2024-overlay
+DEU,DE26,Unterfranken,DE-BY,Bayern,DE,1,nuts2024-overlay
+DEU,DE27,Schwaben,DE-BY,Bayern,DE,1,nuts2024-overlay
+DEU,DE30,Berlin,DE-BE,Berlin,DE,1,nuts2024-overlay
+DEU,DE40,Brandenburg,DE-BB,Brandenburg,DE,1,nuts2024-overlay
+DEU,DE50,Bremen,DE-HB,Bremen,DE,0.9949650309650606,nuts2024-overlay
+DEU,DE50,Bremen,DE-NI,Niedersachsen,DE,0.005034969034939415,nuts2024-overlay
+DEU,DE60,Hamburg,DE-HH,Hamburg,DE,1,nuts2024-overlay
+DEU,DE71,Darmstadt,DE-HE,Hessen,DE,1,nuts2024-overlay
+DEU,DE72,Gießen,DE-HE,Hessen,DE,1,nuts2024-overlay
+DEU,DE73,Kassel,DE-HE,Hessen,DE,1,nuts2024-overlay
+DEU,DE80,Mecklenburg-Vorpommern,DE-MV,Mecklenburg-Vorpommern,DE,1,nuts2024-overlay
+DEU,DE91,Braunschweig,DE-NI,Niedersachsen,DE,1,nuts2024-overlay
+DEU,DE92,Hannover,DE-NI,Niedersachsen,DE,1,nuts2024-overlay
+DEU,DE93,Lüneburg,DE-NI,Niedersachsen,DE,1,nuts2024-overlay
+DEU,DE94,Weser-Ems,DE-NI,Niedersachsen,DE,1,nuts2024-overlay
+DEU,DEA1,Düsseldorf,DE-NW,Nordrhein-Westfalen,DE,1,nuts2024-overlay
+DEU,DEA2,Köln,DE-NW,Nordrhein-Westfalen,DE,1,nuts2024-overlay
+DEU,DEA3,Münster,DE-NW,Nordrhein-Westfalen,DE,1,nuts2024-overlay
+DEU,DEA4,Detmold,DE-NW,Nordrhein-Westfalen,DE,1,nuts2024-overlay
+DEU,DEA5,Arnsberg,DE-NW,Nordrhein-Westfalen,DE,1,nuts2024-overlay
+DEU,DEB1,Koblenz,DE-RP,Rheinland-Pfalz,DE,1,nuts2024-overlay
+DEU,DEB3,Rheinhessen-Pfalz,DE-RP,Rheinland-Pfalz,DE,1,nuts2024-overlay
+DEU,DEC0,Saarland,DE-SL,Saarland,DE,1,nuts2024-overlay
+DEU,DED2,Dresden,DE-SN,Sachsen,DE,1,nuts2024-overlay
+DEU,DED4,Chemnitz,DE-SN,Sachsen,DE,1,nuts2024-overlay
+DEU,DED5,Leipzig,DE-SN,Sachsen,DE,1,nuts2024-overlay
+DEU,DEE0,Sachsen-Anhalt,DE-ST,Sachsen-Anhalt,DE,1,nuts2024-overlay
+DEU,DEF0,Schleswig-Holstein,DE-SH,Schleswig-Holstein,DE,1,nuts2024-overlay
+DEU,DEG0,Thüringen,DE-TH,Thüringen,DE,1,nuts2024-overlay
+DNK,DK01,Hovedstaden,DK-84,Hovedstaden,DK,1,nuts2024-overlay
+DNK,DK02,Sjælland,DK-85,Sjælland,DK,1,nuts2024-overlay
+DNK,DK03,Syddanmark,DK-83,Syddanmark,DK,1,nuts2024-overlay
+DNK,DK04,Midtjylland,DK-82,Midtjylland,DK,1,nuts2024-overlay
+DNK,DK05,Nordjylland,DK-81,Nordjylland,DK,1,nuts2024-overlay
+ESP,ES11,Galicia,ES-GA,Galicia,ES,1,nuts2024-overlay
+ESP,ES12,Principado de Asturias,ES-AS,"Asturias, Principado de",ES,1,nuts2024-overlay
+ESP,ES13,Cantabria,ES-CB,Cantabria,ES,1,nuts2024-overlay
+ESP,ES21,País Vasco,ES-PV,País Vasco,ES,1,nuts2024-overlay
+ESP,ES22,Comunidad Foral de Navarra,ES-NC,"Navarra, Comunidad Foral de",ES,1,nuts2024-overlay
+ESP,ES23,La Rioja,ES-RI,La Rioja,ES,1,nuts2024-overlay
+ESP,ES24,Aragón,ES-AR,Aragón,ES,1,nuts2024-overlay
+ESP,ES30,Comunidad de Madrid,ES-MD,"Madrid, Comunidad de",ES,1,nuts2024-overlay
+ESP,ES41,Castilla y León,ES-CL,Castilla y León,ES,1,nuts2024-overlay
+ESP,ES42,Castilla-La Mancha,ES-CM,Castilla-La Mancha,ES,1,nuts2024-overlay
+ESP,ES43,Extremadura,ES-EX,Extremadura,ES,1,nuts2024-overlay
+ESP,ES51,Cataluña,ES-CT,Catalunya,ES,1,nuts2024-overlay
+ESP,ES52,Comunitat Valenciana,ES-VC,"Valenciana, Comunidad",ES,1,nuts2024-overlay
+ESP,ES53,Illes Balears,ES-IB,Illes Balears,ES,1,nuts2024-overlay
+ESP,ES61,Andalucía,ES-AN,Andalucía,ES,1,nuts2024-overlay
+ESP,ES62,Región de Murcia,ES-MC,"Murcia, Región de",ES,1,nuts2024-overlay
+ESP,ES63,Ciudad de Ceuta,ES-CE,Ceuta,ES,1,nuts2024-overlay
+ESP,ES64,Ciudad de Melilla,ES-ML,Melilla,ES,1,nuts2024-overlay
+ESP,ES70,Canarias,ES-CN,Canarias,ES,1,nuts2024-overlay
+EST,EE00,Eesti,EE001,Põhja-Eesti,EE,0.4507982168257711,nuts2024-overlay
+EST,EE00,Eesti,EE008,Lõuna-Eesti,EE,0.221605791531413,nuts2024-overlay
+EST,EE00,Eesti,EE007,Kirde-Eesti,EE,0.12281395051870918,nuts2024-overlay
+EST,EE00,Eesti,EE004,Lääne-Eesti,EE,0.10892647502393726,nuts2024-overlay
+EST,EE00,Eesti,EE006,Kesk-Eesti,EE,0.09585556610016925,nuts2024-overlay
+FIN,FI19,Länsi-Suomi,FI-11,Pirkanmaa,FI,0.37751677545976653,nuts2024-overlay
+FIN,FI19,Länsi-Suomi,FI-08,Keski-Suomi,FI,0.19809147756228512,nuts2024-overlay
+FIN,FI19,Länsi-Suomi,FI-17,Satakunta,FI,0.15718762742050124,nuts2024-overlay
+FIN,FI19,Länsi-Suomi,FI-03,Etelä-Pohjanmaa,FI,0.14016776831798566,nuts2024-overlay
+FIN,FI19,Länsi-Suomi,FI-12,Pohjanmaa,FI,0.12703635123946141,nuts2024-overlay
+FIN,FI1B,Helsinki-Uusimaa,FI-18,Uusimaa,FI,1,nuts2024-overlay
+FIN,FI1C,Etelä-Suomi,FI-19,Varsinais-Suomi,FI,0.40530338048851955,nuts2024-overlay
+FIN,FI1C,Etelä-Suomi,FI-16,Päijät-Häme,FI,0.177431037108819,nuts2024-overlay
+FIN,FI1C,Etelä-Suomi,FI-06,Kanta-Häme,FI,0.15659782799011793,nuts2024-overlay
+FIN,FI1C,Etelä-Suomi,FI-09,Kymenlaakso,FI,0.15173986519545876,nuts2024-overlay
+FIN,FI1C,Etelä-Suomi,FI-02,Etelä-Karjala,FI,0.10892788921708471,nuts2024-overlay
+FIN,FI1D,Pohjois- ja Itä-Suomi,FI-14,Pohjois-Pohjanmaa,FI,0.3221674631568606,nuts2024-overlay
+FIN,FI1D,Pohjois- ja Itä-Suomi,FI-15,Pohjois-Savo,FI,0.19060669869297459,nuts2024-overlay
+FIN,FI1D,Pohjois- ja Itä-Suomi,FI-10,Lappi,FI,0.13617902581794666,nuts2024-overlay
+FIN,FI1D,Pohjois- ja Itä-Suomi,FI-13,Pohjois-Karjala,FI,0.126548525031701,nuts2024-overlay
+FIN,FI1D,Pohjois- ja Itä-Suomi,FI-04,Etelä-Savo,FI,0.1119611601874077,nuts2024-overlay
+FIN,FI1D,Pohjois- ja Itä-Suomi,FI-05,Kainuu,FI,0.058250255957718634,nuts2024-overlay
+FIN,FI1D,Pohjois- ja Itä-Suomi,FI-07,Keski-Pohjanmaa,FI,0.054286871155390874,nuts2024-overlay
+FRA,FR10,Ile-de-France,FR-IDF,Île-de-France,FR,1,nuts2024-overlay
+FRA,FRB0,Centre — Val de Loire,FR-CVL,Centre-Val de Loire,FR,1,nuts2024-overlay
+FRA,FRC1,Bourgogne,FR-BFC,Bourgogne-Franche-Comté,FR,1,nuts2024-overlay
+FRA,FRC2,Franche-Comté,FR-BFC,Bourgogne-Franche-Comté,FR,1,nuts2024-overlay
+FRA,FRD1,Basse-Normandie,FR-NOR,Normandie,FR,1,nuts2024-overlay
+FRA,FRD2,Haute-Normandie,FR-NOR,Normandie,FR,1,nuts2024-overlay
+FRA,FRE1,Nord-Pas de Calais,FR-HDF,Hauts-de-France,FR,1,nuts2024-overlay
+FRA,FRE2,Picardie,FR-HDF,Hauts-de-France,FR,1,nuts2024-overlay
+FRA,FRF1,Alsace,FR-GES,Grand-Est,FR,1,nuts2024-overlay
+FRA,FRF2,Champagne-Ardenne,FR-GES,Grand-Est,FR,1,nuts2024-overlay
+FRA,FRF3,Lorraine,FR-GES,Grand-Est,FR,1,nuts2024-overlay
+FRA,FRG0,Pays de la Loire,FR-PDL,Pays-de-la-Loire,FR,1,nuts2024-overlay
+FRA,FRH0,Bretagne,FR-BRE,Bretagne,FR,1,nuts2024-overlay
+FRA,FRI1,Aquitaine,FR-NAQ,Nouvelle-Aquitaine,FR,1,nuts2024-overlay
+FRA,FRI2,Limousin,FR-NAQ,Nouvelle-Aquitaine,FR,1,nuts2024-overlay
+FRA,FRI3,Poitou-Charentes,FR-NAQ,Nouvelle-Aquitaine,FR,1,nuts2024-overlay
+FRA,FRJ1,Languedoc-Roussillon,FR-OCC,Occitanie,FR,1,nuts2024-overlay
+FRA,FRJ2,Midi-Pyrénées,FR-OCC,Occitanie,FR,1,nuts2024-overlay
+FRA,FRK1,Auvergne,FR-ARA,Auvergne-Rhône-Alpes,FR,1,nuts2024-overlay
+FRA,FRK2,Rhône-Alpes,FR-ARA,Auvergne-Rhône-Alpes,FR,1,nuts2024-overlay
+FRA,FRL0,Provence-Alpes-Côte d’Azur,FR-PAC,Provence-Alpes-Côte-d’Azur,FR,1,nuts2024-overlay
+FRA,FRM0,Corse,FR-20R,Corse,FR,1,nuts2024-overlay
+GBR,UKC1,Tees Valley and Durham,UKC,North East,GB,1,uk-nuts1-prefix
+GBR,UKC2,Northumberland and Tyne and Wear,UKC,North East,GB,1,uk-nuts1-prefix
+GBR,UKD1,Cumbria,UKD,North West,GB,1,uk-nuts1-prefix
+GBR,UKD3,Greater Manchester,UKD,North West,GB,1,uk-nuts1-prefix
+GBR,UKD4,Lancashire,UKD,North West,GB,1,uk-nuts1-prefix
+GBR,UKD6,Cheshire,UKD,North West,GB,1,uk-nuts1-prefix
+GBR,UKD7,Merseyside,UKD,North West,GB,1,uk-nuts1-prefix
+GBR,UKE1,East Yorkshire and Northern Lincolnshire,UKE,Yorkshire and the Humber,GB,1,uk-nuts1-prefix
+GBR,UKE2,North Yorkshire,UKE,Yorkshire and the Humber,GB,1,uk-nuts1-prefix
+GBR,UKE3,South Yorkshire,UKE,Yorkshire and the Humber,GB,1,uk-nuts1-prefix
+GBR,UKE4,West Yorkshire,UKE,Yorkshire and the Humber,GB,1,uk-nuts1-prefix
+GBR,UKF1,Derbyshire and Nottinghamshire,UKF,East Midlands,GB,1,uk-nuts1-prefix
+GBR,UKF2,"Leicestershire, Rutland and Northamptonshire",UKF,East Midlands,GB,1,uk-nuts1-prefix
+GBR,UKF3,Lincolnshire,UKF,East Midlands,GB,1,uk-nuts1-prefix
+GBR,UKG1,"Herefordshire, Worcestershire and Warwickshire",UKG,West Midlands,GB,1,uk-nuts1-prefix
+GBR,UKG2,Shropshire and Staffordshire,UKG,West Midlands,GB,1,uk-nuts1-prefix
+GBR,UKG3,West Midlands,UKG,West Midlands,GB,1,uk-nuts1-prefix
+GBR,UKH1,East Anglia,UKH,East of England,GB,1,uk-nuts1-prefix
+GBR,UKH2,Bedfordshire and Hertfordshire,UKH,East of England,GB,1,uk-nuts1-prefix
+GBR,UKH3,Essex,UKH,East of England,GB,1,uk-nuts1-prefix
+GBR,UKI3_4_5_6_7,London,UKI,London,GB,1,uk-nuts1-prefix
+GBR,UKJ1,"Berkshire, Buckinghamshire and Oxfordshire",UKJ,South East,GB,1,uk-nuts1-prefix
+GBR,UKJ2,"Surrey, East and West Sussex",UKJ,South East,GB,1,uk-nuts1-prefix
+GBR,UKJ3,Hampshire and Isle of Wight,UKJ,South East,GB,1,uk-nuts1-prefix
+GBR,UKJ4,Kent,UKJ,South East,GB,1,uk-nuts1-prefix
+GBR,UKK1,"Gloucestershire, Wiltshire and Bristol/Bath area",UKK,South West,GB,1,uk-nuts1-prefix
+GBR,UKK2,Dorset and Somerset,UKK,South West,GB,1,uk-nuts1-prefix
+GBR,UKK3,Cornwall and Isles of Scilly,UKK,South West,GB,1,uk-nuts1-prefix
+GBR,UKK4,Devon,UKK,South West,GB,1,uk-nuts1-prefix
+GBR,UKL1,West Wales and The Valleys,UKL,Wales,GB,1,uk-nuts1-prefix
+GBR,UKL2,East Wales,UKL,Wales,GB,1,uk-nuts1-prefix
+GBR,UKM5,North Eastern Scotland,UKM,Scotland,GB,1,uk-nuts1-prefix
+GBR,UKM6,Highlands and Islands,UKM,Scotland,GB,1,uk-nuts1-prefix
+GBR,UKM7,Eastern Scotland,UKM,Scotland,GB,1,uk-nuts1-prefix
+GBR,UKM8,West Central Scotland,UKM,Scotland,GB,1,uk-nuts1-prefix
+GBR,UKM9,Southern Scotland,UKM,Scotland,GB,1,uk-nuts1-prefix
+GBR,UKN0,Northern Ireland,UKN,Northern Ireland,GB,1,uk-nuts1-prefix
+GRC,EL30,Attiki,GR-I,Attikí,GR,1,nuts2024-overlay
+GRC,EL41,Voreio Aigaio,GR-K,Vóreio Aigaío,GR,1,nuts2024-overlay
+GRC,EL42,Notio Aigaio,GR-L,Nótio Aigaío,GR,1,nuts2024-overlay
+GRC,EL43,Kriti,GR-M,Kríti,GR,1,nuts2024-overlay
+GRC,EL51,"Anatoliki Makedonia, Thraki",GR-A,Anatolikí Makedonía kai Thráki,GR,1,nuts2024-overlay
+GRC,EL52,Kentriki Makedonia,GR-B,Kentrikí Makedonía,GR,1,nuts2024-overlay
+GRC,EL53,Dytiki Makedonia,GR-C,Dytikí Makedonía,GR,1,nuts2024-overlay
+GRC,EL61,Thessalia,GR-E,Thessalía,GR,1,nuts2024-overlay
+GRC,EL62,Ionia Nisia,GR-F,Ionía Nísia,GR,1,nuts2024-overlay
+GRC,EL64,Sterea Elláda,GR-H,Stereá Elláda,GR,1,nuts2024-overlay
+GRC,EL65,Peloponnisos,GR-J,Pelóponnisos,GR,1,nuts2024-overlay
+HRV,HR02,Panonska Hrvatska,HR-14,Osječko-baranjska županija,HR,0.25232227234078336,nuts2024-overlay
+HRV,HR02,Panonska Hrvatska,HR-03,Sisačko-moslavačka županija,HR,0.1446934623700814,nuts2024-overlay
+HRV,HR02,Panonska Hrvatska,HR-16,Vukovarsko-srijemska županija,HR,0.1395991654204667,nuts2024-overlay
+HRV,HR02,Panonska Hrvatska,HR-12,Brodsko-posavska županija,HR,0.1288306607012775,nuts2024-overlay
+HRV,HR02,Panonska Hrvatska,HR-04,Karlovačka županija,HR,0.10477211926848239,nuts2024-overlay
+HRV,HR02,Panonska Hrvatska,HR-07,Bjelovarsko-bilogorska županija,HR,0.09598809525061482,nuts2024-overlay
+HRV,HR02,Panonska Hrvatska,HR-10,Virovitičko-podravska županija,HR,0.0690689244948768,nuts2024-overlay
+HRV,HR02,Panonska Hrvatska,HR-11,Požeško-slavonska županija,HR,0.064725300153417,nuts2024-overlay
+HRV,HR03,Jadranska Hrvatska,HR-17,Splitsko-dalmatinska županija,HR,0.3192642848465275,nuts2024-overlay
+HRV,HR03,Jadranska Hrvatska,HR-08,Primorsko-goranska županija,HR,0.20817696906242952,nuts2024-overlay
+HRV,HR03,Jadranska Hrvatska,HR-18,Istarska županija,HR,0.15332393724944138,nuts2024-overlay
+HRV,HR03,Jadranska Hrvatska,HR-13,Zadarska županija,HR,0.12615219585976425,nuts2024-overlay
+HRV,HR03,Jadranska Hrvatska,HR-19,Dubrovačko-neretvanska županija,HR,0.07815126667534074,nuts2024-overlay
+HRV,HR03,Jadranska Hrvatska,HR-15,Šibensko-kninska županija,HR,0.07704053422561803,nuts2024-overlay
+HRV,HR03,Jadranska Hrvatska,HR-09,Ličko-senjska županija,HR,0.037890812080878626,nuts2024-overlay
+HRV,HR05,Grad Zagreb,HR-21,Grad Zagreb,HR,0.991494182928357,nuts2024-overlay
+HRV,HR05,Grad Zagreb,HR-01,Zagrebačka županija,HR,0.00850581707164297,nuts2024-overlay
+HRV,HR06,Sjeverna Hrvatska,HR-21,Grad Zagreb,HR,0.37768489247967024,nuts2024-overlay
+HRV,HR06,Sjeverna Hrvatska,HR-01,Zagrebačka županija,HR,0.20409160958273195,nuts2024-overlay
+HRV,HR06,Sjeverna Hrvatska,HR-05,Varaždinska županija,HR,0.1386943723018137,nuts2024-overlay
+HRV,HR06,Sjeverna Hrvatska,HR-02,Krapinsko-zagorska županija,HR,0.10275071554083376,nuts2024-overlay
+HRV,HR06,Sjeverna Hrvatska,HR-06,Koprivničko-križevačka županija,HR,0.0903172031083071,nuts2024-overlay
+HRV,HR06,Sjeverna Hrvatska,HR-20,Međimurska županija,HR,0.08646120698664325,nuts2024-overlay
+HUN,HU11,Budapest,HU11,Budapest,HU,1,nuts2024-overlay
+HUN,HU12,Pest,HU12,Pest,HU,1,nuts2024-overlay
+HUN,HU21,Közép-Dunántúl,HU21,Közép-Dunántúl,HU,1,nuts2024-overlay
+HUN,HU22,Nyugat-Dunántúl,HU22,Nyugat-Dunántúl,HU,1,nuts2024-overlay
+HUN,HU23,Dél-Dunántúl,HU23,Dél-Dunántúl,HU,1,nuts2024-overlay
+HUN,HU31,Észak-Magyarország,HU31,Észak-Magyarország,HU,1,nuts2024-overlay
+HUN,HU32,Észak-Alföld,HU32,Észak-Alföld,HU,1,nuts2024-overlay
+HUN,HU33,Dél-Alföld,HU33,Dél-Alföld,HU,1,nuts2024-overlay
+IRL,IE04,Northern and Western,IE042,West,IE,0.5185102454145132,nuts2024-overlay
+IRL,IE04,Northern and Western,IE041,Border,IE,0.48148975458548676,nuts2024-overlay
+IRL,IE05,Southern,IE053,South-West (IRL),IE,0.43308491208059324,nuts2024-overlay
+IRL,IE05,Southern,IE051,Mid-West,IE,0.29653280408192595,nuts2024-overlay
+IRL,IE05,Southern,IE052,South-East (IRL),IE,0.2703822838374808,nuts2024-overlay
+IRL,IE06,Eastern and Midland,IE061,Dublin,IE,0.5634135940435743,nuts2024-overlay
+IRL,IE06,Eastern and Midland,IE062,Mid-East,IE,0.3004467497582755,nuts2024-overlay
+IRL,IE06,Eastern and Midland,IE063,Midland,IE,0.13613965619815027,nuts2024-overlay
+ISL,IS00,Ísland,IS.A,Höfuðborgarsvæðið,IS,0.6459040546432671,nuts2024-overlay
+ISL,IS00,Ísland,IS.B,Landsbyggð,IS,0.35409594535673306,nuts2024-overlay
+ITA,ITC1,Piemonte,IT-21,Piemonte,IT,1,nuts2024-overlay
+ITA,ITC3,Liguria,IT-42,Liguria,IT,1,nuts2024-overlay
+ITA,ITC4,Lombardia,IT-25,Lombardia,IT,1,nuts2024-overlay
+ITA,ITF1,Abruzzo,IT-65,Abruzzo,IT,1,nuts2024-overlay
+ITA,ITF2,Molise,IT-67,Molise,IT,1,nuts2024-overlay
+ITA,ITF3,Campania,IT-72,Campania,IT,1,nuts2024-overlay
+ITA,ITF4,Puglia,IT-75,Puglia,IT,1,nuts2024-overlay
+ITA,ITF5,Basilicata,IT-77,Basilicata,IT,1,nuts2024-overlay
+ITA,ITF6,Calabria,IT-78,Calabria,IT,1,nuts2024-overlay
+ITA,ITG1,Sicilia,IT-82,Sicilia,IT,1,nuts2024-overlay
+ITA,ITG2,Sardegna,IT-88,Sardegna,IT,1,nuts2024-overlay
+ITA,ITH1,Provincia Autonoma di Bolzano/Bozen,IT-32,Trentino-Alto Adige,IT,1,nuts2024-overlay
+ITA,ITH2,Provincia Autonoma di Trento,IT-32,Trentino-Alto Adige,IT,1,nuts2024-overlay
+ITA,ITH3,Veneto,IT-34,Veneto,IT,1,nuts2024-overlay
+ITA,ITH4,Friuli-Venezia Giulia,IT-36,Friuli Venezia Giulia,IT,1,nuts2024-overlay
+ITA,ITH5,Emilia-Romagna,IT-45,Emilia-Romagna,IT,1,nuts2024-overlay
+ITA,ITI1,Toscana,IT-52,Toscana,IT,1,nuts2024-overlay
+ITA,ITI2,Umbria,IT-55,Umbria,IT,1,nuts2024-overlay
+ITA,ITI3,Marche,IT-57,Marche,IT,1,nuts2024-overlay
+ITA,ITI4,Lazio,IT-62,Lazio,IT,1,nuts2024-overlay
+LTU,LT01,Sostinės regionas,LT-VL,Vilniaus apskritis,LT,1,nuts2024-overlay
+LTU,LT02,Vidurio ir vakarų Lietuvos regionas,LT-KU,Kauno apskritis,LT,0.2751450594173695,nuts2024-overlay
+LTU,LT02,Vidurio ir vakarų Lietuvos regionas,LT-KL,Klaipėdos apskritis,LT,0.1631793431909742,nuts2024-overlay
+LTU,LT02,Vidurio ir vakarų Lietuvos regionas,LT-SA,Šiaulių apskritis,LT,0.13410753995311314,nuts2024-overlay
+LTU,LT02,Vidurio ir vakarų Lietuvos regionas,LT-PN,Panevėžio apskritis,LT,0.10990599903256856,nuts2024-overlay
+LTU,LT02,Vidurio ir vakarų Lietuvos regionas,LT-MR,Marijampolės apskritis,LT,0.07368667593264937,nuts2024-overlay
+LTU,LT02,Vidurio ir vakarų Lietuvos regionas,LT-AL,Alytaus apskritis,LT,0.06800836187983389,nuts2024-overlay
+LTU,LT02,Vidurio ir vakarų Lietuvos regionas,LT-TE,Telšių apskritis,LT,0.06716733156692495,nuts2024-overlay
+LTU,LT02,Vidurio ir vakarų Lietuvos regionas,LT-UT,Utenos apskritis,LT,0.06503445404462048,nuts2024-overlay
+LTU,LT02,Vidurio ir vakarų Lietuvos regionas,LT-TA,Tauragės apskritis,LT,0.04376523498194607,nuts2024-overlay
+LUX,LU00,Luxembourg,LU.nat,Luxembourg,LU,1,nuts2024-overlay
+LVA,LV00,Latvija,LV00A,Rīga,LV,0.41979660057858087,nuts2024-overlay
+LVA,LV00,Latvija,LV00B,Kurzeme,LV,0.15703173175538018,nuts2024-overlay
+LVA,LV00,Latvija,LV00C,Vidzeme,LV,0.15275320911288312,nuts2024-overlay
+LVA,LV00,Latvija,LV005,Latgale,LV,0.14644356101347172,nuts2024-overlay
+LVA,LV00,Latvija,LV009,Zemgale,LV,0.12397489753968402,nuts2024-overlay
+MKD,MK00,Severna Makedonija,MK008,Skopje,MK,0.3042164885924185,nuts2024-overlay
+MKD,MK00,Severna Makedonija,MK006,Polog,MK,0.15692660093689456,nuts2024-overlay
+MKD,MK00,Severna Makedonija,MK005,Pelagonia,MK,0.1088179874513687,nuts2024-overlay
+MKD,MK00,Severna Makedonija,MK003,Southwestern,MK,0.10741072784818964,nuts2024-overlay
+MKD,MK00,Severna Makedonija,MK004,Southeastern,MK,0.08425862150165311,nuts2024-overlay
+MKD,MK00,Severna Makedonija,MK002,Eastern,MK,0.08338599182387361,nuts2024-overlay
+MKD,MK00,Severna Makedonija,MK007,Northeastern,MK,0.08024218397332156,nuts2024-overlay
+MKD,MK00,Severna Makedonija,MK001,Vardar,MK,0.07474139787228044,nuts2024-overlay
+MLT,MT00,Malta,MT.nat,Malta,MT,1,nuts2024-overlay
+NLD,NL11,Groningen,NL-GR,Groningen,NL,1,nuts2024-overlay
+NLD,NL12,Friesland (NL),NL-FR,Fryslân,NL,1,nuts2024-overlay
+NLD,NL13,Drenthe,NL-DR,Drenthe,NL,1,nuts2024-overlay
+NLD,NL21,Overijssel,NL-OV,Overijssel,NL,1,nuts2024-overlay
+NLD,NL22,Gelderland,NL-GE,Gelderland,NL,1,nuts2024-overlay
+NLD,NL23,Flevoland,NL-FL,Flevoland,NL,1,nuts2024-overlay
+NLD,NL32,Noord-Holland,NL-NH,Noord-Holland,NL,1,nuts2024-overlay
+NLD,NL34,Zeeland,NL-ZE,Zeeland,NL,1,nuts2024-overlay
+NLD,NL35,Utrecht,NL-UT,Utrecht,NL,0.8982307533140783,nuts2024-overlay
+NLD,NL35,Utrecht,NL-ZH,Zuid-Holland,NL,0.10176924668592176,nuts2024-overlay
+NLD,NL36,Zuid-Holland,NL-ZH,Zuid-Holland,NL,1,nuts2024-overlay
+NLD,NL41,Noord-Brabant,NL-NB,Noord-Brabant,NL,1,nuts2024-overlay
+NLD,NL42,Limburg (NL),NL-LI,Limburg,NL,1,nuts2024-overlay
+NOR,NO07,Nord-Norge,NO-18,Nordland,NO,0.4947219449828255,nuts2024-overlay
+NOR,NO07,Nord-Norge,NO-19,Troms,NO,0.3452181847183736,nuts2024-overlay
+NOR,NO07,Nord-Norge,NO-20,Finnmark,NO,0.16005987029880084,nuts2024-overlay
+NOR,NO09,Agder og Sør-Østlandet,NO-07,Vestfold,NO,0.34358603525385406,nuts2024-overlay
+NOR,NO09,Agder og Sør-Østlandet,NO-10,Vest-Agder,NO,0.2520986350361746,nuts2024-overlay
+NOR,NO09,Agder og Sør-Østlandet,NO-08,Telemark,NO,0.24308116860828663,nuts2024-overlay
+NOR,NO09,Agder og Sør-Østlandet,NO-09,Aust-Agder,NO,0.16123416110168481,nuts2024-overlay
+NOR,NO0A,Vestlandet,NO-12,Hordaland,NO,0.3926286784019358,nuts2024-overlay
+NOR,NO0A,Vestlandet,NO-11,Rogaland,NO,0.36358457376864334,nuts2024-overlay
+NOR,NO0A,Vestlandet,NO-15,Møre og Romsdal,NO,0.165012228923424,nuts2024-overlay
+NOR,NO0A,Vestlandet,NO-14,Sogn og Fjordane,NO,0.0787745189059969,nuts2024-overlay
+POL,PL21,Małopolskie,PL-12,Małopolskie,PL,1,nuts2024-overlay
+POL,PL22,Śląskie,PL-24,Śląskie,PL,1,nuts2024-overlay
+POL,PL41,Wielkopolskie,PL-30,Wielkopolskie,PL,1,nuts2024-overlay
+POL,PL42,Zachodniopomorskie,PL-32,Zachodniopomorskie,PL,1,nuts2024-overlay
+POL,PL43,Lubuskie,PL-08,Lubuskie,PL,1,nuts2024-overlay
+POL,PL51,Dolnośląskie,PL-02,Dolnośląskie,PL,1,nuts2024-overlay
+POL,PL52,Opolskie,PL-16,Opolskie,PL,1,nuts2024-overlay
+POL,PL61,Kujawsko-pomorskie,PL-04,Kujawsko-pomorskie,PL,1,nuts2024-overlay
+POL,PL63,Pomorskie,PL-22,Pomorskie,PL,1,nuts2024-overlay
+POL,PL71,Łódzkie,PL-10,Łódzkie,PL,1,nuts2024-overlay
+POL,PL72,Świętokrzyskie,PL-26,Świętokrzyskie,PL,1,nuts2024-overlay
+POL,PL81,Lubelskie,PL-06,Lubelskie,PL,1,nuts2024-overlay
+POL,PL82,Podkarpackie,PL-18,Podkarpackie,PL,1,nuts2024-overlay
+POL,PL84,Podlaskie,PL-20,Podlaskie,PL,1,nuts2024-overlay
+POL,PL91,Warszawski stołeczny,PL-14,Mazowieckie,PL,1,nuts2024-overlay
+POL,PL92,Mazowiecki regionalny,PL-14,Mazowieckie,PL,1,nuts2024-overlay
+PRT,PT11,Norte,PT11,North,PT,1,nuts2024-overlay
+PRT,PT15,Algarve,PT15,Algarve,PT,1,nuts2024-overlay
+PRT,PT19,Centro (PT),PT19,Centro (PT),PT,1,nuts2024-overlay
+PRT,PT1A,"Grande Lisboa
+",PT1A,Grande Lisboa,PT,1,nuts2024-overlay
+PRT,PT1B,"Península de Setúbal
+",PT1B,Península de Setúbal,PT,1,nuts2024-overlay
+PRT,PT1C,Alentejo,PT1C,Alentejo,PT,1,nuts2024-overlay
+PRT,PT1D,"Oeste e Vale do Tejo
+",PT1D,Oeste e Vale do Tejo,PT,1,nuts2024-overlay
+PRT,PT20,Região Autónoma dos Açores,PT20,Região Autónoma dos Açores,PT,1,nuts2024-overlay
+PRT,PT30,Região Autónoma da Madeira,PT30,Região Autónoma da Madeira,PT,1,nuts2024-overlay
+ROU,RO11,Nord-Vest,RO11,Nord-Vest,RO,1,nuts2024-overlay
+ROU,RO12,Centru,RO12,Centru,RO,1,nuts2024-overlay
+ROU,RO21,Nord-Est,RO21,Nord-Est,RO,1,nuts2024-overlay
+ROU,RO22,Sud-Est,RO22,Sud-Est,RO,1,nuts2024-overlay
+ROU,RO31,Sud-Muntenia,RO31,Sud-Muntenia,RO,1,nuts2024-overlay
+ROU,RO32,Bucureşti-Ilfov,RO32,București-Ilfov,RO,1,nuts2024-overlay
+ROU,RO41,Sud-Vest Oltenia,RO41,Sud-Vest Oltenia,RO,1,nuts2024-overlay
+ROU,RO42,Vest,RO42,Vest,RO,1,nuts2024-overlay
+SVK,SK01,Bratislavský kraj,SK01,Bratislava Region,SK,0.9883215666695145,nuts2024-overlay
+SVK,SK01,Bratislavský kraj,SK02,Západné Slovensko,SK,0.011678433330485495,nuts2024-overlay
+SVK,SK02,Západné Slovensko,SK02,Západné Slovensko,SK,1,nuts2024-overlay
+SVK,SK03,Stredné Slovensko,SK03,Stredné Slovensko,SK,1,nuts2024-overlay
+SVK,SK04,Východné Slovensko,SK04,Východné Slovensko,SK,1,nuts2024-overlay
+SVN,SI03,Vzhodna Slovenija,SI032,Podravska statistična regija,SI,0.3028365967819137,nuts2024-overlay
+SVN,SI03,Vzhodna Slovenija,SI034,Savinjska statistična regija,SI,0.24358010539933936,nuts2024-overlay
+SVN,SI03,Vzhodna Slovenija,SI037,Jugovzhodna Slovenija statistična regija,SI,0.13560724933758,nuts2024-overlay
+SVN,SI03,Vzhodna Slovenija,SI031,Pomurska statistična regija,SI,0.10222407423383377,nuts2024-overlay
+SVN,SI03,Vzhodna Slovenija,SI036,Spodnjeposavska statistična regija,SI,0.06539442542209728,nuts2024-overlay
+SVN,SI03,Vzhodna Slovenija,SI033,Koroška statistična regija,SI,0.06499353505488402,nuts2024-overlay
+SVN,SI03,Vzhodna Slovenija,SI038,Primorsko-notranjska statistična regija,SI,0.04758844159216834,nuts2024-overlay
+SVN,SI03,Vzhodna Slovenija,SI035,Zasavska statistična regija,SI,0.03777557217818343,nuts2024-overlay
+SVN,SI04,Zahodna Slovenija,SI041,Osrednjeslovenska statistična regija,SI,0.5588178073848561,nuts2024-overlay
+SVN,SI04,Zahodna Slovenija,SI042,Gorenjska statistična regija,SI,0.21228887058381044,nuts2024-overlay
+SVN,SI04,Zahodna Slovenija,SI043,Goriška statistična regija,SI,0.11449536838381556,nuts2024-overlay
+SVN,SI04,Zahodna Slovenija,SI044,Obalno-kraška statistična regija,SI,0.1143979536475179,nuts2024-overlay
+SWE,SE11,Stockholm,SE11,Stockholm,SE,1,nuts2024-overlay
+SWE,SE12,Östra Mellansverige,SE12,Östra Mellansverige,SE,1,nuts2024-overlay
+SWE,SE21,Småland med öarna,SE21,Småland med öarna,SE,0.9484010422963755,nuts2024-overlay
+SWE,SE21,Småland med öarna,SE23,Västsverige,SE,0.05159895770362465,nuts2024-overlay
+SWE,SE22,Sydsverige,SE22,Sydsverige,SE,1,nuts2024-overlay
+SWE,SE23,Västsverige,SE23,Västsverige,SE,1,nuts2024-overlay
+SWE,SE31,Norra Mellansverige,SE31,Norra Mellansverige,SE,1,nuts2024-overlay
+SWE,SE32,Mellersta Norrland,SE32,Mellersta Norrland,SE,1,nuts2024-overlay
+SWE,SE33,Övre Norrland,SE33,Övre Norrland,SE,1,nuts2024-overlay
+TUR,TR10,İstanbul,TR1,Istanbul,TR,0.9952963217692741,nuts2024-overlay
+TUR,TR10,İstanbul,TR2,West Marmara,TR,0.0025061018135780666,nuts2024-overlay
+TUR,TR10,İstanbul,TR4,East Marmara,TR,0.0021975764171478993,nuts2024-overlay
+TUR,TR21,"Tekirdağ, Edirne, Kırklareli",TR2,West Marmara,TR,1,nuts2024-overlay
+TUR,TR22,"Balıkesir, Çanakkale",TR2,West Marmara,TR,1,nuts2024-overlay
+TUR,TR31,İzmir,TR3,Aegean,TR,1,nuts2024-overlay
+TUR,TR32,"Aydın, Denizli, Muğla",TR3,Aegean,TR,0.9804561504779533,nuts2024-overlay
+TUR,TR32,"Aydın, Denizli, Muğla",TR6,Mediterranean,TR,0.01954384952204666,nuts2024-overlay
+TUR,TR33,"Manisa, Afyonkarahisar, Kütahya, Uşak",TR3,Aegean,TR,1,nuts2024-overlay
+TUR,TR41,"Bursa, Eskişehir, Bilecik",TR4,East Marmara,TR,1,nuts2024-overlay
+TUR,TR42,"Kocaeli, Sakarya, Düzce, Bolu, Yalova",TR4,East Marmara,TR,1,nuts2024-overlay
+TUR,TR51,Ankara,TR5,West Anatolia,TR,0.954316543945779,nuts2024-overlay
+TUR,TR51,Ankara,TR4,East Marmara,TR,0.04568345605422105,nuts2024-overlay
+TUR,TR52,"Konya, Karaman",TR5,West Anatolia,TR,0.9787564878750005,nuts2024-overlay
+TUR,TR52,"Konya, Karaman",TR6,Mediterranean,TR,0.02124351212499955,nuts2024-overlay
+TUR,TR61,"Antalya, Isparta, Burdur",TR6,Mediterranean,TR,1,nuts2024-overlay
+TUR,TR62,"Adana, Mersin",TR6,Mediterranean,TR,1,nuts2024-overlay
+TUR,TR63,"Hatay, Kahramanmaraş, Osmaniye",TR6,Mediterranean,TR,0.9760675590671734,nuts2024-overlay
+TUR,TR63,"Hatay, Kahramanmaraş, Osmaniye",TRC,Southeast Anatolia,TR,0.0239324409328266,nuts2024-overlay
+TUR,TR71,"Kırıkkale, Aksaray, Niğde, Nevşehir, Kırşehir",TR7,Central Anatolia,TR,0.8497554604089703,nuts2024-overlay
+TUR,TR71,"Kırıkkale, Aksaray, Niğde, Nevşehir, Kırşehir",TR5,West Anatolia,TR,0.1502445395910297,nuts2024-overlay
+TUR,TR72,"Kayseri, Sivas, Yozgat",TR7,Central Anatolia,TR,0.9399609900964206,nuts2024-overlay
+TUR,TR72,"Kayseri, Sivas, Yozgat",TR6,Mediterranean,TR,0.060039009903579334,nuts2024-overlay
+TUR,TR81,"Zonguldak, Karabük, Bartın",TR8,West Black Sea,TR,1,nuts2024-overlay
+TUR,TR82,"Kastamonu, Çankırı, Sinop",TR8,West Black Sea,TR,1,nuts2024-overlay
+TUR,TR83,"Samsun, Tokat, Çorum, Amasya",TR8,West Black Sea,TR,1,nuts2024-overlay
+TUR,TR90,"Trabzon, Ordu, Giresun, Rize, Artvin, Gümüşhane",TR9,East Black Sea,TR,1,nuts2024-overlay
+TUR,TRB2,"Van, Muş, Bitlis, Hakkari",TRB,Central East Anatolia,TR,0.9161697990200076,nuts2024-overlay
+TUR,TRB2,"Van, Muş, Bitlis, Hakkari",TRC,Southeast Anatolia,TR,0.08383020097999243,nuts2024-overlay
+TUR,TRC1,"Gaziantep, Adıyaman, Kilis",TRC,Southeast Anatolia,TR,1,nuts2024-overlay
+TUR,TRC2,"Şanlıurfa, Diyarbakır",TRC,Southeast Anatolia,TR,1,nuts2024-overlay
+TUR,TRC3,"Mardin, Batman, Şırnak, Siirt",TRC,Southeast Anatolia,TR,1,nuts2024-overlay
+UKR,UA11,Poltava,UA-53,Poltavska oblast,UA,1,ukraine-table
+UKR,UA12,Sumy,UA-59,Sumska oblast,UA,1,ukraine-table
+UKR,UA13,Kharkiv,UA-63,Kharkivska oblast,UA,1,ukraine-table
+UKR,UA14,Chernihiv,UA-74,Chernihivska oblast,UA,1,ukraine-table
+UKR,UA21,Donets'k,UA-14,Donetska oblast,UA,1,ukraine-table
+UKR,UA22,Luhans'k,UA-09,Luhanska oblast,UA,1,ukraine-table
+UKR,UA31,Dnipropetrovs'k,UA-12,Dnipropetrovska oblast,UA,1,ukraine-table
+UKR,UA32,Zaporizhia,UA-23,Zaporizka oblast,UA,1,ukraine-table
+UKR,UA42,Odessa,UA-51,Odeska oblast,UA,1,ukraine-table
+UKR,UA44,Crimea,UA-43,Avtonomna Respublika Krym,UA,1,ukraine-table
+UKR,UA45,Sevastopol',UA-40,Sevastopol,UA,1,ukraine-table
+UKR,UA51,Vinnytsya,UA-05,Vinnytska oblast,UA,1,ukraine-table
+UKR,UA61,Kiev,UA-32,Kyivska oblast,UA,1,ukraine-table
+UKR,UA62,Cherkasy,UA-71,Cherkaska oblast,UA,1,ukraine-table
+UKR,UA63,Kiev City,UA-30,Kyiv,UA,1,ukraine-table
+UKR,UA72,Ivano-Frankivs'k,UA-26,Ivano-Frankivska oblast,UA,1,ukraine-table
+UKR,UA73,L'viv,UA-46,Lvivska oblast,UA,1,ukraine-table

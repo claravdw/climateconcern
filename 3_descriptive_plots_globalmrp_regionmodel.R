@@ -296,8 +296,10 @@ worldplot<-countrynoest_proj%>%
   coord_sf()+
   facet_wrap(~year,nrow=2,ncol=1)
 worldplot
-ggsave(file=paste0(figfolder,"map_projected_paired_",modelname,"_",datafilter,".pdf"),height=6.5,width=6.5,
-       worldplot)
+ggsave(file=paste0(figfolder,"map_projected_paired_",modelname,"_",datafilter,".png"),height=6.5,width=6.5,
+       worldplot,device=ragg::agg_png,dpi=600)
+
+
 
 ## fig. S9: Deltas
 worldplot_delta<-countrynoest_proj%>%
@@ -319,8 +321,8 @@ worldplot_delta<-countrynoest_proj%>%
   annotation_north_arrow(height=unit(.5,"cm"),width=unit(.35,"cm"),style=north_arrow_orienteering(text_size=4))+
   coord_sf()
 worldplot_delta
-ggsave(file=paste0(figfolder,"map_delta_",modelname,"_",datafilter,".pdf"),height=6.5,width=6.5,
-       worldplot_delta)
+ggsave(file=paste0(figfolder,"map_delta_",modelname,"_",datafilter,".png"),height=6.5,width=6.5,
+       worldplot_delta,device=ragg::agg_png,dpi=600)
 
 ## subnational maps of Europe #### 
 # regions[is.na(regions$year)==TRUE,]$year <- "2024-25" ## nothing here now 

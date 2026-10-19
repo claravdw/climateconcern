@@ -25,6 +25,7 @@ library(sf)
 library(fixest)
 library(grid) ## for function "unit" in maps
 library(ggspatial) ## for north arrow function in maps
+library(ggpattern) ## for hatching on deltas map
 library(tidyverse)
 # source("globalmrp_functions.R")
 
@@ -84,49 +85,88 @@ length(unique(d$mergekey[grepl(".nat",d$mergekey)==FALSE])) ## 2240
 
 ## number of countries where concern increased 
 # increase in global climate concern 
+est.nat.allyears<-est.nat ## preserve all years before narrowing est.nat below, for analyses elsewhere that need other periods (e.g. the 2012-13/2022-23 validation figure)
 est.nat%<>%filter(year%in%c("2010-11","2024-25"))
 est.reg%<>%filter(year%in%c("2010-11","2024-25"))
-est.nat%>%
-  select(iso_3166,mean.scl,year)%>%
-  pivot_wider(names_from=year,values_from=mean.scl)%>%
-  mutate(delta=`2024-25`-`2010-11`,
-         # increase=ifelse(delta>=0,1,0))%>%
-         change=case_when(delta==0~"stable",
-                            delta>0~"increase",
-                            delta<0~"decrease"))%>%
-  group_by(change)%>%
-  count() ## 108 increase, 61 decrease
+
+## load thinned posteriors for countries in 2010 and 2024
+load(paste0(repofolder,"outputs_stan/draws_country_2010-11_full4000.Rda"))
+draws_2010<-data.frame(draws_country)%>%
+  mutate(draw=1:nrow(draws_country))
+load(paste0(repofolder,"outputs_stan/draws_country_2024-25_full4000.Rda"))
+draws_2024<-data.frame(draws_country)%>%
+  mutate(draw=1:nrow(draws_country))
+
+stopifnot(identical(draws_2010$draw, draws_2024$draw)) ## confirms the two files are paired by posterior sample
+est.nat$q5.scl<-scales::rescale(est.nat$q5,to=c(0,1),from=global.range)
+est.nat$q95.scl<-scales::rescale(est.nat$q95,to=c(0,1),from=global.range)
+nat_isos<-unique(est.nat$iso_3166)
+M2010<-as.matrix(draws_2010%>%select(draw,any_of(nat_isos))%>%select(-draw))
+M2024<-as.matrix(draws_2024%>%select(draw,any_of(nat_isos))%>%select(-draw))
+
+range_width<-diff(global.range)
+Mdelta<-(M2024-M2010)/range_width
+
+delta_ci<-tibble(
+  iso_3166=colnames(Mdelta),
+  delta.ci.low=apply(Mdelta,2,quantile,probs=.025),
+  delta.ci.high=apply(Mdelta,2,quantile,probs=.975)
+)%>%
+  mutate(delta.sig=(delta.ci.low>0)|(delta.ci.high<0)) ## 95% CI excludes zero
+
+## "robust" change: the ENTIRE 95% CI must fall outside a band of negligible
+## change (-delta.threshold, +delta.threshold), not just exclude zero. This is
+## stricter than simple zero-exclusion: a country can technically exclude zero
+## while its whole CI still sits inside the negligible-change band (Slovenia
+## here: delta=0.011, CI=[0.0002,0.022] -- "significant" only because its
+## estimate happens to be very precise, not because the change is meaningful).
+## delta.threshold is anchored to Cohen's conventional "small effect" benchmark
+## (0.2 SD) applied to the cross-country variability in delta itself --
+## an externally-recognized convention, not derived from estimation precision.
+summ<-est.nat%>%
+  select(iso_3166,NAME_0_gadm,mean.scl,q5.scl,q95.scl,year)%>%
+  pivot_wider(names_from=year,values_from=c(mean.scl,q5.scl,q95.scl))%>%
+  mutate(delta=`mean.scl_2024-25`-`mean.scl_2010-11`,
+         increase=factor(ifelse(delta>0,1,0)))%>%
+  left_join(delta_ci,by="iso_3166")
+
+delta.threshold<-0.1*sd(summ$delta,na.rm=TRUE)
+
+summ<-summ%>%
+  mutate(real.change=case_when(
+    delta.ci.low > delta.threshold ~ "increase (robust)",
+    delta.ci.high < -delta.threshold ~ "decrease (robust)",
+    TRUE ~ "not established"))
+
+summ%>%group_by(real.change)%>%count() ## 24 decrease (robust), 46 increase (robust), 99 not established
+
+summ_sig<-summ%>%filter(delta.sig)
 
 # fig of top increasers and decreasers #### 
-summ<-est.nat%>%
-  select(NAME_0_gadm,mean.scl,year)%>%
-  pivot_wider(names_from=year,values_from=mean.scl)%>%
-  mutate(delta=`2024-25`-`2010-11`,
-         increase=factor(ifelse(delta>0,1,0)))
-
-
-summtop<-summ%>%
+summtop<-summ_sig%>%
   arrange(desc(delta))%>%
   slice_head(n=10)
-summbottom<-summ%>%
+summbottom<-summ_sig%>%
   arrange(delta)%>%
   slice_head(n=10)
 mypal<-brewer.pal(10,"RdBu")[c(3,8)]
-change<-rbind(summtop,summbottom)%>%
+change.topbottom<-rbind(summtop,summbottom)%>%  
   mutate(NAME_0_gadm=factor(NAME_0_gadm),
          NAME_0_gadm=fct_reorder(NAME_0_gadm,delta))%>%
   arrange(NAME_0_gadm)
-changefig<-change%>%
+changefig<-change.topbottom%>%
   ggplot()+
-  geom_segment(aes(x=`2010-11`,y=NAME_0_gadm,xend=`2024-25`,yend=NAME_0_gadm,color=increase),
-                            arrow=arrow(length=unit(0.2,"cm")))+
-  geom_point(aes(x=`2010-11`,y=NAME_0_gadm,color=increase))+
+  geom_segment(aes(x=`q5.scl_2010-11`,xend=`q95.scl_2010-11`,y=NAME_0_gadm,yend=NAME_0_gadm),
+               color="gray40",lwd=1.5,alpha=.5)+
+  geom_segment(aes(x=`q5.scl_2024-25`,xend=`q95.scl_2024-25`,y=NAME_0_gadm,yend=NAME_0_gadm),
+               color="gray40",lwd=1.5,alpha=0.5)+
+  geom_segment(aes(x=`mean.scl_2010-11`,y=NAME_0_gadm,xend=`mean.scl_2024-25`,yend=NAME_0_gadm,color=increase),
+               arrow=arrow(length=unit(0.2,"cm")))+
+  geom_point(aes(x=`mean.scl_2010-11`,y=NAME_0_gadm,color=increase))+
   scale_color_manual(values=rev(mypal))+
   theme_bw()+
   labs(x="Climate concern",y="")+
   theme(legend.position="none")
-
-#quartz(12,12)
 changefig
 ggsave(paste0(figfolder,"countrychanges_",modelname,".pdf"),width=3.5,height=6.5,changefig)
 
@@ -212,6 +252,8 @@ rm(list=c("countrynoest1","countrynoest2"))
 ## World map in equal area projection
 countryest_proj <- st_transform(countryest, "+proj=moll")
 countrynoest_proj <- st_transform(countrynoest, "+proj=moll")
+countryest_proj%<>%
+  left_join(summ%>%select(NAME_0_gadm,real.change),by=c("COUNTRY"="NAME_0_gadm"))
 
 ## drop countries whose raw WGS84 geometry spans the antimeridian as a single unsplit polygon
 ## (e.g. Russia, USA via the Aleutians, New Zealand, Antarctica) -- reprojecting these into any
@@ -235,6 +277,11 @@ worldplot<-countrynoest_proj%>%
   geom_sf(aes(geometry=geom),fill="lightgray",lwd=.1,color="darkgray")+
   geom_sf(data=countryest_proj,aes(geometry=geom,fill=mean.scl.bin),lwd=.1,color="darkgray",
           show.legend=c(fill=TRUE))+
+  geom_sf_pattern(data=countryest_proj%>%filter(real.change%in%c("increase (robust)","decrease (robust)"),year=="2024-25"),
+                  aes(geometry=geom),
+                  pattern="stripe",pattern_fill="gray20",pattern_colour=NA,
+                  pattern_density=0.2,pattern_spacing=0.01,pattern_angle=45,
+                  fill=NA,color=NA)+
   scale_fill_viridis_d(option="viridis",direction=-1,drop=FALSE,guide=guide_legend(reverse=TRUE))+
   labs(fill="Climate\nconcern")+
   theme_classic()+
@@ -259,18 +306,17 @@ worldplot_delta<-countrynoest_proj%>%
   geom_sf(aes(geometry=geom),fill="lightgray",lwd=.1,color="darkgray")+
   geom_sf(data=countrydelta_proj,aes(geometry=geom,fill=delta),lwd=.1,color="darkgray",
           show.legend=c(fill=TRUE))+
+  geom_sf_pattern(data=countrydelta_proj%>%filter(real.change%in%c("increase (robust)","decrease (robust)")),
+                  aes(geometry=geom),
+                  pattern="stripe",pattern_fill="gray20",pattern_colour=NA,
+                  pattern_density=0.1,pattern_spacing=0.01,pattern_angle=45,
+                  fill=NA,color=NA)+
   scale_fill_distiller(palette="RdBu")+
-  # scale_fill_brewer(palette="RdBu",direction=-1,drop=FALSE,guide=guide_legend(reverse=TRUE))+
   labs(fill="Change in \nclimate\nconcern")+
   theme_classic()+
-  theme(axis.text=element_blank(),
-        axis.title= element_blank(),
-        axis.ticks = element_blank(),
-        panel.grid=element_blank(),
-        axis.line = element_blank()
-  )+
-  annotation_north_arrow(height=unit(.5,"cm"),width=unit(.35,"cm"),
-                         style=north_arrow_orienteering(text_size=4)) +  
+  theme(axis.text=element_blank(),axis.title=element_blank(),axis.ticks=element_blank(),
+        panel.grid=element_blank(),axis.line=element_blank())+
+  annotation_north_arrow(height=unit(.5,"cm"),width=unit(.35,"cm"),style=north_arrow_orienteering(text_size=4))+
   coord_sf()
 worldplot_delta
 ggsave(file=paste0(figfolder,"map_delta_",modelname,"_",datafilter,".pdf"),height=6.5,width=6.5,
@@ -693,9 +739,15 @@ d<-read_csv(paste0(repofolder,"predictors/ND-GAIN2026_exposure.csv"))
 est.nat<-left_join(est.nat,d%>%select(-NAME_0_gadm,-GID_0_gadm),by=c("iso_3166"))
 est.nat$exp.std<-scale(est.nat$exposure,center=TRUE,scale=TRUE)
 
-## quadrants plot without 2010 values #### 
 reg1<-lm_robust(mean.std~exp.std,data=subset(est.nat,year=="2024-25"))
-
+## capture fit statistics directly from reg1 (lm_robust doesn't populate residuals()/sigma(),
+## so use summary()$r.squared/$adj.r.squared and res_var directly instead)
+reg1_stats_uncorrected<-c(
+  N=nobs(reg1),
+  `R-squared`=summary(reg1)$r.squared,
+  `Adj. R-squared`=summary(reg1)$adj.r.squared,
+  RMSE=sqrt(reg1$res_var)
+)
 ## error-corrected. 
 load(paste0(repofolder,"outputs_stan/draws_country_2024-25.Rda"))
 est.nat24<-est.nat%>%filter(year=="2024-25")%>%select(iso_3166,exp.std,mean)
@@ -718,7 +770,10 @@ moc_draws_exposure<-map_dfr(seq_len(nrow(M)), function(i){
   mod<-lm_robust(mean.std~exp.std,data=est.nat24)
   tidy(mod)%>%
     mutate(draw=draw_ids[i],
-           composed=rnorm(n(),mean=estimate,sd=std.error))
+           composed=rnorm(n(),mean=estimate,sd=std.error),
+           r2=summary(mod)$r.squared,
+           ar2=summary(mod)$adj.r.squared,
+           rmse=sqrt(mod$res_var))
 })
 
 reg1.moc<-moc_draws_exposure%>%
@@ -728,30 +783,91 @@ reg1.moc<-moc_draws_exposure%>%
             ci.low=quantile(composed,.025),
             ci.high=quantile(composed,.975),
             statistic=estimate/std.error,
-            p_below_zero=mean(composed<0))%>%
+            p_below_zero=mean(composed<0),
+            p_empirical=2*min(mean(composed<0),mean(composed>0)),
+            mean_r2=mean(r2),
+            mean_ar2=mean(ar2),
+            mean_rmse=mean(rmse))%>%
   ungroup()
 
 
-## combine uncorrected + error-corrected exposure results, export as a table ####
+## combine uncorrected + error-corrected exposure results, append fit statistics, export as a table ####
+## function: reshape a long coefficient table + a long fit-stats table into a
+## standard side-by-side regression table (one 4-column block per model:
+## Estimate, SE, t, p), with fit statistics as rows below the coefficients.
+make_regression_table<-function(coef_long, stats_long, model_levels=c("Uncorrected","Error corrected")){
+  metric_levels<-c("estimate","std.error","statistic","p.value")
+  all_cols<-paste(rep(model_levels,each=4),metric_levels,sep="__")
+  
+  coef_wide<-coef_long%>%
+    mutate(mod=factor(mod,levels=model_levels))%>%
+    pivot_wider(id_cols=term,names_from=mod,
+                values_from=c(estimate,std.error,statistic,p.value),
+                names_glue="{mod}__{.value}")%>%
+    select(term,all_of(all_cols))
+  
+  stats_wide<-stats_long%>%
+    mutate(mod=factor(mod,levels=model_levels))%>%
+    pivot_wider(id_cols=term,names_from=mod,values_from=estimate,
+                names_glue="{mod}__estimate")
+  missing_cols<-setdiff(all_cols,names(stats_wide))
+  stats_wide[missing_cols]<-NA_real_
+  stats_wide<-stats_wide%>%select(term,all_of(all_cols))
+  
+  list(table=bind_rows(coef_wide,stats_wide), n_coef=nrow(coef_wide))
+}
+
+## export: builds the two-level LaTeX header and writes the file
+export_regression_table<-function(tbl_list, label, caption, file){
+  tex_names<-c("Term","Estimate","SE","t","p","Estimate","SE","t","p")
+  addtorow<-list()
+  addtorow$pos<-list(0,0)
+  addtorow$command<-c(
+    "\\hline\n & \\multicolumn{4}{c}{Uncorrected} & \\multicolumn{4}{c}{Error corrected} \\\\\n",
+    paste0(paste(tex_names,collapse=" & ")," \\\\\n\\hline\n")
+  )
+  xt<-xtable(tbl_list$table,digits=3,label=label,caption=caption)
+  print.xtable(xt, add.to.row=addtorow, include.colnames=FALSE, include.rownames=FALSE,
+               caption.placement="bottom",
+               hline.after=c(tbl_list$n_coef,nrow(tbl_list$table)),
+               NA.string="", file=file)
+}
+
 lm1<-tidy(reg1)%>%
   mutate(mod="Uncorrected")%>%
-  select(term,estimate,std.error,statistic,mod)
+  select(term,estimate,std.error,statistic,p.value,mod)
 
 lm1.moc.all<-reg1.moc%>%
   mutate(mod="Error corrected")%>%
-  select(term,estimate,std.error,statistic,mod)
+  rename(p.value=p_empirical)%>%
+  select(term,estimate,std.error,statistic,p.value,mod)
 
-reg1.combined<-bind_rows(lm1,lm1.moc.all)%>%
+## fit-statistic rows: N is identical across draws (same sample every time, only the
+## outcome changes); R2/Adj R2/RMSE differ draw to draw, so "Error corrected" uses
+## their mean across the posterior draws
+reg1_stats<-tibble(
+  term=c("N","R-squared","Adj. R-squared","RMSE"),
+  Uncorrected=unname(reg1_stats_uncorrected),
+  `Error corrected`=c(reg1_stats_uncorrected[["N"]],
+                      mean(moc_draws_exposure$r2),
+                      mean(moc_draws_exposure$ar2),
+                      mean(moc_draws_exposure$rmse))
+)%>%
+  pivot_longer(cols=c(Uncorrected,`Error corrected`),names_to="mod",values_to="estimate")
+
+coef_long1<-bind_rows(lm1,lm1.moc.all)%>%
   filter(term!="(Intercept)")%>%
   mutate(term=case_when(term=="exp.std"~"Exposure (st.dev.)",TRUE~term))
 
+tbl1<-make_regression_table(coef_long1, reg1_stats)
 ## table S6: climate risk exposure and climate concern 
 
-print.xtable(xtable(reg1.combined,digits=3,
-                    label="tab:regression.exposure.concern",
-                    caption="{\\bf Effect of climate risk exposure on climate concern:} The table shows results from an OLS regression of climate concern (standardized, in 2024-25) on climate risk exposure (standardized), at the national level, with heteroskedasticity-robust standard errors. ``Uncorrected'' is the direct regression estimate; ``Error corrected'' uses the Method of Composition over the thinned (to 1000 draws) posterior distribution of national climate concern estimates."),
-             caption.placement="bottom",include.rownames=FALSE,
-             file=paste0(figfolder,"regression_results_simple.tex"))
+export_regression_table(tbl1,
+                        label="tab:regression.exposure.concern",
+                        caption="{\\bf Effect of climate risk exposure on climate concern:} OLS regression of climate concern (standardized, 2024-25) on climate risk exposure (standardized), at the national level, with heteroskedasticity-robust standard errors. ``Uncorrected'' p-values are conventional; ``Error corrected'' p-values are empirical (simulation-based, two-sided), from the Method of Composition over the posterior distribution (thinned to 1,000 draws) of national climate concern estimates. R-squared, adjusted R-squared, and RMSE for the error-corrected model are averaged across posterior draws.",
+                        file=paste0(figfolder,"regression_results_simple.tex"))
+
+
 
 est.nat24<-est.nat%>%filter(year=="2024-25")
 est.nat24$mean_2024.stdwithin<-scale(est.nat24$mean,center=TRUE,scale=TRUE)
@@ -784,7 +900,7 @@ quadrants<-est.nat24%>%
   annotate(geom="text",x=-1.8,y=-3,label="Low exposure,\nlow concern",color="blue")+
   annotate(geom="text",x=-1.8,y=3,label="Low exposure,\nhigh concern",color="blue")+ 
   annotate("text",x=3,y=.5,label=paste("beta == ",round(reg1.moc[2,2],2)),color="blue",parse=TRUE)+
-  annotate("text",x=3,y=.3,label=paste("p == ",round(reg1.moc[2,7],2)),color="blue",parse=TRUE)+
+  annotate("text",x=3,y=.3,label=paste("p == ",round(reg1.moc[2,"p_empirical"],2)),color="blue",parse=TRUE)+
   labs(x="Climate exposure (st.dev)",y="Climate concern (st.dev)")
 quadrants
 ggsave(file=paste0(figfolder,"quadrants_exposure_concern_",modelname,".pdf"),width=6.5,height=6.5,quadrants)
@@ -799,9 +915,20 @@ europe$mean.std <- scale(europe$mean)
 # europe$emissions.log.std <- scale(europe$log_pc_2024) 
 
 reg2<-feols(mean.std~log_pc_2024|iso_3166,vcov=~iso_3166,data=europe)
+
+## capture fit statistics BEFORE reg2 is overwritten into a coeftable matrix below
+reg2_stats_uncorrected<-c(
+  N=fitstat(reg2,"n")[[1]],
+  `N clusters`=reg2$fixef_sizes[["iso_3166"]], ## clusters = countries remaining after singleton-FE drop
+  `R-squared`=fitstat(reg2,"r2")[[1]],
+  `Adj. R-squared`=fitstat(reg2,"ar2")[[1]],
+  RMSE=fitstat(reg2,"rmse")[[1]]
+)
+
 summary(reg2)
 reg2<-coeftable(reg2)
 rownames(reg2)[1]<-"Emissions (logged)"
+
 
 
 ## error-corrected regressions over the thinned posterior #### 
@@ -836,13 +963,16 @@ europe.2<-europe%>%
   select(mergekey,iso_3166,log_pc_2024)
 
 moc_draws_emissions<-map_dfr(seq_len(nrow(M)), function(i){
-  europe.2$mean.post<-M[i, europe.2$mergekey] ## this draw's values, in europe.2's row order
+  europe.2$mean.post<-M[i, europe.2$mergekey]
   europe.2$mean.std<-as.numeric(scale(europe.2$mean.post))
   
   mod<-feols(mean.std~log_pc_2024|iso_3166,vcov=~iso_3166,data=europe.2)
   tidy(mod)%>%
     mutate(draw=draw_ids[i],
-           composed=rnorm(n(),mean=estimate,sd=std.error))
+           composed=rnorm(n(),mean=estimate,sd=std.error),
+           r2=fitstat(mod,"r2")[[1]],
+           ar2=fitstat(mod,"ar2")[[1]],
+           rmse=fitstat(mod,"rmse")[[1]])
 })
 
 reg2.moc<-moc_draws_emissions%>%
@@ -852,30 +982,52 @@ reg2.moc<-moc_draws_emissions%>%
             ci.low=quantile(composed,.025),
             ci.high=quantile(composed,.975),
             statistic=estimate/std.error,
-            p_below_zero=mean(composed<0))%>%
+            p_below_zero=mean(composed<0),
+            p_empirical=2*min(mean(composed<0),mean(composed>0)),
+            mean_r2=mean(r2),
+            mean_ar2=mean(ar2),
+            mean_rmse=mean(rmse))%>%
   ungroup()
 
-## combine uncorrected + error-corrected emissions results, export as an extended table ####
-## reg2 is already a coeftable matrix (feols coeftable columns: Estimate, Std. Error, t value, Pr(>|t|))
+## combine uncorrected + error-corrected emissions results, append fit statistics, export as a table ####
 lm2<-tibble(term="log_pc_2024",
             estimate=reg2[1,"Estimate"],
             std.error=reg2[1,"Std. Error"],
             statistic=reg2[1,"t value"],
+            p.value=reg2[1,"Pr(>|t|)"],
             mod="Uncorrected")
 
 lm2.moc<-reg2.moc%>%
   mutate(mod="Error corrected")%>%
-  select(term,estimate,std.error,statistic,mod)
+  rename(p.value=p_empirical)%>%
+  select(term,estimate,std.error,statistic,p.value,mod)
 
-reg2.combined<-bind_rows(lm2,lm2.moc)%>%
+## fit-statistic rows: N and N clusters are identical across draws (same sample/FE
+## structure every time, only the outcome changes); R2/Adj R2/RMSE differ draw to
+## draw, so "Error corrected" uses their mean across the posterior draws
+reg2_stats<-tibble(
+  term=c("N","N clusters","R-squared","Adj. R-squared","RMSE"),
+  Uncorrected=unname(reg2_stats_uncorrected),
+  `Error corrected`=c(reg2_stats_uncorrected[["N"]],
+                      reg2_stats_uncorrected[["N clusters"]],
+                      mean(moc_draws_emissions$r2),
+                      mean(moc_draws_emissions$ar2),
+                      mean(moc_draws_emissions$rmse))
+)%>%
+  pivot_longer(cols=c(Uncorrected,`Error corrected`),names_to="mod",values_to="estimate")
+
+coef_long2<-bind_rows(lm2,lm2.moc)%>%
   mutate(term=case_when(term=="log_pc_2024"~"Emissions (logged)",TRUE~term))
 
-## table S7: energy sector emissions and climate concern 
-print.xtable(xtable(reg2.combined,digits=3,
-                    label="tab:regression.emissions.concern",
-                    caption="{\\bf Effect of energy-sector CO$_2$ emissions on climate concern:} The table shows results from an OLS regression of climate concern (standardized, in 2024-25) on per-capita emissions from the energy sector (logged, 2024) at the sub-national region level in the European Union, with country fixed effects and SEs clustered by country. ``Uncorrected'' is the direct regression estimate; ``Error corrected'' uses the Method of Composition over the thinned (to 1000 draws) posterior distribution of regional climate concern estimates."),
-             caption.placement="bottom",include.rownames=FALSE,
-             file=paste0(figfolder,"regression_results_emissions.tex"))
+tbl2<-make_regression_table(coef_long2, reg2_stats)
+## table S7: energy sector emissions and climate concern
+
+export_regression_table(tbl2,
+                        label="tab:regression.emissions.concern",
+                        caption="{\\bf Effect of energy-sector CO$_2$ emissions on climate concern:} OLS regression of climate concern (standardized, 2024-25) on logged per-capita energy-sector emissions (2024), 
+                        EU sub-national regions, with country fixed effects and SEs clustered by country. ``Uncorrected'' p-values are conventional; ``Error corrected'' p-values are empirical (simulation-based, two-sided), 
+                        from the Method of Composition over the posterior distribution (thinned to 1,000 draws) of regional climate concern estimates. R-squared, adjusted R-squared, and RMSE for the error-corrected model are averaged across posterior draws.",
+                        file=paste0(figfolder,"regression_results_emissions.tex"))
 
 ## plot results, demeaning by country FEs 
 europe%<>%
@@ -890,7 +1042,7 @@ emissionsplot_fe<-ggplot(data=europe,aes(x=emissions.log.within,y=mean.std.withi
   geom_smooth(method="lm",se=FALSE,lty="dashed")+
   annotate("text",x=-3,y=1.2,label=paste("beta == ",round(reg2.moc[1,2],2)),
            color="blue",parse=TRUE)+
-  annotate("text",x=-3,y=1.0,label=paste("p == ",round(reg2.moc[1,7],2)),
+  annotate("text",x=-3,y=1.0,label=paste("p == ",round(reg2.moc[1,"p_empirical"],2)),
            color="blue",parse=TRUE)+
   labs(x="Energy-sector carbon dioxide emissions\n(regional deviation from within-country mean of regional logged emissions)",
        y="Climate concern\n(standardized, deviation from within-country mean)")+
@@ -1033,6 +1185,64 @@ corrplot(cormat.yr,order="alphabet",
          tl.pos="lt",
          tl.cex=.5,number.cex=0.5)
 dev.off()
+
+# Fig. val.2012-24: validate over-time trends against an independent survey question ####
+## compares the model's over-time change in national climate concern against the
+## change in national-average responses to a single, independently-fielded survey
+## question (Pew: "is climate change a major threat, minor threat, or not a threat"),
+## asked in both the 2012-13 and 2022-23 waves -- a direct test of whether the model's
+## estimated trends track real survey movement, not just cross-sectional levels.
+
+pew_means<-survey.data%>%
+  filter(year2%in%c("2012-13","2024-25"))%>%
+  select(iso_3166,year2,worry_climatethreat_pew)%>%
+  drop_na()%>%
+  group_by(iso_3166,year2)%>%
+  summarise(resp=mean(worry_climatethreat_pew,na.rm=TRUE),.groups="drop")%>%
+  pivot_wider(names_from=year2,values_from=resp)%>%
+  mutate(delta.survey=`2024-25`-`2012-13`)%>%
+  filter(!is.na(delta.survey))
+
+model_means<-est.nat.allyears%>%
+  filter(year%in%c("2012-13","2024-25"))%>%
+  select(iso_3166,year,mean)%>%
+  pivot_wider(names_from=year,values_from=mean)%>%
+  mutate(delta.model=`2024-25`-`2012-13`)%>%
+  filter(!is.na(delta.model))
+
+## each variable standardized by its OWN cross-country SD at the 2012-13 baseline,
+## using the full available sample at that wave (not restricted to the comparison subset)
+model.sd.2012.13<-sd(est.nat.allyears$mean[est.nat.allyears$year=="2012-13"],na.rm=TRUE)
+
+survey.2012.13.all<-survey.data%>%
+  filter(year2=="2012-13")%>%
+  select(iso_3166,worry_climatethreat_pew)%>%
+  drop_na()%>%
+  group_by(iso_3166)%>%
+  summarise(resp=mean(worry_climatethreat_pew,na.rm=TRUE),.groups="drop")
+survey.sd.2012.13<-sd(survey.2012.13.all$resp,na.rm=TRUE)
+
+val.2012.22<-model_means%>%
+  select(iso_3166,delta.model)%>%
+  inner_join(pew_means%>%select(iso_3166,delta.survey),by="iso_3166")%>%
+  mutate(delta.model.std=delta.model/model.sd.2012.13,
+         delta.survey.std=delta.survey/survey.sd.2012.13)
+
+r.2012.24<-cor(val.2012.24$delta.model.std,val.2012.24$delta.survey.std)
+cat("Fig val.2012-24: n =",nrow(val.2012.24)," countries, r =",round(r.2012.24,2),"\n")
+
+val.2012.24.plot<-val.2012.24%>%
+  ggplot(aes(x=delta.model.std,y=delta.survey.std,label=iso_3166))+
+  geom_abline(slope=1,intercept=0,lty="dashed")+
+  geom_text(size=3)+
+  annotate("text",x=max(val.2012.24$delta.model.std)-0.5,
+           y=min(val.2012.24$delta.survey.std)+0.3,
+           label=paste0("r = ",round(r.2012.24,2)),color="blue")+
+  labs(x="Change in climate concern\n(standard deviations)",
+       y="Change in country-aggregated survey responses\n(standard deviations)")+
+  theme_bw()
+val.2012.24.plot
+ggsave(file=paste0(figfolder,"validation_2012-2024_",modelname,".pdf"),width=6.5,height=6.5,val.2012.24.plot)
 
 # dimensionality for surveys for which we have multiple questions ####
 sources<-c("worldbank_2010","mildenbergerdynata_2021")

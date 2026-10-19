@@ -1,15 +1,20 @@
 % latex table generated in R 4.5.3 by xtable 1.8-8 package
-% Thu Oct 15 16:30:00 2026
+% Sun Oct 18 16:32:30 2026
 \begin{table}[ht]
 \centering
-\begin{tabular}{lrrrl}
-  \hline
-term & estimate & std.error & statistic & mod \\ 
-  \hline
-Exposure (st.dev.) & 0.083 & 0.078 & 1.056 & Uncorrected \\ 
-  Exposure (st.dev.) & 0.076 & 0.109 & 0.696 & Error corrected \\ 
+\begin{tabular}{lrrrrrrrr}
+   \hline
+ & \multicolumn{4}{c}{Uncorrected} & \multicolumn{4}{c}{Error corrected} \\
+ Term & Estimate & SE & t & p & Estimate & SE & t & p \\
+\hline
+Exposure (st.dev.) & 0.083 & 0.078 & 1.056 & 0.293 & 0.076 & 0.107 & 0.711 & 0.464 \\ 
+   \hline
+N & 164.000 &  &  &  & 164.000 &  &  &  \\ 
+  R-squared & 0.008 &  &  &  & 0.009 &  &  &  \\ 
+  Adj. R-squared & 0.002 &  &  &  & 0.003 &  &  &  \\ 
+  RMSE & 0.931 &  &  &  & 1.007 &  &  &  \\ 
    \hline
 \end{tabular}
-\caption{{\bf Effect of climate risk exposure on climate concern:} The table shows results from an OLS regression of climate concern (standardized, in 2024-25) on climate risk exposure (standardized), at the national level, with heteroskedasticity-robust standard errors. ``Uncorrected'' is the direct regression estimate; ``Error corrected'' uses the Method of Composition over the thinned (to 1000 draws) posterior distribution of national climate concern estimates.} 
+\caption{{\bf Effect of climate risk exposure on climate concern:} OLS regression of climate concern (standardized, 2024-25) on climate risk exposure (standardized), at the national level, with heteroskedasticity-robust standard errors. ``Uncorrected'' p-values are conventional; ``Error corrected'' p-values are empirical (simulation-based, two-sided), from the Method of Composition over the posterior distribution (thinned to 1,000 draws) of national climate concern estimates. R-squared, adjusted R-squared, and RMSE for the error-corrected model are averaged across posterior draws.} 
 \label{tab:regression.exposure.concern}
 \end{table}

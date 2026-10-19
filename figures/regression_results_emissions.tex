@@ -1,15 +1,23 @@
 % latex table generated in R 4.5.3 by xtable 1.8-8 package
-% Thu Oct 15 16:22:44 2026
+% Sun Oct 18 16:32:42 2026
 \begin{table}[ht]
 \centering
-\begin{tabular}{lrrrl}
-  \hline
-term & estimate & std.error & statistic & mod \\ 
-  \hline
-Emissions (logged) & 0.031 & 0.025 & 1.251 & Uncorrected \\ 
-  Emissions (logged) & 0.029 & 0.028 & 1.032 & Error corrected \\ 
+\begin{tabular}{lrrrrrrrr}
+   \hline
+ & \multicolumn{4}{c}{Uncorrected} & \multicolumn{4}{c}{Error corrected} \\
+ Term & Estimate & SE & t & p & Estimate & SE & t & p \\
+\hline
+Emissions (logged) & 0.031 & 0.025 & 1.251 & 0.223 & 0.029 & 0.029 & 0.991 & 0.320 \\ 
+   \hline
+N & 270.000 &  &  &  & 270.000 &  &  &  \\ 
+  N clusters & 25.000 &  &  &  & 25.000 &  &  &  \\ 
+  R-squared & 0.709 &  &  &  & 0.670 &  &  &  \\ 
+  Adj. R-squared & 0.679 &  &  &  & 0.636 &  &  &  \\ 
+  RMSE & 0.540 &  &  &  & 0.574 &  &  &  \\ 
    \hline
 \end{tabular}
-\caption{{\bf Effect of energy-sector CO$_2$ emissions on climate concern:} The table shows results from an OLS regression of climate concern (standardized, in 2024-25) on per-capita emissions from the energy sector (logged, 2024) at the sub-national region level in the European Union, with country fixed effects and SEs clustered by country. ``Uncorrected'' is the direct regression estimate; ``Error corrected'' uses the Method of Composition over the thinned (to 1000 draws) posterior distribution of regional climate concern estimates.} 
+\caption{{\bf Effect of energy-sector CO$_2$ emissions on climate concern:} OLS regression of climate concern (standardized, 2024-25) on logged per-capita energy-sector emissions (2024), 
+                        EU sub-national regions, with country fixed effects and SEs clustered by country. ``Uncorrected'' p-values are conventional; ``Error corrected'' p-values are empirical (simulation-based, two-sided), 
+                        from the Method of Composition over the posterior distribution (thinned to 1,000 draws) of regional climate concern estimates. R-squared, adjusted R-squared, and RMSE for the error-corrected model are averaged across posterior draws.} 
 \label{tab:regression.emissions.concern}
 \end{table}
